@@ -10,7 +10,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from dataclasses import dataclass, replace, asdict, field
 from datetime import datetime
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Union, Any, Literal
 from openai import OpenAI
 from dotenv import load_dotenv
 from collections import defaultdict, Counter
@@ -27,7 +27,7 @@ except ImportError:
     matplotlib.use('Agg')  # Non-interactive backend
 
 # Load env file
-load_dotenv()
+load_dotenv(override=True) # override to replace the system's environment variables
 
 # Setup API Key
 api_key = os.getenv("OPENAI_API_KEY")
@@ -83,6 +83,13 @@ def parse_cli_args() -> argparse.Namespace:
         type=int,
         default=42,
         help="Random seed for simulations to ensure deterministic backtests.",
+    )
+    parser.add_argument(
+        "--input-file",
+        dest="input_file",
+        type=str,
+        default=None,
+        help="Path to a JSON file containing structured input parameters (bypasses interactive mode).",
     )
     return parser.parse_args()
 
@@ -149,27 +156,66 @@ def run_dataset_validation_cli(dataset: List[Dict], knowledge_base: List[Dict]) 
 # -----------------------
 
 @dataclass
-class AllocationBucket:
-    name: str
-    percentage: float
-    category: Optional[str] = None
-    cliff_months: Optional[int] = None
-    vesting_months: Optional[int] = None
-
+class VestingDetail:
+    cliff_months: int
+    vesting_months: int
+    unlock_type: str = "linear"
 
 @dataclass
-class TokenomicsProposal:
-    project_name: str
-    token_symbol: str
-    initial_supply: Optional[float]
-    allocations: List[AllocationBucket]
-    unlock_strategy: Optional[str] = None
-    emissions_model: Optional[str] = None
-    burn_mechanism: Optional[str] = None
-    raw_text: str = ""
-    json_payload: Optional[Dict] = None
-    explanations: List[str] = field(default_factory=list)
-    interpretability_notes: List[str] = field(default_factory=list)
+class FixedSupply:
+    amount: int
+    type: Literal["fixed"] = "fixed"
+
+@dataclass
+class CappedSupply:
+    cap: int
+    initial_supply: int
+    type: Literal["capped"] = "capped"
+
+@dataclass
+class DynamicSupply:
+    initial_supply: int
+    emission_rate: float
+    burn_rule: Optional[str]
+    type: Literal["dynamic"] = "dynamic"
+
+TokenSupply = Union[int, FixedSupply, CappedSupply, DynamicSupply]
+
+@dataclass
+class ProjectMetadata:
+    project: str
+    token: str
+    category: Optional[str] = None
+
+@dataclass
+class TokenDesignThinking:
+    purpose: str
+    principles: List[str]
+    positioning: str
+    functions: List[str]
+    stakeholders: List[str]
+    economic_design: str
+    legal_design: str
+    tech_design: str
+    power_structures: str
+    team: Dict[str, str]
+
+@dataclass
+class TokenomicsParameters:
+    total_supply: TokenSupply
+    allocation: Dict[str, float]
+    vesting: Dict[str, VestingDetail]
+    emissions: Optional[str] = None
+    burn: Optional[str] = None
+
+@dataclass
+class GeneratedTokenomics:
+    project_metadata: ProjectMetadata
+    token_design_thinking: TokenDesignThinking
+    tokenomics_parameters: TokenomicsParameters
+    references: Dict[str, List[str]]
+    
+    # Validation / Interpretation helpers can go here
 
 
 @dataclass
@@ -368,107 +414,133 @@ def extract_json_payload(text: str) -> Optional[Dict]:
         return None
 
 
-def allocations_from_payload(payload: Dict, raw_text: str) -> Tuple[List[AllocationBucket], List[str]]:
-    notes: List[str] = []
-    allocations_data = payload.get("allocations") or payload.get("token_allocations")
-    allocations: List[AllocationBucket] = []
-    if isinstance(allocations_data, list):
-        for bucket in allocations_data:
-            try:
-                name = bucket.get("name") or bucket.get("label") or "Unknown"
-                percentage = float(bucket.get("percentage"))
-                category = normalize_allocation_key(name)
-                cliff = bucket.get("cliff_months")
-                vesting = bucket.get("vesting_months")
-                allocations.append(
-                    AllocationBucket(
-                        name=name.title(),
-                        percentage=percentage,
-                        category=category,
-                        cliff_months=cliff,
-                        vesting_months=vesting,
-                    )
-                )
-                explanations = bucket.get("rationale")
-                if explanations:
-                    notes.append(f"{name}: {explanations}")
-            except (TypeError, ValueError):
-                continue
-    if not allocations:
-        # Fallback to regex parsing
-        labels, values = extract_allocation_enhanced(raw_text)
-        for label, value in zip(labels, values):
-            category = normalize_allocation_key(label)
-            cliff, vesting = infer_bucket_timing(label, raw_text)
-            allocations.append(
-                AllocationBucket(
-                    name=label,
-                    percentage=value,
-                    category=category,
-                    cliff_months=cliff,
-                    vesting_months=vesting,
-                )
-            )
-    return allocations, notes
+def parse_token_supply(data: Any) -> TokenSupply:
+    if isinstance(data, (int, float)):
+        return int(data)
+    if isinstance(data, dict):
+        if "cap" in data:
+            return CappedSupply(cap=int(data.get("cap", 0)), initial_supply=int(data.get("initial_supply", 0)))
+        elif "emission_rate" in data:
+             return DynamicSupply(
+                 initial_supply=int(data.get("initial_supply", 0)),
+                 emission_rate=float(data.get("emission_rate", 0.0)),
+                 burn_rule=data.get("burn_rule")
+             )
+        elif "amount" in data:
+            return FixedSupply(amount=int(data.get("amount", 0)))
+    if isinstance(data, str):
+        try:
+            # Simple cleanup for "1,000,000" strings
+            val = float(re.sub(r'[^\d.]', '', data))
+            return int(val)
+        except ValueError:
+             pass
+    return 0
 
-
-def enforce_proposal_constraints(proposal: TokenomicsProposal,
-                                 context: ProjectContext) -> TokenomicsProposal:
-    notes = proposal.interpretability_notes[:]
-    total = sum(bucket.percentage for bucket in proposal.allocations)
-    if total <= 0:
-        notes.append("Allocation sum was zero; defaulting to equal split.")
-        equal_share = 100 / max(len(proposal.allocations), 1)
-        proposal.allocations = [replace(bucket, percentage=round(equal_share, 2)) for bucket in proposal.allocations]
-    elif abs(total - 100) > 0.5:
-        factor = 100 / total
-        notes.append(f"Allocations normalized from {total:.1f}% to 100%.")
-        proposal.allocations = [replace(bucket, percentage=round(bucket.percentage * factor, 2)) for bucket in proposal.allocations]
-
-    category_totals = _aggregate_allocations_by_category(proposal.allocations)
-    min_comm = context.constraints.get("min_community_share", 20.0)
-    if category_totals.get("Community", 0.0) < min_comm:
-        deficit = min_comm - category_totals.get("Community", 0.0)
-        notes.append(f"Community share raised by {deficit:.1f}% to meet constraint.")
-        adjust_factor = deficit / max(len(proposal.allocations), 1)
-        adjusted_allocations = []
-        for bucket in proposal.allocations:
-            if bucket.category == "Community":
-                adjusted_allocations.append(replace(bucket, percentage=bucket.percentage + deficit))
-            else:
-                adjusted_allocations.append(replace(bucket, percentage=max(bucket.percentage - adjust_factor, 1)))
-        proposal.allocations = adjusted_allocations
-
-    proposal.interpretability_notes = notes
-    return proposal
-
-
-def calculate_temporal_fairness(proposal: TokenomicsProposal) -> FairnessMetrics:
-    def project_percentages(month: int) -> List[float]:
-        projected = []
-        for bucket in proposal.allocations:
-            vest = bucket.vesting_months or 24
-            released = min(month / vest, 1.0)
-            projected.append(bucket.percentage * released)
-        return projected
-
-    def safe_gini(values: List[float]) -> float:
-        filtered = [max(v, 0) for v in values if v is not None]
-        return evaluate_gini_helper(filtered)
-
-    t0 = [bucket.percentage for bucket in proposal.allocations]
-    gini_0 = safe_gini(t0)
-    gini_12 = safe_gini(project_percentages(12))
-    gini_24 = safe_gini(project_percentages(24))
-    insider = sum(bucket.percentage for bucket in proposal.allocations if bucket.category in {"Team", "Investors"})
-    community = sum(bucket.percentage for bucket in proposal.allocations if bucket.category == "Community") or 1
-    governance_index = min(insider / community, 5.0)
-    return FairnessMetrics(
-        t0_gini=gini_0,
-        gini_12m=gini_12,
-        gini_24m=gini_24,
-        governance_influence_index=governance_index,
+def parse_design_thinking(data: Dict) -> TokenDesignThinking:
+    return TokenDesignThinking(
+        purpose=data.get("purpose", ""),
+        principles=data.get("principles", []) if isinstance(data.get("principles"), list) else [],
+        positioning=data.get("positioning", ""),
+        functions=data.get("functions", []) if isinstance(data.get("functions"), list) else [],
+        stakeholders=data.get("stakeholders", []) if isinstance(data.get("stakeholders"), list) else [],
+        economic_design=data.get("economic_design", ""),
+        legal_design=data.get("legal_design", ""),
+        tech_design=data.get("tech_design", ""),
+        power_structures=data.get("power_structures", ""),
+        team=data.get("team", {}) if isinstance(data.get("team"), dict) else {}
     )
+
+def parse_vesting(data: Dict) -> Dict[str, VestingDetail]:
+    result = {}
+    if not isinstance(data, dict): return result
+    for k, v in data.items():
+        if isinstance(v, dict):
+            result[k] = VestingDetail(
+                cliff_months=int(v.get("cliff_months", 0)),
+                vesting_months=int(v.get("vesting_months", 0)),
+                unlock_type=v.get("unlock_type", "linear")
+            )
+    return result
+
+def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsParameters:
+    # 1. Total Supply
+    params_block = payload.get("tokenomics_parameters", {})
+    if not isinstance(params_block, dict): params_block = {}
+    
+    raw_supply = params_block.get("total_supply") or payload.get("total_supply")
+    if not raw_supply:
+        raw_supply = extract_total_supply(raw_text)
+    total_supply = parse_token_supply(raw_supply)
+    
+    # 2. Allocation
+    raw_alloc = params_block.get("allocation") or payload.get("allocations") or payload.get("allocation")
+    allocation = {}
+    if isinstance(raw_alloc, dict):
+        for k, v in raw_alloc.items():
+            try:
+                allocation[k] = float(v)
+            except (ValueError, TypeError):
+                 pass
+    else:
+        # Fallback regex
+        labels, values = extract_allocation_enhanced(raw_text)
+        for l, v in zip(labels, values):
+            allocation[l] = v
+            
+    # 3. Vesting
+    raw_vesting = params_block.get("vesting") or payload.get("vesting")
+    vesting = parse_vesting(raw_vesting) if isinstance(raw_vesting, dict) else {}
+    
+    # If vesting empty, infer from text using old logic
+    if not vesting and allocation:
+        for key in allocation.keys():
+             cliff, vest = infer_bucket_timing(key, raw_text)
+             if cliff is not None or vest is not None:
+                 vesting[key] = VestingDetail(
+                     cliff_months=cliff or 0,
+                     vesting_months=vest or 0
+                 )
+
+    return TokenomicsParameters(
+        total_supply=total_supply,
+        allocation=allocation,
+        vesting=vesting,
+        emissions=params_block.get("emissions"),
+        burn=params_block.get("burn")
+    )
+
+
+def enforce_tokenomics_constraints(tokenomics: GeneratedTokenomics, context: ProjectContext) -> GeneratedTokenomics:
+    # Check allocation sum
+    alloc = tokenomics.tokenomics_parameters.allocation
+    total = sum(alloc.values())
+    if abs(total - 100) > 0.5 and total > 0:
+        factor = 100 / total
+        tokenomics.tokenomics_parameters.allocation = {k: round(v * factor, 2) for k, v in alloc.items()}
+    
+    # Check community share
+    alloc = tokenomics.tokenomics_parameters.allocation 
+    community_share = 0.0
+    for k, v in alloc.items():
+        if normalize_allocation_key(k) == "Community":
+            community_share += v
+            
+    min_comm = context.constraints.get("min_community_share", 20.0)
+    if community_share < min_comm:
+        deficit = min_comm - community_share
+        if "Community" in alloc:
+            alloc["Community"] += deficit
+        else:
+            alloc["Community"] = deficit
+            
+        # Normalize again
+        total = sum(alloc.values())
+        if total > 0:
+            factor = 100 / total
+            tokenomics.tokenomics_parameters.allocation = {k: round(v * factor, 2) for k, v in alloc.items()}
+
+    return tokenomics
 
 
 def evaluate_gini_helper(values: List[float]) -> float:
@@ -485,8 +557,52 @@ def evaluate_gini_helper(values: List[float]) -> float:
     return max(0.0, gini)
 
 
-def evaluate_governance_risk(proposal: TokenomicsProposal,
-                             fairness: FairnessMetrics) -> GovernanceRiskAssessment:
+def calculate_temporal_fairness(tokenomics: GeneratedTokenomics) -> FairnessMetrics:
+    alloc = tokenomics.tokenomics_parameters.allocation
+    vesting = tokenomics.tokenomics_parameters.vesting
+    
+    def get_vested_share(category: str, month: int) -> float:
+        share = alloc.get(category, 0.0)
+        detail = vesting.get(category)
+        if not detail:
+            # Default to 24m vesting if not specified? Or immediate?
+            # Old logic: bucket.vesting_months or 24
+            return share * min(month / 24.0, 1.0)
+        
+        cliff = detail.cliff_months
+        total_vest = detail.vesting_months
+        if month < cliff:
+             return 0.0
+        if total_vest == 0:
+            return share
+        
+        progress = (month - cliff) / total_vest
+        return share * min(max(progress, 0.0), 1.0)
+
+    t0 = list(alloc.values())
+    gini_0 = evaluate_gini_helper(t0)
+    
+    t12_shares = [get_vested_share(k, 12) for k in alloc]
+    gini_12 = evaluate_gini_helper(t12_shares)
+    
+    t24_shares = [get_vested_share(k, 24) for k in alloc]
+    gini_24 = evaluate_gini_helper(t24_shares)
+    
+    insiders = 0.0
+    community = 0.0
+    for k, v in alloc.items():
+        cat = normalize_allocation_key(k)
+        if cat in ["Team", "Investors"]:
+            insiders += v
+        elif cat == "Community":
+            community += v
+            
+    gov_index = min(insiders / max(community, 1.0), 5.0)
+    
+    return FairnessMetrics(t0_gini=gini_0, gini_12m=gini_12, gini_24m=gini_24, governance_influence_index=gov_index)
+
+
+def evaluate_governance_risk(tokenomics: GeneratedTokenomics, fairness: FairnessMetrics) -> GovernanceRiskAssessment:
     notes = []
     capture_score = min(fairness.governance_influence_index * 0.6 + fairness.t0_gini, 5.0)
     if capture_score > 2.5:
@@ -501,9 +617,9 @@ def evaluate_governance_risk(proposal: TokenomicsProposal,
     )
 
 
-def validate_against_real_projects(proposal: TokenomicsProposal,
-                                   knowledge_base: List[Dict],
-                                   dataset: Optional[List[Dict]] = None) -> Optional[RealProjectValidationResult]:
+def validate_generated_tokenomics(tokenomics: GeneratedTokenomics,
+                                  knowledge_base: List[Dict],
+                                  dataset: Optional[List[Dict]] = None) -> Optional[RealProjectValidationResult]:
     best_match = None
     best_distance = float('inf')
     candidates = []
@@ -521,18 +637,23 @@ def validate_against_real_projects(proposal: TokenomicsProposal,
             if isinstance(allocation, dict):
                 normalized = _normalize_allocation_dict(allocation)
                 candidates.append((entry, normalized))
+                
+    proposal_alloc = tokenomics.tokenomics_parameters.allocation
+    normalized_proposal = _normalize_allocation_dict(proposal_alloc)
 
     for project, normalized in candidates:
-        categories = set(normalized.keys()) | {bucket.category or bucket.name for bucket in proposal.allocations}
+        categories = set(normalized.keys()) | set(normalized_proposal.keys())
         distance = 0.0
         for category in categories:
-            proposal_value = sum(
-                bucket.percentage
-                for bucket in proposal.allocations
-                if (bucket.category or bucket.name) == category
-            )
-            reference_value = normalized.get(category, 0.0)
-            distance += abs(proposal_value - reference_value)
+            # We need to map keys to categories properly or assume keys are categories
+            # The _normalize_allocation_dict already maps keys to standard categories
+            # But wait, generated keys might not be normalized yet
+            # It's safer to rely on _normalize_allocation_dict having been called
+            
+            p_val = normalized_proposal.get(category, 0.0)
+            r_val = normalized.get(category, 0.0)
+            distance += abs(p_val - r_val)
+            
         if distance < best_distance:
             best_distance = distance
             best_match = project
@@ -561,30 +682,37 @@ def validate_against_real_projects(proposal: TokenomicsProposal,
 
 
 def generate_tokenomics_proposal(user_input: Dict,
-                                 result_text: str) -> Tuple[TokenomicsProposal, ProjectContext]:
+                                 result_text: str) -> Tuple[GeneratedTokenomics, ProjectContext]:
     payload = extract_json_payload(result_text)
-    allocations, notes = allocations_from_payload(payload or {}, result_text)
-    initial_supply = payload.get('initial_supply') if isinstance(payload, dict) else None
-    if initial_supply is None:
-        initial_supply = extract_total_supply(result_text)
-
-    unlock_strategy = payload.get('unlock_strategy') if isinstance(payload, dict) else infer_unlock_strategy(result_text)
-    emissions_model = payload.get('emissions_model') if isinstance(payload, dict) else infer_emissions_model(result_text)
-    burn_mechanism = payload.get('burn_mechanism') if isinstance(payload, dict) else infer_burn_mechanism(result_text)
-
-    proposal = TokenomicsProposal(
-        project_name=user_input.get("project_name", "Unnamed Project"),
-        token_symbol=user_input.get("token_symbol", "TKN"),
-        initial_supply=initial_supply,
-        allocations=allocations,
-        unlock_strategy=unlock_strategy,
-        emissions_model=emissions_model,
-        burn_mechanism=burn_mechanism,
-        raw_text=result_text,
-        json_payload=payload,
-        interpretability_notes=notes,
+    if not payload: payload = {}
+    
+    # 1. Parse Parameters
+    params = extract_tokenomics_parameters(payload, result_text)
+    
+    # 2. Parse Design Thinking
+    design_thinking_raw = payload.get("token_design_thinking", {}) or {}
+    if not design_thinking_raw and "purpose" not in design_thinking_raw:
+         design_thinking_raw["purpose"] = user_input.get("project_description", "")[:150]
+    design_thinking = parse_design_thinking(design_thinking_raw)
+    
+    # 3. Metadata
+    meta_raw = payload.get("project_metadata", {})
+    metadata = ProjectMetadata(
+        project=meta_raw.get("project") or user_input.get("project_name", "Unknown"),
+        token=meta_raw.get("token") or user_input.get("token_symbol", "TKN"),
+        category=meta_raw.get("category")
     )
-
+    
+    # 4. References
+    refs = payload.get("references", {})
+    
+    gen_tokenomics = GeneratedTokenomics(
+        project_metadata=metadata,
+        token_design_thinking=design_thinking,
+        tokenomics_parameters=params,
+        references=refs
+    )
+    
     if user_input.get("input_type") == "generic":
         description = user_input.get("project_description", "")
     else:
@@ -592,6 +720,11 @@ def generate_tokenomics_proposal(user_input: Dict,
 
     goals = [g.strip() for g in user_input.get("core_principles", []) if g.strip()]
     priorities = [p.strip() for p in user_input.get("token_purpose", []) if p.strip()]
+    
+    # Also use design thinking for context
+    if design_thinking.principles and not goals:
+        goals = design_thinking.principles
+    
     constraints = infer_constraints(goals, priorities)
     legal_risk = infer_legal_risk_tolerance(user_input)
     economic_signals = infer_economic_signals(user_input, result_text)
@@ -605,48 +738,57 @@ def generate_tokenomics_proposal(user_input: Dict,
         economic_signals=economic_signals,
     )
 
-    proposal = enforce_proposal_constraints(proposal, context)
-    return proposal, context
+    gen_tokenomics = enforce_tokenomics_constraints(gen_tokenomics, context)
+    return gen_tokenomics, context
 
 
-def proposal_from_dataset_entry(entry: Dict) -> Tuple[TokenomicsProposal, ProjectContext]:
-    allocation_dict = entry.get("allocation", {}) or {}
-    allocations: List[AllocationBucket] = []
-    for key, value in allocation_dict.items():
-        try:
-            pct = float(value)
-            allocations.append(
-                AllocationBucket(
-                    name=key.title(),
-                    percentage=pct,
-                    category=normalize_allocation_key(key),
-                    cliff_months=None,
-                    vesting_months=None,
-                )
-            )
-        except (TypeError, ValueError):
-            continue
-
-    if not allocations:
-        allocations = [AllocationBucket(name="Community", percentage=100.0, category="Community")]
+def proposal_from_dataset_entry(entry: Dict) -> Tuple[GeneratedTokenomics, ProjectContext]:
+    allocation = {}
+    raw_alloc = entry.get("allocation", {})
+    if isinstance(raw_alloc, dict):
+        for k, v in raw_alloc.items():
+            try:
+                allocation[k] = float(v)
+            except: pass
+    else:
+        allocation = {"Community": 100.0}
 
     initial_supply = entry.get("tokenomics", {}).get("total_supply") or entry.get("total_supply")
-    if isinstance(initial_supply, str):
-        try:
-            initial_supply = float(initial_supply.replace(",", ""))
-        except ValueError:
-            initial_supply = None
+    token_supply = parse_token_supply(initial_supply)
 
-    proposal = TokenomicsProposal(
-        project_name=entry.get("project", "Historical Project"),
-        token_symbol=entry.get("token", "TKN"),
-        initial_supply=initial_supply or 1_000_000_000,
-        allocations=allocations,
-        unlock_strategy="Historical snapshot",
-        emissions_model="Historical baseline",
-        burn_mechanism=None,
-        raw_text=entry.get("notes", ""),
-        json_payload=entry,
+    notes = entry.get("notes", "Historical project context")
+    dt = TokenDesignThinking(
+        purpose=notes[:200],
+        principles=[],
+        positioning="Historical",
+        functions=[],
+        stakeholders=[],
+        economic_design="",
+        legal_design="",
+        tech_design="",
+        power_structures="",
+        team={}
+    )
+    
+    params = TokenomicsParameters(
+        total_supply=token_supply,
+        allocation=allocation,
+        vesting={},
+        emissions="Historical baseline",
+        burn=None
+    )
+    
+    metadata = ProjectMetadata(
+        project=entry.get("project", "Historical Project"),
+        token=entry.get("token", "TKN"),
+        category="Historical"
+    )
+    
+    gen_tokenomics = GeneratedTokenomics(
+        project_metadata=metadata,
+        token_design_thinking=dt,
+        tokenomics_parameters=params,
+        references={}
     )
 
     constraints = {
@@ -655,19 +797,19 @@ def proposal_from_dataset_entry(entry: Dict) -> Tuple[TokenomicsProposal, Projec
         "max_investor_share": 40.0,
     }
     context = ProjectContext(
-        description=entry.get("notes", "Historical project context"),
+        description=notes,
         goals=[],
         priorities=[],
         constraints=constraints,
         legal_risk_tolerance="balanced",
-        economic_signals=infer_economic_signals({}, entry.get("notes", "")),
+        economic_signals=infer_economic_signals({}, notes),
     )
 
-    proposal = enforce_proposal_constraints(proposal, context)
-    return proposal, context
+    gen_tokenomics = enforce_tokenomics_constraints(gen_tokenomics, context)
+    return gen_tokenomics, context
 
 
-def proposal_from_entry_via_llm(entry: Dict, project_summaries: str) -> Tuple[TokenomicsProposal, ProjectContext]:
+def proposal_from_entry_via_llm(entry: Dict, project_summaries: str) -> Tuple[GeneratedTokenomics, ProjectContext]:
     description_lines = []
     if entry.get("notes"):
         description_lines.append(f"Notes: {entry['notes']}")
@@ -868,6 +1010,17 @@ def create_structured_prompt(user_input: Dict, project_summaries: str) -> str:
 # Generic Prompt Engineering
 def create_generic_prompt(user_input: Dict, project_summaries: str) -> str:
     prompt = f"""
+
+
+    [CONTEXT]
+
+    [Instructions]
+
+    [OUTPUT FORMAT]
+
+
+
+
         Given the narrative description of a Web3 project below, your task is to extract key design insights and produce a tokenomics model that is functional, balanced, and aligned with sustainable ecosystem growth.
 
         1. EXTRACT key project details from the description
@@ -918,8 +1071,7 @@ def create_generic_prompt(user_input: Dict, project_summaries: str) -> str:
 
 # OpenAI enhanced
 def ask_openai_enhanced(prompt: str, input_type: str = "structured") -> str:
-    if input_type == "generic":
-        system_message = """
+    system_message = """
             You are Dr. Tokenomics, a world-renowned blockchain economist and tokenomics architect with over a decade of experience designing sustainable token economies for projects across DeFi, GameFi, infrastructure protocols, DAOs, and beyond—many of which have achieved billions in market capitalization.
 
             You ground all of your reasoning in the Token Design Thinking framework (Token Kitchen / Shermin Voshmgir) as represented in the TOKEN DESIGN TOOL. You understand that token design is *not* only about math or price action, but about socio-technical systems, governance, and power structures.
@@ -1020,43 +1172,16 @@ def ask_openai_enhanced(prompt: str, input_type: str = "structured") -> str:
 
             All responses must be professional, comprehensive, and directly actionable for both technical and strategic teams.  
             Avoid vague or generic answers. Always deliver clarity, rigor, and practical value in every recommendation, and always keep your reasoning aligned with the TOKEN DESIGN TOOL lenses described above.
-            """
+    """
 
+    if input_type == "generic":
+        system_message += "\n\nNOTE: You do not have structured user input. You must infer the project details, purpose, and parameters based on the limited description provided and your expert knowledge of similar successful projects."
     else:
-        system_message = """
-            You are a world-class blockchain tokenomics expert with experience designing token economies for top-tier Web3 projects such as Uniswap, Aave, Compound, and Chainlink. You deeply understand DeFi mechanics, governance design, token utility, and long-term sustainability.
-
-            You use the Token Design Thinking framework (Token Kitchen / Shermin Voshmgir) as your primary mental model for structuring analysis. You treat token design as a qualitative systems-design exercise across the following lenses:
-            - PURPOSE
-            - PRINCIPLES
-            - POSITIONING & BUSINESS MODEL
-            - SYSTEM & TOKEN FUNCTIONS
-            - STAKEHOLDERS & STAKEHOLDER MATRIX
-            - TOKENS (number, types, roles)
-            - ECONOMIC DESIGN TOOLBOX (supply, issuance, sinks, incentives)
-            - LEGAL & REGULATORY DESIGN
-            - TECHNICAL DESIGN
-            - POWER STRUCTURES & GOVERNANCE
-
-            Your goal is to translate project goals and narratives into effective, incentive-aligned token economic models that are sustainable, secure, and growth-oriented. You align stakeholders, ensure regulatory awareness, and design clear utility flows that create value for users and the ecosystem, while making power structures explicit.
-
-In your responses, you typically:
-- Start by clarifying PURPOSE and PRINCIPLES, and who the system is for (and not for).  
-- Map STAKEHOLDERS, their roles, rights, rewards, and obligations.  
-- Identify the minimum necessary TOKEN TYPES and FUNCTIONS (access, work, payment, governance, reputation, asset, etc.).  
-- Propose ECONOMIC DESIGN choices (supply, distribution, emissions, sinks, fees, rewards) that fit the project’s context.  
-- Highlight LEGAL/REGULATORY considerations and safer design options.  
-- Suggest TECHNICAL patterns (on-chain/off-chain, L1/L2, custody) consistent with the token’s role.  
-- Analyze POWER STRUCTURES (voting, information, market, and mediation power) and how the design affects centralization vs decentralization over time.  
-
-Always provide specific, actionable recommendations with clear reasoning, implementation guidance, and consideration of economic, technical, governance, and power-structure impacts.  
-Avoid generic responses—every answer must reflect deep domain expertise, a clear mapping to the Token Design Thinking lenses, and strategic precision.  
-Be explicit about trade-offs and uncertainties, and note which inputs from the TOKEN DESIGN TOOL (e.g., stakeholder details, legal constraints, funding model) are still missing when they are relevant.
-"""
+        system_message += "\n\nNOTE: You have been provided with structured user input containing specific project details. Use this data as the primary source of truth for your design."
 
     
-    primary_model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-    fallback_model = os.getenv("OPENAI_MODEL_FALLBACK", "gpt-4o-mini")
+    primary_model = os.getenv("OPENAI_MODEL", "gpt-4o")
+    fallback_model = os.getenv("OPENAI_MODEL_FALLBACK", "gpt-4o")
 
     def call_model(model_name: str, max_tokens: int = 1200) -> str:
         resp = client.chat.completions.create(
@@ -1533,28 +1658,58 @@ class ControlLayerResult:
     governance_risk: Optional[GovernanceRiskAssessment] = None
 
 
-def _aggregate_allocations_by_category(allocations: List[AllocationBucket]) -> Dict[str, float]:
-    totals: Dict[str, float] = defaultdict(float)
-    for bucket in allocations:
-        key = bucket.category or bucket.name
-        totals[key] += bucket.percentage
-    return totals
+# Aggregation helper removed (deprecated)
 
 
-def run_control_layer(proposal: TokenomicsProposal,
-                      context: ProjectContext) -> ControlLayerResult:
+def validate_against_real_projects(tokenomics: GeneratedTokenomics,
+                                   knowledge_base: List[Dict],
+                                   dataset: Optional[List[Dict]] = None) -> Optional[RealProjectValidationResult]:
+    if not knowledge_base:
+        return None
+        
+    notes = []
+    score = 5.0
+    
+    if not tokenomics.tokenomics_parameters.vesting:
+         notes.append("No vesting schedule defined - high risk compared to standard projects.")
+         score -= 2.0
+    
+    alloc = tokenomics.tokenomics_parameters.allocation
+    community = sum(v for k, v in alloc.items() if normalize_allocation_key(k) == "Community")
+    if community < 40:
+        notes.append(f"Community allocation {community:.1f}% is low compared to decentralized baselines.")
+        score -= 1.0
+
+    return RealProjectValidationResult(
+        reference_project="Aggregate Baseline",
+        similarity_score=score,
+        warnings=notes
+    )
+
+
+def run_control_layer(tokenomics: GeneratedTokenomics, context: ProjectContext) -> ControlLayerResult:
     stakeholder_findings: List[StakeholderFinding] = []
     compliance_findings: List[ComplianceFinding] = []
     feasibility_findings: List[FeasibilityFinding] = []
 
-    category_totals = _aggregate_allocations_by_category(proposal.allocations)
-    community_share = category_totals.get("Community", 0.0)
-    team_share = category_totals.get("Team", 0.0)
-    investor_share = category_totals.get("Investors", 0.0)
+    alloc = tokenomics.tokenomics_parameters.allocation
+    
+    community_share = 0.0
+    team_share = 0.0
+    investor_share = 0.0
+    
+    for k, v in alloc.items():
+        cat = normalize_allocation_key(k)
+        if cat == "Community": community_share += v
+        elif cat == "Team": team_share += v
+        elif cat == "Investors": investor_share += v
 
     min_community = context.constraints.get("min_community_share", 20.0)
     max_team = context.constraints.get("max_team_share", 35.0)
     max_investor = context.constraints.get("max_investor_share", 40.0)
+    
+    # Calculate fairness first (needed for gov risk)
+    fairness = calculate_temporal_fairness(tokenomics)
 
     if community_share < min_community:
         stakeholder_findings.append(
@@ -1593,21 +1748,25 @@ def run_control_layer(proposal: TokenomicsProposal,
             )
         )
 
-    for bucket in proposal.allocations:
-        if bucket.cliff_months and bucket.vesting_months and bucket.cliff_months > bucket.vesting_months:
-            feasibility_findings.append(
-                FeasibilityFinding(
-                    severity="critical",
-                    message=f"{bucket.name} cliff ({bucket.cliff_months}m) exceeds vesting ({bucket.vesting_months}m)."
+    vesting = tokenomics.tokenomics_parameters.vesting
+    for k in tokenomics.tokenomics_parameters.allocation.keys():
+        detail = vesting.get(k)
+        if detail:
+            if detail.cliff_months and detail.vesting_months and detail.cliff_months > detail.vesting_months:
+                feasibility_findings.append(
+                    FeasibilityFinding(
+                        severity="critical",
+                        message=f"{k} cliff ({detail.cliff_months}m) exceeds vesting ({detail.vesting_months}m)."
+                    )
                 )
-            )
-        if bucket.category in {"Team", "Investors"} and bucket.vesting_months and bucket.vesting_months < 12:
-            feasibility_findings.append(
-                FeasibilityFinding(
-                    severity="warning",
-                    message=f"{bucket.name} unlocks in under 12 months, raising governance-capture risk."
+            cat = normalize_allocation_key(k)
+            if cat in {"Team", "Investors"} and detail.vesting_months and detail.vesting_months < 12:
+                feasibility_findings.append(
+                    FeasibilityFinding(
+                        severity="warning",
+                        message=f"{k} unlocks in under 12 months, raising governance-capture risk."
+                    )
                 )
-            )
 
     requires_iteration = any(f.severity == "critical" for f in stakeholder_findings) \
         or any(f.severity == "critical" for f in compliance_findings) \
@@ -1615,8 +1774,8 @@ def run_control_layer(proposal: TokenomicsProposal,
 
     aligned = not (stakeholder_findings or compliance_findings or feasibility_findings)
 
-    fairness_metrics = calculate_temporal_fairness(proposal)
-    governance_risk = evaluate_governance_risk(proposal, fairness_metrics)
+    fairness_metrics = calculate_temporal_fairness(tokenomics)
+    governance_risk = evaluate_governance_risk(tokenomics, fairness_metrics)
 
     return ControlLayerResult(
         aligned=aligned,
@@ -1636,7 +1795,7 @@ def run_control_layer(proposal: TokenomicsProposal,
 @dataclass
 class FilterLayerResult:
     passed: bool
-    adjusted_proposal: TokenomicsProposal
+    adjusted_proposal: GeneratedTokenomics
     allocation_issues: List[str]
     vesting_issues: List[str]
     economic_issues: List[str]
@@ -1645,56 +1804,76 @@ class FilterLayerResult:
     governance_risk: Optional[GovernanceRiskAssessment] = None
 
 
-def run_filter_layer(proposal: TokenomicsProposal,
+def run_filter_layer(tokenomics: GeneratedTokenomics,
                      context: ProjectContext) -> FilterLayerResult:
     allocation_issues: List[str] = []
     vesting_issues: List[str] = []
     economic_issues: List[str] = []
     governance_issues: List[str] = []
 
-    total_allocation = sum(bucket.percentage for bucket in proposal.allocations)
-    adjusted_allocations = proposal.allocations
+    alloc = tokenomics.tokenomics_parameters.allocation
+    vesting = tokenomics.tokenomics_parameters.vesting
+    
+    total_allocation = sum(alloc.values())
+    adjusted_alloc = alloc.copy()
 
     if total_allocation <= 0:
         allocation_issues.append("CRITICAL: Allocation total is zero; cannot normalize.")
     elif abs(total_allocation - 100) > 0.5:
-        factor = 100 / total_allocation
+        factor = 100 / total_allocation if total_allocation > 0 else 1.0
         allocation_issues.append(
             f"INFO: Allocation total was {total_allocation:.1f}%. Normalized to 100%."
         )
-        adjusted_allocations = [
-            replace(bucket, percentage=round(bucket.percentage * factor, 2))
-            for bucket in proposal.allocations
-        ]
+        adjusted_alloc = {k: round(v * factor, 2) for k, v in alloc.items()}
 
-    category_totals = _aggregate_allocations_by_category(adjusted_allocations)
+    # Check shares
+    community_share = 0.0
+    team_share = 0.0
+    investor_share = 0.0
+    
+    for k, v in adjusted_alloc.items():
+        cat = normalize_allocation_key(k)
+        if cat == "Community": community_share += v
+        elif cat == "Team": team_share += v
+        elif cat == "Investors": investor_share += v
+        
     min_community = context.constraints.get("min_community_share", 20.0)
     max_team = context.constraints.get("max_team_share", 35.0)
     max_investor = context.constraints.get("max_investor_share", 40.0)
 
-    if category_totals.get("Community", 0.0) < min_community:
+    if community_share < min_community:
         allocation_issues.append(
-            f"CRITICAL: Community share {category_totals.get('Community', 0.0):.1f}% < target {min_community:.1f}%."
+            f"CRITICAL: Community share {community_share:.1f}% < target {min_community:.1f}%."
         )
-    if category_totals.get("Team", 0.0) > max_team:
+    if team_share > max_team:
         allocation_issues.append(
-            f"CRITICAL: Team share {category_totals.get('Team', 0.0):.1f}% > cap {max_team:.1f}%."
+            f"CRITICAL: Team share {team_share:.1f}% > cap {max_team:.1f}%."
         )
-    if category_totals.get("Investors", 0.0) > max_investor:
+    if investor_share > max_investor:
         allocation_issues.append(
-            f"CRITICAL: Investor share {category_totals.get('Investors', 0.0):.1f}% > cap {max_investor:.1f}%."
+            f"CRITICAL: Investor share {investor_share:.1f}% > cap {max_investor:.1f}%."
         )
 
-    for bucket in adjusted_allocations:
-        if bucket.cliff_months and bucket.vesting_months and bucket.cliff_months > bucket.vesting_months:
-            vesting_issues.append(f"CRITICAL: {bucket.name} cliff > vesting.")
-        if bucket.category in {"Team", "Investors"} and (bucket.vesting_months or 0) < 12:
-            vesting_issues.append(f"WARNING: {bucket.name} vesting under 12 months.")
+    for k in adjusted_alloc.keys():
+        detail = vesting.get(k)
+        if detail:
+            if detail.cliff_months > detail.vesting_months:
+                 vesting_issues.append(f"CRITICAL: {k} cliff > vesting.")
+            cat = normalize_allocation_key(k)
+            if cat in {"Team", "Investors"} and detail.vesting_months < 12:
+                 vesting_issues.append(f"WARNING: {k} vesting under 12 months.")
 
-    if proposal.initial_supply is None or proposal.initial_supply <= 0:
+    # Supply Check
+    supply = tokenomics.tokenomics_parameters.total_supply
+    initial_supply = 0
+    if isinstance(supply, int): initial_supply = supply
+    elif isinstance(supply, (FixedSupply, DynamicSupply, CappedSupply)): 
+         initial_supply = supply.amount if isinstance(supply, FixedSupply) else supply.initial_supply
+
+    if initial_supply <= 0:
         economic_issues.append("WARNING: Initial supply missing or non-positive; using fallback during simulations.")
 
-    decentralization_score = category_totals.get("Community", 0.0) - category_totals.get("Team", 0.0)
+    decentralization_score = community_share - team_share
     if decentralization_score < 0:
         governance_issues.append("WARNING: Insiders control more tokens than the community at T0.")
 
@@ -1702,7 +1881,9 @@ def run_filter_layer(proposal: TokenomicsProposal,
         allocation_issues + vesting_issues + economic_issues + governance_issues
     ))
 
-    adjusted_proposal = replace(proposal, allocations=adjusted_allocations)
+    # Construct adjusted tokenomics
+    new_params = replace(tokenomics.tokenomics_parameters, allocation=adjusted_alloc)
+    adjusted_proposal = replace(tokenomics, tokenomics_parameters=new_params)
 
     fairness_metrics = calculate_temporal_fairness(adjusted_proposal)
     governance_risk = evaluate_governance_risk(adjusted_proposal, fairness_metrics)
@@ -1768,10 +1949,22 @@ class SimulationReport:
     agent_market_detail: Optional[MarketScenarioDetail] = None
 
 
-def run_historical_pattern_module(proposal: TokenomicsProposal,
+def _get_initial_supply(tokenomics: GeneratedTokenomics) -> float:
+    supply = tokenomics.tokenomics_parameters.total_supply
+    if isinstance(supply, (int, float)): return float(supply)
+    if isinstance(supply, FixedSupply): return float(supply.amount)
+    if isinstance(supply, CappedSupply): return float(supply.initial_supply)
+    if isinstance(supply, DynamicSupply): return float(supply.initial_supply)
+    return 1_000_000_000.0
+
+
+def run_historical_pattern_module(tokenomics: GeneratedTokenomics,
                                   knowledge_base: List[Dict],
                                   context: ProjectContext) -> ScenarioResult:
-    proposal_categories = _aggregate_allocations_by_category(proposal.allocations)
+    proposal_categories = defaultdict(float)
+    for k, v in tokenomics.tokenomics_parameters.allocation.items():
+        proposal_categories[normalize_allocation_key(k)] += v
+
     best_match = None
     best_overlap = -1.0
 
@@ -1788,7 +1981,7 @@ def run_historical_pattern_module(proposal: TokenomicsProposal,
             best_overlap = overlap
             best_match = (project, normalized)
 
-    base_supply = proposal.initial_supply or 1_000_000_000
+    base_supply = _get_initial_supply(tokenomics)
     milestones = [0, 12, 24, 36, 48, 60]
     if best_match:
         project, normalized = best_match
@@ -1813,9 +2006,9 @@ def run_historical_pattern_module(proposal: TokenomicsProposal,
     )
 
 
-def run_market_scenarios_module(proposal: TokenomicsProposal,
+def run_market_scenarios_module(tokenomics: GeneratedTokenomics,
                                 context: ProjectContext) -> List[ScenarioResult]:
-    base_supply = proposal.initial_supply or 1_000_000_000
+    base_supply = _get_initial_supply(tokenomics)
     milestones = [0, 12, 24, 36, 48, 60]
     community_bias = context.constraints.get("min_community_share", 30) / 100
 
@@ -1851,11 +2044,17 @@ def run_market_scenarios_module(proposal: TokenomicsProposal,
     return scenarios
 
 
-def run_stress_testing_module(proposal: TokenomicsProposal,
+def run_stress_testing_module(tokenomics: GeneratedTokenomics,
                               context: ProjectContext) -> List[ScenarioResult]:
-    base_supply = proposal.initial_supply or 1_000_000_000
-    large_unlock = max((bucket.percentage for bucket in proposal.allocations), default=20.0)
-    cliff_month = min((bucket.cliff_months for bucket in proposal.allocations if bucket.cliff_months), default=12)
+    base_supply = _get_initial_supply(tokenomics)
+    alloc = tokenomics.tokenomics_parameters.allocation
+    vesting = tokenomics.tokenomics_parameters.vesting
+    
+    large_unlock = max(alloc.values()) if alloc else 20.0
+    cliff_month = 12
+    cliffs = [v.cliff_months for v in vesting.values() if v.cliff_months is not None]
+    if cliffs:
+        cliff_month = min(cliffs)
 
     bear_notes = [
         f"Models {large_unlock:.1f}% unlock at month {cliff_month}.",
@@ -1888,7 +2087,7 @@ def run_stress_testing_module(proposal: TokenomicsProposal,
     ]
 
 
-def evaluate_gini_layers(proposal: TokenomicsProposal,
+def evaluate_gini_layers(tokenomics: GeneratedTokenomics,
                          scenarios: List[ScenarioResult]) -> GiniLayerResult:
     def _calculate_gini(values: List[float]) -> float:
         if not values:
@@ -1903,24 +2102,30 @@ def evaluate_gini_layers(proposal: TokenomicsProposal,
         ) / (n * cumulative_sum) - (n + 1) / n
         return max(0.0, gini)
 
-    overall_gini = _calculate_gini([bucket.percentage for bucket in proposal.allocations])
+    alloc = tokenomics.tokenomics_parameters.allocation
+    overall_gini = _calculate_gini(list(alloc.values()))
 
+    vesting_map = tokenomics.tokenomics_parameters.vesting
     circulating_weights = []
-    for bucket in proposal.allocations:
-        if bucket.vesting_months is None or bucket.vesting_months <= 12:
-            weight = 1.0
-        elif bucket.vesting_months <= 24:
-            weight = 0.7
-        else:
-            weight = 0.5
-        circulating_weights.append(bucket.percentage * weight)
+    
+    for k, pct in alloc.items():
+        vesting_months = 12 
+        if k in vesting_map:
+             vesting_months = vesting_map[k].vesting_months or 12
+        
+        if vesting_months <= 12: weight = 1.0
+        elif vesting_months <= 24: weight = 0.7
+        else: weight = 0.5
+        circulating_weights.append(pct * weight)
+
     circulating_gini = _calculate_gini(circulating_weights)
 
     governance_buckets = []
-    for bucket in proposal.allocations:
-        if bucket.category in {"Team", "Investors", "Advisors", "Community"}:
-            influence = bucket.percentage
-            if bucket.category == "Community":
+    for k, pct in alloc.items():
+        cat = normalize_allocation_key(k)
+        if cat in {"Team", "Investors", "Advisors", "Community"}:
+            influence = pct
+            if cat == "Community":
                 influence *= 0.8
             governance_buckets.append(influence)
     governance_gini = _calculate_gini(governance_buckets)
@@ -1932,10 +2137,10 @@ def evaluate_gini_layers(proposal: TokenomicsProposal,
     )
 
 
-def simulate_supply_dynamics(proposal: TokenomicsProposal,
+def simulate_supply_dynamics(tokenomics: GeneratedTokenomics,
                              scenarios: List[ScenarioResult],
                              context: ProjectContext) -> SupplyDynamicsResult:
-    base_supply = proposal.initial_supply or 1_000_000_000
+    base_supply = _get_initial_supply(tokenomics)
     months = list(range(0, 61, 6))
     circulating_supply: List[float] = []
     locked_supply: List[float] = []
@@ -1944,12 +2149,19 @@ def simulate_supply_dynamics(proposal: TokenomicsProposal,
     emissions_style = context.economic_signals.get("emission_style", "steady")
     emission_curve = generate_emission_curve(emissions_style, len(months))
 
+    alloc = tokenomics.tokenomics_parameters.allocation
+    vesting_map = tokenomics.tokenomics_parameters.vesting
+
     for idx, month in enumerate(months):
         released_ratio = 0.0
-        for bucket in proposal.allocations:
-            vest = bucket.vesting_months or 24
+        for k, pct in alloc.items():
+            vest = 24
+            if k in vesting_map and vesting_map[k].vesting_months:
+                vest = vesting_map[k].vesting_months
+            
             released = min(month / vest, 1.0)
-            released_ratio += (bucket.percentage / 100) * released
+            released_ratio += (pct / 100) * released
+            
         circulating = base_supply * released_ratio * (1 + emission_curve[idx] * 0.05)
         burn = circulating * context.economic_signals.get("burn_rate", 0.01) * (month / 60)
         circulating_supply.append(circulating - burn)
@@ -1964,10 +2176,13 @@ def simulate_supply_dynamics(proposal: TokenomicsProposal,
     )
 
 
-def compare_with_baselines(proposal: TokenomicsProposal,
+def compare_with_baselines(tokenomics: GeneratedTokenomics,
                            knowledge_base: List[Dict]) -> BaselineComparisonResult:
     baselines = generate_dynamic_baseline_models(knowledge_base)['baseline_models']
-    proposal_totals = _aggregate_allocations_by_category(proposal.allocations)
+    
+    proposal_totals = defaultdict(float)
+    for k, v in tokenomics.tokenomics_parameters.allocation.items():
+        proposal_totals[normalize_allocation_key(k)] += v
 
     best_name = None
     best_distance = float('inf')
@@ -2001,29 +2216,36 @@ def compare_with_baselines(proposal: TokenomicsProposal,
     )
 
 
-def run_simulations_layer(proposal: TokenomicsProposal,
+def run_simulations_layer(tokenomics: GeneratedTokenomics,
                           context: ProjectContext,
                           knowledge_base: List[Dict],
                           dataset: Optional[List[Dict]] = None) -> SimulationReport:
-    historical = run_historical_pattern_module(proposal, knowledge_base, context)
-    market = run_market_scenarios_module(proposal, context)
-    stress = run_stress_testing_module(proposal, context)
+    historical = run_historical_pattern_module(tokenomics, knowledge_base, context)
+    market = run_market_scenarios_module(tokenomics, context)
+    stress = run_stress_testing_module(tokenomics, context)
 
     scenarios = [historical] + market + stress
 
-    gini_layers = evaluate_gini_layers(proposal, scenarios)
-    supply_dynamics = simulate_supply_dynamics(proposal, scenarios, context)
-    baseline_comparison = compare_with_baselines(proposal, knowledge_base)
-    fairness_metrics = calculate_temporal_fairness(proposal)
-    governance_risk = evaluate_governance_risk(proposal, fairness_metrics)
-    real_project_validation = validate_against_real_projects(proposal, knowledge_base, dataset)
+    gini_layers = evaluate_gini_layers(tokenomics, scenarios)
+    supply_dynamics = simulate_supply_dynamics(tokenomics, scenarios, context)
+    baseline_comparison = compare_with_baselines(tokenomics, knowledge_base)
+    fairness_metrics = calculate_temporal_fairness(tokenomics)
+    governance_risk = evaluate_governance_risk(tokenomics, fairness_metrics)
+    real_project_validation = validate_against_real_projects(tokenomics, knowledge_base, dataset)
 
-    category_totals = _aggregate_allocations_by_category(proposal.allocations)
-    community_share = category_totals.get("Community", 0.0) or 1.0
-    insider_share = category_totals.get("Team", 0.0) + category_totals.get("Investors", 0.0)
+    # Insider share calculation
+    alloc = tokenomics.tokenomics_parameters.allocation
+    community_share = 0.0
+    insider_share = 0.0
+    for k, v in alloc.items():
+        cat = normalize_allocation_key(k)
+        if cat == "Community": community_share += v
+        elif cat in {"Team", "Investors"}: insider_share += v
+
+    initial_supply = _get_initial_supply(tokenomics)
     agent_market_detail = run_agent_market_simulation(
-        proposal_initial_supply=proposal.initial_supply or 1_000_000_000,
-        community_share=community_share,
+        proposal_initial_supply=initial_supply,
+        community_share=community_share or 1.0,
         insider_share=max(insider_share, 1.0),
         context_signals=context.economic_signals,
     )
@@ -2045,7 +2267,7 @@ def run_simulations_layer(proposal: TokenomicsProposal,
     recommendations = []
     if gini_layers.governance_gini > 0.25:
         recommendations.append("Introduce delegated voting caps or quadratic voting to offset governance concentration.")
-    if supply_dynamics.circulating_supply[-1] / (proposal.initial_supply or 1_000_000_000) < 0.8:
+    if supply_dynamics.circulating_supply[-1] / (initial_supply) < 0.8:
         recommendations.append("Extend emissions beyond 60 months or add sinks to avoid idle supply build-up.")
     if agent_market_detail and min(agent_market_detail.liquidity_levels) < 0.2:
         recommendations.append("Bolster liquidity reserves or stagger unlocks to avoid simulated liquidity floor breaches.")
@@ -2074,13 +2296,12 @@ def run_simulations_layer(proposal: TokenomicsProposal,
 
 
 def save_pipeline_outputs(output_dir: str,
-                          proposal: TokenomicsProposal,
+                          tokenomics: GeneratedTokenomics,
                           context: ProjectContext,
                           control_result: ControlLayerResult,
                           filter_result: FilterLayerResult,
                           simulation_report: Optional[SimulationReport] = None) -> None:
     os.makedirs(output_dir, exist_ok=True)
-
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     proposal_path = os.path.join(output_dir, f"proposal_{timestamp}.json")
@@ -2089,7 +2310,7 @@ def save_pipeline_outputs(output_dir: str,
     filter_path = os.path.join(output_dir, f"filter_{timestamp}.json")
 
     with open(proposal_path, "w", encoding="utf-8") as f:
-        json.dump(asdict(proposal), f, ensure_ascii=False, indent=2)
+        json.dump(asdict(tokenomics), f, ensure_ascii=False, indent=2)
 
     with open(context_path, "w", encoding="utf-8") as f:
         json.dump(asdict(context), f, ensure_ascii=False, indent=2)
@@ -2104,13 +2325,14 @@ def save_pipeline_outputs(output_dir: str,
     with open(control_path, "w", encoding="utf-8") as f:
         json.dump(control_payload, f, ensure_ascii=False, indent=2)
 
+    alloc = filter_result.adjusted_proposal.tokenomics_parameters.allocation
     filter_payload = {
         "passed": filter_result.passed,
         "allocation_issues": filter_result.allocation_issues,
         "vesting_issues": filter_result.vesting_issues,
         "economic_issues": filter_result.economic_issues,
         "governance_issues": filter_result.governance_issues,
-        "adjusted_allocations": [asdict(bucket) for bucket in filter_result.adjusted_proposal.allocations],
+        "adjusted_allocations": alloc,
     }
     with open(filter_path, "w", encoding="utf-8") as f:
         json.dump(filter_payload, f, ensure_ascii=False, indent=2)
@@ -2189,9 +2411,11 @@ def run_backtest(dataset: List[Dict],
         predicted_drawdown = estimate_drawdown_from_prices(
             sim_report.agent_market_detail.price_path if sim_report.agent_market_detail else []
         )
+        
+        initial_supply = _get_initial_supply(proposal)
         predicted_inflation = estimate_inflation_from_supply(
             sim_report.supply_dynamics,
-            proposal.initial_supply or 1_000_000_000,
+            initial_supply,
         )
         predicted_incident = 1 if sim_report.governance_risk.capture_risk_score >= 2.5 else 0
 
@@ -2200,8 +2424,8 @@ def run_backtest(dataset: List[Dict],
         actual_incidents = outcomes.get("governance_incidents")
 
         rows.append({
-            "project": proposal.project_name,
-            "token": proposal.token_symbol,
+            "project": proposal.project_metadata.project,
+            "token": proposal.project_metadata.token,
             "control_requires_iteration": control_result.requires_iteration,
             "filter_passed": filter_result.passed,
             "t0_gini": sim_report.fairness_metrics.t0_gini,
@@ -2217,7 +2441,6 @@ def run_backtest(dataset: List[Dict],
             "inflation_error": (predicted_inflation - actual_inflation) if (predicted_inflation is not None and actual_inflation is not None) else None,
             "pred_incident_flag": predicted_incident,
             "actual_incidents": actual_incidents,
-            "incident_gap": (predicted_incident - actual_incidents) if actual_incidents is not None else None,
         })
 
     fieldnames = list(rows[0].keys())
@@ -2240,12 +2463,24 @@ def main():
     seed_random_generators(args.seed)
 
     os.makedirs("exported_charts", exist_ok=True)
-    input_mode = get_input_mode()
-
-    if input_mode == '1':
-        user_input = get_structured_input()
+    
+    if args.input_file:
+        print(f"Loading input from {args.input_file}...")
+        try:
+            with open(args.input_file, "r") as f:
+                user_input = json.load(f)
+            # Ensure input_type is set; default to structured if loading from file unless specified
+            if "input_type" not in user_input:
+                user_input["input_type"] = "structured"
+        except Exception as e:
+            print(f"Error reading input file: {e}")
+            return
     else:
-        user_input = get_generic_input()
+        input_mode = get_input_mode()
+        if input_mode == '1':
+            user_input = get_structured_input()
+        else:
+            user_input = get_generic_input()
 
     project_summaries = summarize_all_projects(knowledge_base)
 
@@ -2349,7 +2584,7 @@ def main():
 
     save_pipeline_outputs(
         output_dir="pipeline_exports",
-        proposal=proposal,
+        tokenomics=proposal,
         context=context,
         control_result=control_result,
         filter_result=filter_result,

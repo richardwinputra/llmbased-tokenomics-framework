@@ -1,71 +1,82 @@
-# Tokenomics Design Tool
+# 🪙 Tokenomics Design & Analysis Tool
 
-AI-assisted tokenomics design and analysis tool that generates comprehensive token economic models with advanced analytics.
+An AI-powered framework for designing, simulating, and validating token economic models. This tool leverages OpenAI's GPT-4 to generate comprehensive tokenomics proposals while providing rigorous analytical validation through Monte Carlo simulations, Gini-based fairness metrics, and historical benchmarking.
 
-## Features
+---
 
-- **AI-Powered Design**: Generate tokenomics models using OpenAI GPT-4
-- **Two Input Modes**: Structured input for detailed control or generic description
-- **Advanced Analytics**: A/B testing, Monte Carlo simulation, and knowledge base analysis
-- **Interactive Visualizations**: Pie charts, distribution analysis, and comparison charts
-- **Knowledge Base**: Built-in reference from successful Web3 projects
+## 🚀 Key Features
 
-## Quick Start
+### 🤖 AI-Driven Tokenomics Engine
+- **Two Input Modes**:
+  - **Structured Intake**: Detailed questionnaire for precise control over project parameters (legal, technical, economic).
+  - **Generic Description**: Natural language project descriptions for rapid prototyping.
+- **Context-Aware Design**: Automatically infers constraints, legal risk profiles, and economic signals from inputs.
 
-1. **Install Dependencies**
-   ```bash
-   pip install openai python-dotenv matplotlib numpy
-   ```
+### 📊 Advanced Analytics & Simulations
+- **Monte Carlo Simulations**: Predict potential token supply scenarios and distribution paths over time.
+- **Agent Market Simulation**: Simulate price impact, liquidity depth, and market sentiment based on proposed allocations.
+- **Fairness Metrics**: Calculate Gini coefficients at T=0, 12m, and 24m to measure wealth concentration and decentralization.
+- **Governance Risk Assessment**: Automated scoring of capture risks and voter turnout projections.
 
-2. **Setup Environment**
-   Create a `.env` file in the project root:
-   ```
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
+### 📚 Knowledge Base & Benchmarking
+- **Historical Analysis**: Built-in dataset of successful Web3 projects (Aave, Chainlink, Uniswap, etc.) for similarity matching and benchmarking.
+- **Risk Flagging**: Identify potential failure modes by comparing new proposals with historical drawdown and inflation data.
 
-3. **Add Knowledge Base**
-   Ensure `TokenomicsKnowledge.json` is in the project directory
+---
 
-4. **Run the Tool**
-   ```bash
-   python main.py
-   ```
+## 🛠 Quick Start
 
-## Usage
+### 1. Prerequisites
+- Python 3.8+
+- OpenAI API Key
 
-1. Choose input mode:
-   - **Structured Input**: Detailed project specifications
-   - **Generic Input**: Simple project description
-
-2. Provide project details based on selected mode
-
-3. Select analysis options:
-   - A/B Testing: Compare with proven models
-   - Monte Carlo Simulation: Predict token supply scenarios
-   - Knowledge Base Analysis: Detailed reference breakdown
-   - Comprehensive Analysis: All analytics combined
-
-4. Review generated tokenomics design and analysis results
-
-## Output
-
-- Comprehensive tokenomics recommendation
-- Token allocation visualizations
-- Risk analysis and comparison charts
-- Exported charts in `exported_charts/` directory
-
-## Requirements
-
-- Python 3.7+
-- OpenAI API key
-- Required packages: `openai`, `python-dotenv`, `matplotlib`, `numpy`
-
-## File Structure
-
+### 2. Installation
+```bash
+git clone <repository-url>
+cd llmbased-tokenomics
+pip install -r requirements.txt
 ```
-├── main.py   
-├── TokenomicsKnowledge.json
-├── .env              
-├── exported_charts/  
-└── README.md
+*Note: If `requirements.txt` is missing, install core dependencies:*
+```bash
+pip install openai python-dotenv matplotlib numpy
 ```
+
+### 3. Setup
+Create a `.env` file in the project root:
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+### 4. Run the Pipeline
+```bash
+python main.py
+```
+
+---
+
+## 📖 Usage Guide
+
+### Simulation & Analysis Options
+When running the tool, you can select various analysis depths:
+- **A/B Testing**: Benchmarks your proposal against the most similar successful project in the knowledge base.
+- **Monte Carlo Simulation**: Generates probabilistic outcomes for supply inflation and distribution.
+- **Full Comprehensive Analysis**: Runs all simulations, fairness checks, and risk assessments.
+
+### CLI Arguments
+- `--historical-dataset`: Path to a custom JSON dataset (defaults to `TokenomicsKnowledge.json`).
+- `--dataset-report`: Prints a summary of the current historical dataset and exits.
+- `--seed`: Set a random seed for deterministic simulation results.
+
+---
+
+## 📂 Project Structure
+
+- `main.py`: Core logic for input handling, AI orchestration, and analysis pipeline.
+- `advanced_simulations.py`: Market and agent-based simulation engines.
+- `TokenomicsKnowledge.json`: Curated dataset of historical tokenomics models.
+- `exported_charts/`: Directory where visualization outputs (pie charts, distribution graphs) are saved.
+
+---
+
+## 🤝 Contributing
+Contributions are welcome! Please ensure you follow the existing code structure and add unit tests for any new simulation logic.

@@ -569,7 +569,7 @@
       "team": "Developed by the Interchain Foundation, Ignite (Tendermint), and a global open-source community."
     },
     "tokenomics": {
-      "total_supply": "Dynamic (no max supply, ~390,930,671 as of June 2024)",
+      "total_supply": -1,
       "allocation": {
         "public_fundraiser": 0.679,
         "seed": 0.0508,
@@ -741,6 +741,284 @@
       "https://tokenomist.ai/bittensor",
       "https://learnbittensor.org/explore/concept/tao",
       "https://www.datawallet.com/crypto/what-is-bittensor"
+    ]
+  },
+  {
+    "project": "Starknet",
+    "token": "STRK",
+    "token_design_thinking": {
+      "purpose": "Governance and utility token for the Starknet Layer‑2 network, used to pay transaction fees and participate in protocol upgrades.",
+      "principles": [
+        "Decentralization and community ownership of network resources",
+        "Sustainable token distribution for long‑term development",
+        "Security through incentivized staking"
+      ],
+      "positioning": "A permissionless Layer‑2 rollup on Ethereum enabling scalable STARK‑based proofs with its own token for governance and economic alignment.",
+      "functions": [
+        "Paying transaction fees on Starknet",
+        "Delegating and staking for network security",
+        "Voting on protocol upgrades and parameter changes",
+        "Funding ecosystem grants and development partners"
+      ],
+      "stakeholders": [
+        "Early contributors and core developers",
+        "Investors",
+        "StarkWare operations and service providers",
+        "Community members and users",
+        "Starknet Foundation"
+      ],
+      "economic_design": {
+        "model": "Inflationary governance token with scheduled unlocks and potential staking rewards",
+        "details": "Ten billion STRK tokens were minted at genesis and allocated across contributors, investors, foundation reserves, grants, community provisions and rebates. Early contributors and investors have lock‑ups with monthly unlocks from April 2024 through March 2027 (7.68% unlocks in year one and 30.48% over years two and three)【770644530770112†L194-L200】. New tokens may be minted for staking rewards subject to community approval【770644530770112†L206-L219】, so supply can increase beyond 10 billion."
+      },
+      "legal_design": "Administered by the Starknet Foundation, transitioning to community governance through on‑chain voting.",
+      "tech_design": "Optimistic rollup leveraging STARK proofs with recursive composition and data availability on Ethereum.",
+      "power_structures": "Token‑weighted governance in which STRK holders can delegate voting power and propose protocol changes; the Foundation initially manages operations and strategic reserves.",
+      "team": "Developed by StarkWare with contributions from core teams, early contributors and a global community."
+    },
+    "tokenomics": {
+      "total_supply": "Dynamic (10,000,000,000 STRK minted at genesis with additional minting for staking rewards possible)",
+      "allocation": {
+        "early_contributors": 0.2004,
+        "investors": 0.1817,
+        "starkware_operations": 0.1076,
+        "grants_and_development_partners": 0.1293,
+        "community_provisions": 0.09,
+        "community_rebates": 0.09,
+        "foundation_strategic_reserves": 0.10,
+        "foundation_treasury": 0.081,
+        "donations": 0.02
+      },
+      "vesting": {
+        "early_contributors_and_investors": "Tokens locked until 15 April 2024; 7.68% unlocks monthly from April 15 2024 to March 15 2025 and 30.48% unlocks monthly from April 15 2025 to March 15 2027【770644530770112†L194-L200】.",
+        "grants_and_development_partners": "Vesting schedules vary by grant, governed by the Starknet Foundation.",
+        "foundation_reserves_and_treasury": "Released over time to support ecosystem initiatives and operations as decided by governance.",
+        "community_provisions_and_rebates": "Distributed through incentive programs and user rebates subject to governance decisions."
+      },
+      "emissions": "Future STRK minting can be enacted by the community to fund staking rewards and other initiatives【770644530770112†L206-L219】.",
+      "burn": "No burn mechanism is specified."
+    },
+    "sources": [
+      "https://docs.starknet.io/learn/protocol/strk#supply-and-distribution",
+      "https://docs.starknet.io/learn/protocol/strk#token-unlock-and-minting"
+    ]
+  },
+  {
+    "project": "Worldcoin",
+    "token": "WLD",
+    "token_design_thinking": {
+      "purpose": "Decentralized identity and payments token incentivizing global user onboarding and enabling governance of the Worldcoin protocol.",
+      "principles": [
+        "Universal access and inclusivity",
+        "Sustainable token distribution over decades",
+        "Transparent governance and gradual decentralization"
+      ],
+      "positioning": "A token designed to bootstrap a global identity network and facilitate human‑verified participation in digital economies.",
+      "functions": [
+        "Incentivizing new user sign‑ups and identity verification",
+        "Voting on protocol upgrades and treasury allocations",
+        "Payments within the World App and associated services"
+      ],
+      "stakeholders": [
+        "Worldcoin community members",
+        "Verified human users",
+        "Tools for Humanity team",
+        "Investors",
+        "Worldcoin Foundation"
+      ],
+      "economic_design": {
+        "model": "Long‑term token release with a capped initial supply and potential inflation controlled by governance",
+        "details": "The WLD supply is capped at 10 billion tokens. 75% of the supply is reserved for the World Community, 11.1% for the development team, 13.6% for investors and 0.3% for a reserve【51101104974187†L4195-L4245】. Team and investor tokens are locked for 12 months after launch and then 80% unlock linearly over 48 months while 20% unlock over 24 months【51101104974187†L4352-L4363】. Community tokens are distributed over a 15‑year period via user grants, ecosystem funds and research initiatives; governance may introduce up to 1.5% annual inflation after year 15【51101104974187†L4293-L4341】."
+      },
+      "legal_design": "Administered by the Worldcoin Foundation and Tools for Humanity, transitioning to decentralized governance as adoption grows.",
+      "tech_design": "World ID biometric verification integrated with Ethereum Layer 2 for transfers and a planned cross‑chain bridge for scalability.",
+      "power_structures": "WLD holders will govern protocol changes, inflation parameters and treasury allocations through on‑chain proposals.",
+      "team": "Led by Tools for Humanity, co‑founded by Sam Altman, with contributions from developers and regional operators."
+    },
+    "tokenomics": {
+      "total_supply": "Dynamic (initial cap of 10,000,000,000 WLD with governance‑controlled inflation up to 1.5% per year after year 15)",
+      "allocation": {
+        "community": 0.75,
+        "team": 0.111,
+        "investors": 0.136,
+        "reserve": 0.003
+      },
+      "vesting": {
+        "team_and_investors": "Locked for 12 months post launch; 80% unlocks linearly over 48 months and the remaining 20% unlocks over 24 months starting after the cliff【51101104974187†L4352-L4363】.",
+        "community": "Released over 15 years via user onboarding grants, ecosystem funds and research programs; exact schedules determined by governance【51101104974187†L4293-L4341】.",
+        "reserve": "Reserved for future needs and unlocked according to governance decisions."
+      },
+      "emissions": "No new WLD until at least year 15; thereafter, governance may allow up to 1.5% annual inflation【51101104974187†L4293-L4341】.",
+      "burn": "No burn mechanism specified."
+    },
+    "sources": [
+      "https://whitepaper.worldcoin.org",
+      "https://worldcoin.org/blog/understanding-wld-tokenomics"
+    ]
+  },
+  {
+    "project": "Lido DAO",
+    "token": "LDO",
+    "token_design_thinking": {
+      "purpose": "Governance token for the Lido liquid staking protocol on Ethereum and other chains.",
+      "principles": [
+        "Decentralized governance and risk mitigation for staked assets",
+        "Long‑term alignment of stakeholders through locked allocations",
+        "Flexible treasury managed by the DAO"
+      ],
+      "positioning": "Major liquid staking solution enabling users to stake ETH and other tokens without locking up liquidity, governed by LDO holders.",
+      "functions": [
+        "Voting on protocol upgrades and parameter changes",
+        "Allocating treasury funds and incentive programs",
+        "Managing validator sets and security parameters"
+      ],
+      "stakeholders": [
+        "LDO token holders and delegates",
+        "Validators and signature holders",
+        "Investors",
+        "Initial Lido developers and founders",
+        "DAO treasury and community"
+      ],
+      "economic_design": {
+        "model": "Fixed supply governance token with significant treasury and vesting allocations",
+        "details": "One billion LDO tokens were minted at launch. The distribution allocated 36.32% to the DAO treasury, 22.18% to investors, 6.5% to validators and signature holders, 20% to initial Lido developers and 15% to founders and future employees【108302573523353†L124-L140】. Founding members’ tokens (developers, validators, investors, founders and employees) were locked for one year and then vested linearly over the following year【108302573523353†L176-L179】. Treasury tokens are controlled by DAO governance with no fixed emission schedule【108302573523353†L141-L154】."
+      },
+      "legal_design": "Governed by the Lido DAO through on‑chain proposals and multisig signers under an unincorporated association.",
+      "tech_design": "Liquid staking contracts on Ethereum and other chains, using oracles and validator selection modules.",
+      "power_structures": "LDO holders vote on protocol parameters, gauge weights and treasury usage; major changes require quorum and time‑locked execution.",
+      "team": "Initially developed by P2P Validator, Chorus One and other teams under the Lido umbrella; governance has since decentralized to the DAO."
+    },
+    "tokenomics": {
+      "total_supply": 1000000000,
+      "allocation": {
+        "dao_treasury": 0.3632,
+        "investors": 0.2218,
+        "validators_and_signature_holders": 0.065,
+        "initial_developers": 0.20,
+        "founders_and_future_employees": 0.15
+      },
+      "vesting": {
+        "founders_and_investors_and_developers": "Tokens locked for 1 year after launch (December 2020), then vest linearly over 1 year until December 2022【108302573523353†L176-L179】.",
+        "dao_treasury": "Tokens held by the DAO treasury are unlocked and distributed via governance proposals with no preset schedule【108302573523353†L141-L154】.",
+        "validators_and_signature_holders": "Same schedule as developers and founders: 1‑year lock, then 1‑year linear vesting."
+      },
+      "emissions": "No new LDO tokens are minted beyond the initial 1 billion supply; treasury distributions are decided through governance proposals【108302573523353†L141-L154】.",
+      "burn": "No burn mechanism."
+    },
+    "sources": [
+      "https://blog.lido.fi/introducing-ldo/",
+      "https://blog.lido.fi/introducing-ldo/#token-distribution"
+    ]
+  },
+  {
+    "project": "Filecoin",
+    "token": "FIL",
+    "token_design_thinking": {
+      "purpose": "Utility and incentive token powering a decentralized storage network that rewards participants for storing and retrieving data.",
+      "principles": [
+        "Long‑term sustainability through gradual minting and vesting",
+        "Fair distribution between investors, core contributors, foundation and miners",
+        "Economic alignment of storage providers and clients"
+      ],
+      "positioning": "A leading decentralized storage protocol with a large token supply allocated to miners and ecosystem growth.",
+      "functions": [
+        "Payment for data storage and retrieval services",
+        "Collateral for storage deals and retrieval markets",
+        "Staking for consensus and governance participation",
+        "Incentivizing storage providers and network development"
+      ],
+      "stakeholders": [
+        "Storage miners",
+        "Deal clients and users",
+        "Protocol Labs and contributors",
+        "Filecoin Foundation",
+        "Investors and SAFT purchasers"
+      ],
+      "economic_design": {
+        "model": "Large fixed supply with long‑term emission schedule for mining rewards and vesting for investors and contributors",
+        "details": "The maximum supply is 2 billion FIL (FIL_BASE). The genesis block allocation was 10% for fundraising, 15% to Protocol Labs (including team and contributors), 5% to the Filecoin Foundation, and 70% to miners – of which 55% is reserved for storage mining and 15% for a mining reserve【205284677284828†L57-L66】【205284677284828†L75-L90】. SAFT investor tokens vest in tranches: 22% over 6 months, 15% over 1 year, 5% over 2 years and 58% over 3 years【731013319096822†L118-L131】. Protocol Labs’ 300 million FIL and the Filecoin Foundation’s 100 million FIL vest linearly over six years starting at network launch【731013319096822†L132-L134】. Miners receive block rewards continuously, with 25% of each reward immediately available and 75% vesting linearly over 180 days【731013319096822†L118-L124】."
+      },
+      "legal_design": "Operated by Protocol Labs and the Filecoin Foundation with open‑source governance and a community grants program.",
+      "tech_design": "Proof‑of‑Replication and Proof‑of‑Spacetime consensus ensuring verifiable and persistent storage; actors interact through smart contracts on the Filecoin blockchain.",
+      "power_structures": "Decision‑making distributed across Protocol Labs, the Filecoin Foundation and token holders via FIPs; miners influence network parameters through their stake.",
+      "team": "Developed by Protocol Labs under Juan Benet with contributions from a global network of engineers and researchers."
+    },
+    "tokenomics": {
+      "total_supply": 2000000000,
+      "allocation": {
+        "fundraising": 0.10,
+        "protocol_labs": 0.15,
+        "filecoin_foundation": 0.05,
+        "storage_mining": 0.55,
+        "mining_reserve": 0.15
+      },
+      "vesting": {
+        "fundraising_investors": "SAFT investors’ tokens vest in tranches: 22% over 6 months, 15% over 1 year, 5% over 2 years and 58% over 3 years from network launch【731013319096822†L118-L131】.",
+        "protocol_labs_and_foundation": "Protocol Labs’ 300 M FIL and the Filecoin Foundation’s 100 M FIL vest linearly over six years starting at network launch【731013319096822†L132-L134】.",
+        "miners": "Block rewards are minted continuously; 25% of each reward is available immediately and 75% vests linearly over 180 days【731013319096822†L118-L124】.",
+        "mining_reserve": "Released over time to support future mining incentives and network upgrades as decided by governance."
+      },
+      "emissions": "FIL is minted as block rewards for storage and retrieval miners until the 2 billion cap is reached. No additional tokens are created once the maximum supply is minted.",
+      "burn": "Transaction fees and penalties paid by miners may be burned, reducing effective supply."
+    },
+    "sources": [
+      "https://spec.filecoin.io/systems/filecoin_token/token_allocation/",
+      "https://filecoin.io/blog/posts/understanding-filecoin-circulating-supply/"
+    ]
+  },
+  {
+    "project": "Sei Network",
+    "token": "SEI",
+    "token_design_thinking": {
+      "purpose": "Native token of the Sei blockchain used for staking, transaction fees, governance and incentivizing ecosystem growth.",
+      "principles": [
+        "Community‑first allocation with a large ecosystem reserve",
+        "High throughput and parallelized execution for trading applications",
+        "Flexible token distribution enabling future initiatives"
+      ],
+      "positioning": "General‑purpose Layer‑1 blockchain optimized for exchanges and trading with a bespoke order‑matching engine.",
+      "functions": [
+        "Staking to secure the network and earn rewards",
+        "Paying transaction and gas fees",
+        "Voting on on‑chain governance proposals",
+        "Funding ecosystem projects and airdrops"
+      ],
+      "stakeholders": [
+        "Validators and delegators",
+        "Developers and ecosystem projects",
+        "Sei Foundation",
+        "Community airdrop recipients",
+        "Investors (team, private sales and partners)"
+      ],
+      "economic_design": {
+        "model": "Capped supply with majority allocated to community initiatives and an undisclosed portion for team and investors",
+        "details": "Sei has a maximum supply of 10 billion SEI. The Future‑Proofed Tokenomics blog states that 51% of the supply is allocated to the community, consisting of a 48% ecosystem reserve and a 3% launchpool/airdrop【643995938098539†L82-L133】. An additional 9% is assigned to the Sei Foundation treasury【643995938098539†L82-L133】. The remaining 40% of the supply is not detailed in the blog and likely covers private sales, team and future fundraising; this distribution is not publicly disclosed, which limits transparency around vesting and release schedules."
+      },
+      "legal_design": "Administered by the Sei Foundation with plans for on‑chain governance by SEI holders.",
+      "tech_design": "Cosmos SDK‑based blockchain with parallelized transaction execution and built‑in orderbook for high‑performance trading.",
+      "power_structures": "Governance will transition to SEI holders voting on proposals, though initial control resides with the Sei Foundation.",
+      "team": "Founded by Jeffrey Feng, Jay Jog and other members of Sei Labs with experience in trading infrastructure."
+    },
+    "tokenomics": {
+      "total_supply": 10000000000,
+      "allocation": {
+        "ecosystem_reserve": 0.48,
+        "launchpool": 0.03,
+        "foundation_treasury": 0.09,
+        "undisclosed": 0.40
+      },
+      "vesting": {
+        "ecosystem_reserve": "Allocated to staking rewards, ecosystem projects and future airdrops; distribution schedules determined by governance and the foundation【643995938098539†L82-L133】.",
+        "launchpool": "Airdropped to users and used in launchpool programs; specific unlock schedules vary by campaign【643995938098539†L82-L133】.",
+        "foundation_treasury": "Used for protocol development and operational costs; release schedules not specified.",
+        "undisclosed": "Presumed allocations to team, private sale and partners with undisclosed percentages and vesting terms."
+      },
+      "emissions": "No ongoing emissions beyond the initial 10 billion SEI; tokens are distributed from the ecosystem reserve and launchpool according to programmatic schedules.",
+      "burn": "No burn mechanism is specified."
+    },
+    "sources": [
+      "https://blog.sei.io/sei-future-proofed-tokenomics/",
+      "https://www.binance.com/en/feed/post/1273722"
     ]
   }
 ]
