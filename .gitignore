@@ -5,3 +5,5 @@ __pycache__/
 .idea/
 pipeline_exports/
 exported_charts/
+scenario_exports/
+OLD/
