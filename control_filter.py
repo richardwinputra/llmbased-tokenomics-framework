@@ -1,263 +1,338 @@
 """
-Control Layer and Filter Layer: validation, constraint checking, proposal adjustment.
+Output Control and Filter Module (Section III.C).
+
+Control Layer (Table II): Diagnostic checks with severity levels.
+  - Distributed allocation >= 20%
+  - Team allocation <= 35%
+  - Investor allocation <= 25% preferred; > 25% flagged; > 40% high risk
+  - Combined insider allocation <= 40% preferred; > 40% flagged; > 60% high risk
+  - Cliff <= vesting duration (vesting consistency)
+  - Insider vesting >= 12 months
+  - Gini <= 0.60
+
+Filter Layer (Table III): Hard validity constraints (recalculate if failed).
+  - 99.5% <= total allocation <= 100.5%
+  - Each allocation >= 0
+  - Total supply > 0
+  - Insider and distributed groups identifiable
+  - Each insider allocation has vesting defined
+  - Initial circulating supply <= total supply
 """
 
 from dataclasses import replace
 from typing import Dict, List, Optional
 
 from models import (
-    GeneratedTokenomics, ProjectContext, FairnessMetrics, GovernanceRiskAssessment,
-    ControlLayerResult, FilterLayerResult, RealProjectValidationResult,
-    StakeholderFinding, ComplianceFinding, FeasibilityFinding,
+    GeneratedTokenomics, ProjectContext,
+    ControlLayerResult, ControlFinding,
+    FilterLayerResult, FilterCheck,
 )
-from utils import normalize_allocation_key, calculate_gini
+from utils import (
+    normalize_allocation_key, calculate_gini,
+    is_insider_category, is_distributed_category,
+    compute_insider_pct, compute_distributed_pct,
+    compute_team_pct, compute_investor_pct,
+)
 
 
-# ── Fairness & Governance metrics ─────────────────────────────
+# ── Control Layer (Table II) ─────────────────────────────────
 
-def calculate_temporal_fairness(tokenomics: GeneratedTokenomics) -> FairnessMetrics:
+def run_control_layer(
+    tokenomics: GeneratedTokenomics,
+    context: ProjectContext,
+) -> ControlLayerResult:
+    """
+    Diagnostic assessment per Table II.
+    Returns findings with severity levels but does not block the pipeline.
+    """
+    findings: List[ControlFinding] = []
     alloc = tokenomics.tokenomics_parameters.allocation
     vesting = tokenomics.tokenomics_parameters.vesting
 
-    def get_vested_share(category: str, month: int) -> float:
-        share = alloc.get(category, 0.0)
-        detail = vesting.get(category)
-        if not detail:
-            return share * min(month / 24.0, 1.0)
-        cliff = detail.cliff_months
-        total_vest = detail.vesting_months
-        if month < cliff:
-            return 0.0
-        if total_vest == 0:
-            return share
-        progress = (month - cliff) / total_vest
-        return share * min(max(progress, 0.0), 1.0)
+    # Compute category shares
+    distributed_pct = compute_distributed_pct(alloc)
+    insider_pct = compute_insider_pct(alloc)
+    team_pct = compute_team_pct(alloc)
+    investor_pct = compute_investor_pct(alloc)
 
-    t0 = list(alloc.values())
-    gini_0 = calculate_gini(t0)
-    t12_shares = [get_vested_share(k, 12) for k in alloc]
-    gini_12 = calculate_gini(t12_shares)
-    t24_shares = [get_vested_share(k, 24) for k in alloc]
-    gini_24 = calculate_gini(t24_shares)
-
-    insiders = 0.0
-    community = 0.0
-    for k, v in alloc.items():
-        cat = normalize_allocation_key(k)
-        if cat in ["Team", "Investors"]:
-            insiders += v
-        elif cat == "Community":
-            community += v
-    gov_index = min(insiders / max(community, 1.0), 5.0)
-
-    return FairnessMetrics(t0_gini=gini_0, gini_12m=gini_12, gini_24m=gini_24,
-                           governance_influence_index=gov_index)
-
-
-def evaluate_governance_risk(tokenomics: GeneratedTokenomics,
-                             fairness: FairnessMetrics) -> GovernanceRiskAssessment:
-    notes = []
-    capture_score = min(fairness.governance_influence_index * 0.6 + fairness.t0_gini, 5.0)
-    if capture_score > 2.5:
-        notes.append("High insider balance relative to community; risk of governance capture.")
-    voter_turnout = max(0.1, 1 - fairness.t0_gini)
-    notes.append(f"Projected voter turnout {voter_turnout*100:.1f}% based on initial distribution.")
-    return GovernanceRiskAssessment(
-        capture_risk_score=capture_score,
-        voter_turnout_projection=voter_turnout,
-        governance_influence_index=fairness.governance_influence_index,
-        notes=notes,
-    )
-
-
-# ── Validation ────────────────────────────────────────────────
-
-def validate_against_real_projects(tokenomics: GeneratedTokenomics,
-                                   knowledge_base: List[Dict],
-                                   dataset: Optional[List[Dict]] = None) -> Optional[RealProjectValidationResult]:
-    if not knowledge_base:
-        return None
-    notes = []
-    score = 5.0
-    if not tokenomics.tokenomics_parameters.vesting:
-        notes.append("No vesting schedule defined - high risk compared to standard projects.")
-        score -= 2.0
-    alloc = tokenomics.tokenomics_parameters.allocation
-    community = sum(v for k, v in alloc.items() if normalize_allocation_key(k) == "Community")
-    if community < 40:
-        notes.append(f"Community allocation {community:.1f}% is low compared to decentralized baselines.")
-        score -= 1.0
-    return RealProjectValidationResult(reference_project="Aggregate Baseline",
-                                       similarity_score=score, warnings=notes)
-
-
-# ── Control Layer ─────────────────────────────────────────────
-
-def run_control_layer(tokenomics: GeneratedTokenomics,
-                      context: ProjectContext) -> ControlLayerResult:
-    stakeholder_findings: List[StakeholderFinding] = []
-    compliance_findings: List[ComplianceFinding] = []
-    feasibility_findings: List[FeasibilityFinding] = []
-
-    alloc = tokenomics.tokenomics_parameters.allocation
-    community_share = 0.0
-    team_share = 0.0
-    investor_share = 0.0
-    for k, v in alloc.items():
-        cat = normalize_allocation_key(k)
-        if cat == "Community":
-            community_share += v
-        elif cat == "Team":
-            team_share += v
-        elif cat == "Investors":
-            investor_share += v
-
-    min_community = context.constraints.get("min_community_share", 20.0)
-    max_team = context.constraints.get("max_team_share", 35.0)
-    max_investor = context.constraints.get("max_investor_share", 40.0)
-
-    if community_share < min_community:
-        stakeholder_findings.append(StakeholderFinding(
-            stakeholder="Community", severity="warning",
-            message=f"Community allocation {community_share:.1f}% falls below target {min_community:.1f}%.",
-        ))
-    if team_share > max_team:
-        stakeholder_findings.append(StakeholderFinding(
-            stakeholder="Team", severity="warning",
-            message=f"Team allocation {team_share:.1f}% exceeds cap of {max_team:.1f}%.",
-        ))
-    if investor_share > max_investor:
-        stakeholder_findings.append(StakeholderFinding(
-            stakeholder="Investors",
-            severity="critical" if investor_share > 50 else "warning",
-            message=f"Investor allocation {investor_share:.1f}% dominates the cap table.",
+    # 1. Minimum distribution floor: distributed >= 20%
+    if distributed_pct < 20.0:
+        findings.append(ControlFinding(
+            category="Distributed allocation",
+            check="Minimum distribution floor",
+            severity="warning",
+            message=f"Distributed allocation {distributed_pct:.1f}% < 20% minimum floor. "
+                    "Severely weak non-insider dispersion.",
         ))
 
-    concentrated_share = team_share + investor_share
-    if concentrated_share > 70:
-        compliance_findings.append(ComplianceFinding(
-            severity="critical" if concentrated_share > 80 else "warning",
-            message=f"Combined insider share at {concentrated_share:.1f}% could draw regulatory scrutiny.",
+    # 2. Team concentration: team <= 35%
+    if team_pct > 35.0:
+        findings.append(ControlFinding(
+            category="Insider allocation",
+            check="Team concentration",
+            severity="warning",
+            message=f"Team allocation {team_pct:.1f}% > 35% threshold. "
+                    "Unusually high internal concentration.",
         ))
 
-    vesting = tokenomics.tokenomics_parameters.vesting
+    # 3. Investor concentration: <= 25% preferred; > 25% flagged; > 40% high risk
+    if investor_pct > 40.0:
+        findings.append(ControlFinding(
+            category="Insider allocation",
+            check="Investor concentration",
+            severity="high_risk",
+            message=f"Investor allocation {investor_pct:.1f}% > 40%. "
+                    "High risk of concentrated external capital influence.",
+        ))
+    elif investor_pct > 25.0:
+        findings.append(ControlFinding(
+            category="Insider allocation",
+            check="Investor concentration",
+            severity="warning",
+            message=f"Investor allocation {investor_pct:.1f}% > 25% preferred threshold. "
+                    "Flagged for concentrated external capital influence.",
+        ))
+
+    # 4. Combined insider concentration: <= 40% preferred; > 40% flagged; > 60% high risk
+    if insider_pct > 60.0:
+        findings.append(ControlFinding(
+            category="Insider allocation",
+            check="Combined insider concentration",
+            severity="high_risk",
+            message=f"Combined insider allocation {insider_pct:.1f}% > 60%. "
+                    "High risk of governance concentration and coordinated market influence.",
+        ))
+    elif insider_pct > 40.0:
+        findings.append(ControlFinding(
+            category="Insider allocation",
+            check="Combined insider concentration",
+            severity="warning",
+            message=f"Combined insider allocation {insider_pct:.1f}% > 40% preferred threshold. "
+                    "Flagged for governance concentration.",
+        ))
+
+    # 5. Vesting consistency: cliff <= vesting duration
     for k in alloc.keys():
         detail = vesting.get(k)
-        if detail:
-            if detail.cliff_months and detail.vesting_months and detail.cliff_months > detail.vesting_months:
-                feasibility_findings.append(FeasibilityFinding(
-                    severity="critical",
-                    message=f"{k} cliff ({detail.cliff_months}m) exceeds vesting ({detail.vesting_months}m).",
+        if detail and detail.cliff_months and detail.vesting_months:
+            if detail.cliff_months > detail.vesting_months:
+                findings.append(ControlFinding(
+                    category="Release feasibility",
+                    check="Vesting consistency",
+                    severity="high_risk",
+                    message=f"{k}: cliff ({detail.cliff_months}m) > vesting duration "
+                            f"({detail.vesting_months}m). Logically incoherent schedule.",
                 ))
-            cat = normalize_allocation_key(k)
-            if cat in {"Team", "Investors"} and detail.vesting_months and detail.vesting_months < 12:
-                feasibility_findings.append(FeasibilityFinding(
+
+    # 6. Insider lockup horizon: insider vesting >= 12 months
+    for k in alloc.keys():
+        if is_insider_category(k):
+            detail = vesting.get(k)
+            if detail and detail.vesting_months and detail.vesting_months < 12:
+                findings.append(ControlFinding(
+                    category="Release feasibility",
+                    check="Insider lockup horizon",
                     severity="warning",
-                    message=f"{k} unlocks in under 12 months, raising governance-capture risk.",
+                    message=f"{k} vesting ({detail.vesting_months}m) < 12 months. "
+                            "Early synchronized insider unlock pressure.",
                 ))
 
-    requires_iteration = any(f.severity == "critical" for f in
-                             stakeholder_findings + compliance_findings + feasibility_findings)
-    aligned = not (stakeholder_findings or compliance_findings or feasibility_findings)
+    # 7. Aggregate concentration: Gini <= 0.60
+    gini_t0 = calculate_gini(list(alloc.values()))
+    if gini_t0 > 0.60:
+        findings.append(ControlFinding(
+            category="Distributional inequality",
+            check="Aggregate concentration",
+            severity="warning",
+            message=f"Initial Gini coefficient {gini_t0:.3f} > 0.60 threshold. "
+                    "Concentration not fully captured by category thresholds.",
+        ))
 
-    fairness_metrics = calculate_temporal_fairness(tokenomics)
-    governance_risk = evaluate_governance_risk(tokenomics, fairness_metrics)
+    requires_iteration = any(f.severity == "high_risk" for f in findings)
+    aligned = len(findings) == 0
 
     return ControlLayerResult(
-        aligned=aligned, requires_iteration=requires_iteration,
-        stakeholder_findings=stakeholder_findings,
-        compliance_findings=compliance_findings,
-        feasibility_findings=feasibility_findings,
-        fairness_metrics=fairness_metrics,
-        governance_risk=governance_risk,
+        aligned=aligned,
+        requires_iteration=requires_iteration,
+        findings=findings,
+        insider_pct=insider_pct,
+        distributed_pct=distributed_pct,
+        team_pct=team_pct,
+        investor_pct=investor_pct,
+        gini_t0=gini_t0,
     )
 
 
-# ── Filter Layer ──────────────────────────────────────────────
+# ── Filter Layer (Table III) ────────────────────────────────
 
-def run_filter_layer(tokenomics: GeneratedTokenomics,
-                     context: ProjectContext) -> FilterLayerResult:
+def run_filter_layer(
+    tokenomics: GeneratedTokenomics,
+    context: ProjectContext,
+) -> FilterLayerResult:
+    """
+    Hard validity constraints per Table III.
+    Designs that fail are recalculated (adjusted) before forwarding to simulation.
+    """
     from models import FixedSupply, DynamicSupply, CappedSupply
 
-    allocation_issues: List[str] = []
-    vesting_issues: List[str] = []
-    economic_issues: List[str] = []
-    governance_issues: List[str] = []
-
+    checks: List[FilterCheck] = []
     alloc = tokenomics.tokenomics_parameters.allocation
     vesting = tokenomics.tokenomics_parameters.vesting
-    total_allocation = sum(alloc.values())
     adjusted_alloc = alloc.copy()
 
+    # 1. Allocation completeness: 99.5% <= total <= 100.5%
+    total_allocation = sum(alloc.values())
     if total_allocation <= 0:
-        allocation_issues.append("CRITICAL: Allocation total is zero; cannot normalize.")
+        checks.append(FilterCheck(
+            category="Allocation integrity",
+            rule="Allocation completeness",
+            passed=False,
+            message="Allocation total is zero; cannot normalize.",
+        ))
     elif abs(total_allocation - 100) > 0.5:
-        factor = 100 / total_allocation if total_allocation > 0 else 1.0
-        allocation_issues.append(f"INFO: Allocation total was {total_allocation:.1f}%. Normalized to 100%.")
+        factor = 100 / total_allocation
         adjusted_alloc = {k: round(v * factor, 2) for k, v in alloc.items()}
+        checks.append(FilterCheck(
+            category="Allocation integrity",
+            rule="Allocation completeness",
+            passed=False,
+            message=f"Allocation total was {total_allocation:.1f}%. Normalized to 100%.",
+        ))
+    else:
+        checks.append(FilterCheck(
+            category="Allocation integrity",
+            rule="Allocation completeness",
+            passed=True,
+            message=f"Allocation total {total_allocation:.1f}% within tolerance.",
+        ))
 
-    community_share = 0.0
-    team_share = 0.0
-    investor_share = 0.0
-    for k, v in adjusted_alloc.items():
-        cat = normalize_allocation_key(k)
-        if cat == "Community":
-            community_share += v
-        elif cat == "Team":
-            team_share += v
-        elif cat == "Investors":
-            investor_share += v
+    # 2. No negative allocation share
+    has_negative = any(v < 0 for v in adjusted_alloc.values())
+    if has_negative:
+        adjusted_alloc = {k: max(v, 0) for k, v in adjusted_alloc.items()}
+        # Re-normalize after removing negatives
+        total = sum(adjusted_alloc.values())
+        if total > 0:
+            factor = 100 / total
+            adjusted_alloc = {k: round(v * factor, 2) for k, v in adjusted_alloc.items()}
+        checks.append(FilterCheck(
+            category="Allocation validity",
+            rule="No negative allocation share",
+            passed=False,
+            message="Negative allocation detected; clipped to zero and renormalized.",
+        ))
+    else:
+        checks.append(FilterCheck(
+            category="Allocation validity",
+            rule="No negative allocation share",
+            passed=True,
+            message="All allocations non-negative.",
+        ))
 
-    min_community = context.constraints.get("min_community_share", 20.0)
-    max_team = context.constraints.get("max_team_share", 35.0)
-    max_investor = context.constraints.get("max_investor_share", 40.0)
-
-    if community_share < min_community:
-        allocation_issues.append(f"CRITICAL: Community share {community_share:.1f}% < target {min_community:.1f}%.")
-    if team_share > max_team:
-        allocation_issues.append(f"CRITICAL: Team share {team_share:.1f}% > cap {max_team:.1f}%.")
-    if investor_share > max_investor:
-        allocation_issues.append(f"CRITICAL: Investor share {investor_share:.1f}% > cap {max_investor:.1f}%.")
-
-    for k in adjusted_alloc.keys():
-        detail = vesting.get(k)
-        if detail:
-            if detail.cliff_months > detail.vesting_months:
-                vesting_issues.append(f"CRITICAL: {k} cliff > vesting.")
-            cat = normalize_allocation_key(k)
-            if cat in {"Team", "Investors"} and detail.vesting_months < 12:
-                vesting_issues.append(f"WARNING: {k} vesting under 12 months.")
-
+    # 3. Positive total supply
     supply = tokenomics.tokenomics_parameters.total_supply
     initial_supply = 0
     if isinstance(supply, int):
         initial_supply = supply
     elif isinstance(supply, (FixedSupply, DynamicSupply, CappedSupply)):
         initial_supply = supply.amount if isinstance(supply, FixedSupply) else supply.initial_supply
-    if initial_supply <= 0:
-        economic_issues.append("WARNING: Initial supply missing or non-positive.")
 
-    if community_share - team_share < 0:
-        governance_issues.append("WARNING: Insiders control more tokens than the community at T0.")
+    if initial_supply > 0:
+        checks.append(FilterCheck(
+            category="Supply validity",
+            rule="Positive total supply",
+            passed=True,
+            message=f"Total supply = {initial_supply:,}.",
+        ))
+    else:
+        checks.append(FilterCheck(
+            category="Supply validity",
+            rule="Positive total supply",
+            passed=False,
+            message="Total supply missing or non-positive. Using default 1B.",
+        ))
 
-    critical_present = any(
-        issue.startswith("CRITICAL")
-        for issue in allocation_issues + vesting_issues + economic_issues + governance_issues
-    )
+    # 4. Required analytical groups identifiable
+    insider_identified = any(is_insider_category(k) for k in adjusted_alloc.keys())
+    distributed_identified = any(is_distributed_category(k) for k in adjusted_alloc.keys())
+    groups_ok = insider_identified and distributed_identified
 
+    if groups_ok:
+        checks.append(FilterCheck(
+            category="Category interpretability",
+            rule="Required analytical groups identifiable",
+            passed=True,
+            message="Both insider and distributed groups identified.",
+        ))
+    else:
+        checks.append(FilterCheck(
+            category="Category interpretability",
+            rule="Required analytical groups identifiable",
+            passed=False,
+            message=f"Insider identified: {insider_identified}, "
+                    f"Distributed identified: {distributed_identified}.",
+        ))
+
+    # 5. Insider vesting defined
+    insider_keys = [k for k in adjusted_alloc.keys() if is_insider_category(k)]
+    all_insider_vesting_ok = True
+    for k in insider_keys:
+        if k not in vesting:
+            all_insider_vesting_ok = False
+
+    if all_insider_vesting_ok and insider_keys:
+        checks.append(FilterCheck(
+            category="Release specification",
+            rule="Insider vesting defined",
+            passed=True,
+            message="All insider allocations have vesting schedules defined.",
+        ))
+    elif not insider_keys:
+        checks.append(FilterCheck(
+            category="Release specification",
+            rule="Insider vesting defined",
+            passed=True,
+            message="No insider allocations present (groups set to 0).",
+        ))
+    else:
+        missing = [k for k in insider_keys if k not in vesting]
+        checks.append(FilterCheck(
+            category="Release specification",
+            rule="Insider vesting defined",
+            passed=False,
+            message=f"Missing vesting for insider categories: {', '.join(missing)}.",
+        ))
+
+    # 6. Initial circulating supply feasible
+    # Circulating at T0 = sum of categories with no cliff or cliff=0
+    initial_circulating_pct = 0.0
+    for k, v in adjusted_alloc.items():
+        detail = vesting.get(k)
+        if not detail or detail.cliff_months == 0:
+            initial_circulating_pct += v
+
+    if initial_circulating_pct <= 100.0:
+        checks.append(FilterCheck(
+            category="Circulation feasibility",
+            rule="Initial unlocked supply feasible",
+            passed=True,
+            message=f"Initial circulating supply {initial_circulating_pct:.1f}% <= 100%.",
+        ))
+    else:
+        checks.append(FilterCheck(
+            category="Circulation feasibility",
+            rule="Initial unlocked supply feasible",
+            passed=False,
+            message=f"Initial circulating supply {initial_circulating_pct:.1f}% > total supply.",
+        ))
+
+    # Build adjusted proposal
+    all_passed = all(c.passed for c in checks)
     new_params = replace(tokenomics.tokenomics_parameters, allocation=adjusted_alloc)
     adjusted_proposal = replace(tokenomics, tokenomics_parameters=new_params)
 
-    fairness_metrics = calculate_temporal_fairness(adjusted_proposal)
-    governance_risk = evaluate_governance_risk(adjusted_proposal, fairness_metrics)
-
     return FilterLayerResult(
-        passed=not critical_present,
+        passed=all_passed,
         adjusted_proposal=adjusted_proposal,
-        allocation_issues=allocation_issues,
-        vesting_issues=vesting_issues,
-        economic_issues=economic_issues,
-        governance_issues=governance_issues,
-        fairness_metrics=fairness_metrics,
-        governance_risk=governance_risk,
+        checks=checks,
     )

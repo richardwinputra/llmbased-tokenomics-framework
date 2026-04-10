@@ -33,16 +33,12 @@
     "tokenomics": {
       "total_supply": 16000000,
       "allocation": {
-        "development": 0.23,
-        "team": 0.2,
-        "advisors": 0.03,
-        "ecosystem_reserve": 0.07,
-        "safety_module": 0.27,
-        "user_incentives": 0.2
+        "lend_migration": 0.8125,
+        "ecosystem_reserve": 0.1875
       },
       "vesting": {
-        "team": "3-month cliff, then linear over 2 years",
-        "advisors": "3-month cliff, then linear over 2 years"
+        "lend_migration": "LEND to AAVE migration at 100:1 ratio",
+        "ecosystem_reserve": "Controlled by AAVE governance for protocol incentives"
       },
       "emissions": "No ongoing emissions.",
       "burn": "None"
@@ -324,14 +320,25 @@
     "tokenomics": {
       "total_supply": 10000000000,
       "allocation": {
-        "ecosystem": 0.35,
-        "team": 0.2,
-        "early_backers": 0.17,
-        "foundation": 0.08,
-        "public_sale": 0.2
+        "early_team_and_advisors": 0.2225,
+        "graph_foundation": 0.1964,
+        "early_backers": 0.1645,
+        "backers": 0.1645,
+        "edge_and_node": 0.0774,
+        "public_grt_sale": 0.0406,
+        "curator_program_grants": 0.0305,
+        "testnet_indexer_rewards": 0.0305,
+        "new_issuance": 0.029,
+        "educational_programs": 0.0203,
+        "strategic_grt_sale": 0.0203,
+        "bug_bounties": 0.0034
       },
       "vesting": {
-        "team_and_early_backers": "1-year cliff, then linear over 4 years"
+        "early_team_and_advisors": "4-year vesting, can stake before unlock",
+        "backers": "6-month to 2-year lockups",
+        "graph_foundation": "10-year vesting schedule",
+        "public_grt_sale": "Unlocked at mainnet launch",
+        "strategic_grt_sale": "1-year lockup"
       },
       "emissions": "Continuous inflationary issuance.",
       "burn": "None"
@@ -569,7 +576,7 @@
       "team": "Developed by the Interchain Foundation, Ignite (Tendermint), and a global open-source community."
     },
     "tokenomics": {
-      "total_supply": "Dynamic (no max supply, ~390,930,671 as of June 2024)",
+      "total_supply": 390930671,
       "allocation": {
         "public_fundraiser": 0.679,
         "seed": 0.0508,
@@ -579,7 +586,8 @@
       "vesting": {
         "seed": "1-year cliff, then linear over 2 years",
         "strategic": "1-year cliff, then linear over 2 years",
-        "foundation": "1-year cliff, then linear over 2 years"
+        "foundation": "1-year cliff, then linear over 2 years",
+        "supply_note": "Dynamic supply with no max cap; value reflects approximate circulating supply as of mid-2024"
       },
       "emissions": "Inflationary, dynamic (targeting 7-20% historically, currently ~10-12%). Staking rewards distributed to validators and delegators.",
       "burn": "Fee burning (portion of transaction fees), slashing (malicious/offline validators), and governance proposal deposits (if vetoed) are burned."
@@ -678,11 +686,18 @@
     "tokenomics": {
       "total_supply": 50000000000,
       "allocation": {
-        "ecosystem_development": "Significant portion allocated",
-        "founders_and_early_contributors": "Allocated with vesting schedules"
+        "treasury": 0.324,
+        "ecosystem_development": 0.24,
+        "saft_and_purchase_agreements": 0.174,
+        "founders": 0.138,
+        "swirlds": 0.08,
+        "employees_and_service_providers": 0.044
       },
       "vesting": {
-        "founders_and_early_contributors": "Details not specified"
+        "founders": "15-year release schedule from treasury",
+        "employees": "4-year vesting with 1-year cliff",
+        "saft_investors": "Governed by SAFT agreements",
+        "treasury": "Quarterly distributions managed by Hedera Governing Council"
       },
       "emissions": "No ongoing emissions.",
       "burn": "None"
@@ -779,11 +794,15 @@
     "tokenomics": {
       "total_supply": 120500000,
       "allocation": {
-        "Premint": 0.72,
-        "Mining/Staking rewards": 0.28
+        "ico_participants": 0.498,
+        "foundation_and_early_contributors": 0.0996,
+        "mining_and_staking_rewards": 0.4024
       },
       "vesting": {
-        "Ongoing": "Continuous block rewards and staking yields"
+        "ico_participants": "Unlocked at genesis (July 2015)",
+        "foundation_and_early_contributors": "Allocated at genesis for development",
+        "mining_rewards": "Block rewards from 2015-2022 (PoW era)",
+        "staking_rewards": "Ongoing post-Merge (September 2022)"
       },
       "emissions": "Post-merge emissions of ~500k ETH annually from staking rewards; variable based on validator participation",
       "burn": "Base fees burned through EIP-1559; ~1M ETH annually burned depending on network activity"
@@ -828,10 +847,11 @@
     "tokenomics": {
       "total_supply": 21000000,
       "allocation": {
-        "Mined rewards": 1.0
+        "mining_rewards": 1.0
       },
       "vesting": {
-        "Block rewards": "50 BTC halving every 210,000 blocks; currently ~6.25 BTC per block"
+        "block_rewards": "3.125 BTC per block since April 2024 halving; halves every 210,000 blocks (~4 years)",
+        "next_halving": "Expected April 2028, reward drops to 1.5625 BTC"
       },
       "emissions": "Decreasing by 50% every 4 years; final halving in 2140",
       "burn": "Not applicable; coins lost through user error reduce effective supply"
@@ -875,17 +895,25 @@
       "team": "Anatoly Yakovenko (creator); Solana Foundation and distributed developers"
     },
     "tokenomics": {
-      "total_supply": 573000000,
+      "total_supply": 500000000,
       "allocation": {
-        "Team": 0.15,
-        "Investors": 0.2,
-        "Airdrop/Liquidity": 0.2,
-        "Prebake": 0.45
+        "inflation": 0.3605,
+        "community": 0.2168,
+        "seed_round": 0.1004,
+        "founding_round": 0.0812,
+        "foundation": 0.0799,
+        "team": 0.0799,
+        "validator_round": 0.0326,
+        "grant_pool": 0.0256,
+        "strategic_round": 0.0128,
+        "coinlist_auction": 0.0102
       },
       "vesting": {
-        "Team": "4 year vesting",
-        "Investors": "Variable vesting schedules",
-        "Foundation": "5-7 year distribution"
+        "team": "Cliff vesting schedule",
+        "foundation": "5-7 year distribution",
+        "seed_round": "Cliff vesting mechanism",
+        "founding_round": "Cliff vesting mechanism",
+        "community": "Released through inflation schedule"
       },
       "emissions": "Initial inflation rate ~8% decreasing to 1.5% annually; 16% annual rewards for validators",
       "burn": "Transaction fees partially burned; exact percentage variable"
@@ -984,16 +1012,17 @@
       "team": "Gavin Wood (creator); Web3 Foundation and Parity Technologies"
     },
     "tokenomics": {
-      "total_supply": 1000000000,
+      "total_supply": 2100000000,
       "allocation": {
-        "Public Auction/Sale": 0.5,
-        "Foundation": 0.3,
-        "Team": 0.2
+        "auction_sale": 0.1895,
+        "web3_foundation": 0.1137,
+        "pre_launch_distribution": 0.0758,
+        "staking_rewards": 0.6211
       },
       "vesting": {
-        "Team": "12-36 month vesting periods",
-        "Foundation": "Multi-year distribution",
-        "Crowdloan": "Bonding period dependent"
+        "auction_sale": "Cliff mechanism, vesting extends into 2033",
+        "web3_foundation": "Multi-year distribution",
+        "staking_rewards": "Ongoing network inflation rewards"
       },
       "emissions": "Staking inflation ~10% annually; variable based on validator participation",
       "burn": "Minimal burning; focus on inflation distribution to stakers"
@@ -1039,15 +1068,18 @@
     "tokenomics": {
       "total_supply": 45000000000,
       "allocation": {
-        "Public Sale": 0.5,
-        "Private Sale": 0.2,
-        "Emurgo": 0.1,
-        "Foundation": 0.2
+        "public_sale": 0.5762,
+        "staking_treasury_reserve": 0.3086,
+        "iohk": 0.055,
+        "emurgo": 0.046,
+        "cardano_foundation": 0.0142
       },
       "vesting": {
-        "Emurgo": "5 year vesting",
-        "Foundation": "5-10 year vesting",
-        "Public/Private": "Various terms"
+        "public_sale": "Unlocked at launch",
+        "iohk": "Three tranches: one-third at launch, one-third after June 2018, one-third after June 2019",
+        "emurgo": "Locked initially, released over vesting period",
+        "cardano_foundation": "Vesting with cliff mechanism",
+        "staking_treasury_reserve": "Distributed through staking and treasury"
       },
       "emissions": "Declining rewards schedule transitioning to transaction fees only; currently ~12.3 ADA per epoch rewards",
       "burn": "Minimal burning; treasury funding through fees and inflation"
@@ -1149,16 +1181,18 @@
     "tokenomics": {
       "total_supply": 10000000000,
       "allocation": {
-        "DAO Treasury": 0.42,
-        "Private Investors": 0.17,
-        "Team/Advisors": 0.26,
-        "Foundation": 0.09,
-        "Community Airdrop": 0.06
+        "dao_treasury": 0.4278,
+        "team_and_advisors": 0.2694,
+        "private_investors": 0.1753,
+        "user_airdrop": 0.1162,
+        "dao_airdrop": 0.0113
       },
       "vesting": {
-        "Team": "4 year vesting with 1 year cliff",
-        "Investors": "Variable vesting",
-        "Airdrop": "1 year with cliffs"
+        "dao_treasury": "Linear vesting over 4 years",
+        "team_and_advisors": "1-year cliff, then 3-year monthly linear vesting until March 2027",
+        "private_investors": "1-year cliff, then 3-year monthly linear vesting until March 2027",
+        "user_airdrop": "Fully unlocked at TGE",
+        "dao_airdrop": "Fully unlocked at TGE"
       },
       "emissions": "No inflationary emissions; fixed supply of 10B tokens",
       "burn": "Governance-controlled token burn mechanisms possible"
@@ -1368,15 +1402,20 @@
     "tokenomics": {
       "total_supply": 10000000000,
       "allocation": {
-        "Stake subsidy": 0.14,
-        "App developers": 0.21,
-        "Private investors": 0.28,
-        "Community": 0.05,
-        "Team": 0.32
+        "foundation_allocated_after_2030": 0.5217,
+        "community_reserve": 0.1065,
+        "stake_subsidies": 0.0949,
+        "series_a_investors": 0.0714,
+        "series_b_investors": 0.0696,
+        "early_contributors": 0.0613,
+        "community_access_program": 0.0582,
+        "mysten_labs_treasury": 0.0164
       },
       "vesting": {
-        "Team": "4 year vesting with 1 year cliff",
-        "Investors": "3-4 year vesting schedules"
+        "series_a_investors": "1-year cliff, then linear vesting",
+        "series_b_investors": "1-year cliff, then linear vesting",
+        "early_contributors": "Multi-year vesting through ~2030",
+        "foundation_allocated_after_2030": "Released after 2030"
       },
       "emissions": "2.5-3% annual staking rewards; declining over time",
       "burn": "Gas fees burned; amount varies with network usage"
@@ -1532,15 +1571,18 @@
     "tokenomics": {
       "total_supply": 1000000000,
       "allocation": {
-        "Community": 0.49,
-        "Private investors": 0.15,
-        "Team": 0.2,
-        "Foundation": 0.16
+        "inflation_cip29": 0.3059,
+        "rnd_and_ecosystem": 0.1627,
+        "public_allocation": 0.1215,
+        "early_backers_series_ab": 0.1195,
+        "initial_core_contributors": 0.1071,
+        "early_backers_seed": 0.0966,
+        "inflation": 0.0867
       },
       "vesting": {
-        "Team": "4 year vesting with 1 year cliff",
-        "Investors": "2-4 year vesting",
-        "Foundation": "4 year distribution"
+        "initial_core_contributors": "Cliff-based vesting",
+        "early_backers": "Cliff-based vesting",
+        "inflation": "Starting at 8% annually, decreasing to 1.5% floor"
       },
       "emissions": "8% annual inflation; declining over time to support validators",
       "burn": "Governance-determined protocol fee burning"
@@ -1641,15 +1683,16 @@
     "tokenomics": {
       "total_supply": 1005577,
       "allocation": {
-        "Founders": 0.03,
-        "Early Contributors": 0.06,
-        "Private Sale": 0.27,
-        "Public Sale": 0.06,
-        "Long-tail": 0.58
+        "founders_and_project": 0.695,
+        "team": 0.15,
+        "seed_round_1": 0.04,
+        "seed_round_2": 0.06,
+        "seed_round_3": 0.055
       },
       "vesting": {
-        "Founder": "Multi-year vesting",
-        "Early Contributors": "Various vesting schedules"
+        "founders": "Initial allocation at launch",
+        "team": "Linear vesting with cliff",
+        "seed_rounds": "Quarterly vesting after cliff"
       },
       "emissions": "Governance-controlled issuance for incentives; no protocol-mandated inflation",
       "burn": "Protocol revenue can be used to buy and burn MKR or distributed to holders"
@@ -1695,15 +1738,18 @@
     "tokenomics": {
       "total_supply": 1000000000,
       "allocation": {
-        "Private investors": 0.3,
-        "Public allocation": 0.19,
-        "Team": 0.2,
-        "Foundation": 0.02,
-        "Investors": 0.29
+        "dao_treasury": 0.3632,
+        "investors": 0.2218,
+        "initial_developers": 0.2,
+        "founders_and_employees": 0.15,
+        "validators_and_signers": 0.065
       },
       "vesting": {
-        "Team": "4 year vesting with 1 year cliff",
-        "Investors": "Various vesting schedules"
+        "investors": "1-year lock-up from TGE, then linear vesting",
+        "initial_developers": "1-year lock-up from TGE, then linear vesting",
+        "founders_and_employees": "1-year lock-up from TGE, then linear vesting",
+        "dao_treasury": "No fixed schedule; governed by DAO proposals",
+        "validators_and_signers": "Released per network participation"
       },
       "emissions": "No protocol-mandated inflation; governance can issue additional tokens",
       "burn": "Governance-controlled token burn mechanisms; focus on fee distribution"
@@ -1749,14 +1795,17 @@
     "tokenomics": {
       "total_supply": 10000000,
       "allocation": {
-        "Founder": 0.26,
-        "Early Contributors": 0.24,
-        "Grants": 0.02,
-        "Liquidity Mining": 0.48
+        "protocol_users": 0.423,
+        "compound_labs_shareholders": 0.2396,
+        "founders_and_team": 0.2226,
+        "community_governance": 0.0775,
+        "future_team_members": 0.0373
       },
       "vesting": {
-        "Founder/Contributors": "4 year vesting with 1 year cliff",
-        "Grants": "Various schedules"
+        "protocol_users": "4-year linear distribution from launch",
+        "compound_labs_shareholders": "4-year vesting with 1-year cliff",
+        "founders_and_team": "4-year vesting with 1-year cliff",
+        "future_team_members": "4-year vesting with 1-year cliff"
       },
       "emissions": "Governance-controlled issuance; community votes on distribution",
       "burn": "Governance can burn tokens; focus on treasury accumulation"
@@ -1907,15 +1956,21 @@
     "tokenomics": {
       "total_supply": 1000000000,
       "allocation": {
-        "Team": 0.25,
-        "Investors": 0.15,
-        "Community/Airdrop": 0.5,
-        "Foundation": 0.1
+        "community_and_rewards_treasury": 0.3128,
+        "investors": 0.2773,
+        "founders_employees_advisors": 0.1527,
+        "future_employees": 0.07,
+        "trading_rewards": 0.0933,
+        "retroactive_mining_rewards": 0.0503,
+        "liquidity_provider_rewards": 0.0328,
+        "safety_module": 0.005,
+        "liquidity_module": 0.0058
       },
       "vesting": {
-        "Team": "4 year vesting with 1 year cliff",
-        "Investors": "Various vesting schedules",
-        "Airdrop": "1 year cliff with vesting"
+        "investors": "18-month cliff, then vesting over 30 months",
+        "founders_employees_advisors": "Standard vesting schedules over 4-5 years",
+        "community_rewards": "Distributed on 28-day epoch basis over 5 years",
+        "trading_rewards": "Distributed on 28-day epoch basis"
       },
       "emissions": "Governance-controlled incentive emissions; funding community programs",
       "burn": "Governance votes on burning mechanisms; focus on incentive distribution"
@@ -2490,17 +2545,20 @@
       "team": "Sreeram Kannan (founder); EigenLayer Labs"
     },
     "tokenomics": {
-      "total_supply": 1702500000,
+      "total_supply": 1793689817,
       "allocation": {
-        "Treasury": 0.3,
-        "Team": 0.25,
-        "Community Airdrop": 0.2,
-        "Investors": 0.25
+        "investors": 0.295,
+        "early_contributors": 0.255,
+        "stakedrops": 0.15,
+        "ecosystem_development": 0.15,
+        "community_initiatives": 0.15
       },
       "vesting": {
-        "Team": "4 year vesting with 1 year cliff",
-        "Investors": "Various vesting schedules",
-        "Airdrop": "Vesting periods vary"
+        "investors": "1-year cliff, then 4% monthly unlock over 3 years",
+        "early_contributors": "1-year cliff, then 4% monthly unlock over 3 years",
+        "stakedrops": "Multi-season distribution to ETH restakers",
+        "ecosystem_development": "Ongoing funding for R&D",
+        "community_initiatives": "Governance-directed programs"
       },
       "emissions": "Governance-controlled emissions for incentive programs and ecosystem funding",
       "burn": "Governance-determined protocol fee burning mechanisms"
@@ -2546,16 +2604,21 @@
     "tokenomics": {
       "total_supply": 10000000000,
       "allocation": {
-        "Starknet Treasury": 0.31,
-        "Investors": 0.17,
-        "Team": 0.2,
-        "Airdrop": 0.17,
-        "Unopened": 0.15
+        "early_contributors": 0.2004,
+        "investors": 0.1817,
+        "grants_and_development_partners": 0.1293,
+        "starkware": 0.1076,
+        "foundation_strategic_reserves": 0.1,
+        "community_provisions": 0.09,
+        "community_rebates": 0.09,
+        "foundation_treasury": 0.081,
+        "donations": 0.02
       },
       "vesting": {
-        "Team": "4 year vesting with 1 year cliff",
-        "Investors": "Variable vesting schedules",
-        "Airdrop": "1-4 year vesting"
+        "starkware": "Lock-up schedule, full unlock by March 2027",
+        "early_contributors": "Lock-up schedule, full unlock by March 2027",
+        "investors": "Lock-up schedule, full unlock by March 2027",
+        "community_provisions": "Monthly unlocks from April 2025 through March 2027"
       },
       "emissions": "Governance-controlled incentive emissions for protocol participants",
       "burn": "Governance-determined token burning and treasury optimization"
@@ -2651,18 +2714,18 @@
       "team": "Protocol Labs, led by Juan Benet"
     },
     "tokenomics": {
-      "total_supply": 1980000000,
+      "total_supply": 2000000000,
       "allocation": {
-        "Mining rewards": 0.5,
-        "IPFS ecosystem": 0.1,
-        "Protocol Labs": 0.15,
-        "Early contributors": 0.15,
-        "Reserve": 0.1
+        "mining_rewards": 0.7,
+        "protocol_labs": 0.15,
+        "early_contributors": 0.1,
+        "filecoin_foundation": 0.05
       },
       "vesting": {
-        "IPFS ecosystem": "6 years",
-        "Protocol Labs": "6 years",
-        "Investors": "3-6 years"
+        "mining_rewards": "75% vests linearly over 180 days, 25% immediately accessible",
+        "protocol_labs": "6-year linear vesting from genesis",
+        "early_contributors": "3-year linear vesting from genesis",
+        "filecoin_foundation": "6-year linear vesting from genesis"
       },
       "emissions": "Block rewards with decreasing schedule, ~55 million FIL per year initially",
       "burn": "No programmatic burn mechanism"
@@ -3110,14 +3173,15 @@
     "tokenomics": {
       "total_supply": 10000000000,
       "allocation": {
-        "Initial grants": 0.5,
-        "Team": 0.13,
-        "Investors": 0.24,
-        "Reserve": 0.13
+        "community": 0.75,
+        "investors": 0.1378,
+        "initial_development_team": 0.1002,
+        "tfh_reserve": 0.012
       },
       "vesting": {
-        "Team": "4 years",
-        "Investors": "2-4 years"
+        "community": "Distributed over 15 years through user grants and ecosystem programs",
+        "team": "20% over 3 years, 80% over 5 years, linear daily unlocking starting July 2024",
+        "investors": "20% over 3 years, 80% over 5 years, linear daily unlocking starting July 2024"
       },
       "emissions": "Daily grants to verified users; decreasing over time",
       "burn": "No explicit burn mechanism"
@@ -3161,14 +3225,21 @@
     "tokenomics": {
       "total_supply": 270000000,
       "allocation": {
-        "Staking rewards": 0.6,
-        "Team": 0.21,
-        "Seed investors": 0.1,
-        "Public sale": 0.09
+        "staking_rewards": 0.29,
+        "play_to_earn": 0.2,
+        "team": 0.1777,
+        "public_sale": 0.11,
+        "private_vesting": 0.0881,
+        "ecosystem_fund": 0.05,
+        "advisors": 0.0472,
+        "private_sale": 0.037
       },
       "vesting": {
-        "Team": "3 years",
-        "Investors": "1-2 years"
+        "staking_rewards": "Distributed over approximately 5.5 years",
+        "team": "4-year vesting from public sale",
+        "play_to_earn": "Gradually unlocked over 5.5 years",
+        "public_sale": "65-month unlock schedule",
+        "private_sale": "Various cliff mechanisms"
       },
       "emissions": "Decreasing staking rewards starting at 6 AXS per block",
       "burn": "Breeding and evolution consume SLP (secondary token), indirectly supporting AXS value"
@@ -3915,12 +3986,20 @@
       "team": "Elrond Network, founded by Beniamin Mincu"
     },
     "tokenomics": {
-      "total_supply": 24613949,
+      "total_supply": 31415926,
       "allocation": {
-        "Allocation varies": "Various"
+        "private_sale": 0.3,
+        "team": 0.2,
+        "company_reserves": 0.15,
+        "presale": 0.125,
+        "public_sale": 0.125,
+        "partnerships": 0.05,
+        "community_and_ecosystem": 0.05
       },
       "vesting": {
-        "Team and early backers": "Varies"
+        "max_supply_model": "Maximum cap at 31,415,926 EGLD reached after 10 years",
+        "inflation": "Gradual introduction over 10 years",
+        "fee_burning": "Transaction fees burned to offset newly minted tokens"
       },
       "emissions": "Staking rewards through block production",
       "burn": "Protocol burn through gas optimization"
@@ -3962,13 +4041,13 @@
       "team": "Kaspa Foundation and community (formerly known as DAGlabs)"
     },
     "tokenomics": {
-      "total_supply": 28694385220,
+      "total_supply": 28700000000,
       "allocation": {
-        "Mining rewards": "Ongoing",
-        "Pre-mine": "Various"
+        "mining_rewards": 1.0
       },
       "vesting": {
-        "Pre-mine": "Community-determined"
+        "fair_launch": "No ICO, no premine, no pre-allocations - launched November 7, 2021",
+        "emission_schedule": "Block rewards geometrically decrease, halving annually via monthly reductions"
       },
       "emissions": "Block rewards with halving schedule",
       "burn": "No explicit burn mechanism"
@@ -4158,16 +4237,18 @@
       "team": "Jito Labs"
     },
     "tokenomics": {
-      "total_supply": 100000000,
+      "total_supply": 1000000000,
       "allocation": {
-        "Community": 0.5,
-        "Team": 0.25,
-        "Investors": 0.2,
-        "Reserve": 0.05
+        "community_growth": 0.3429,
+        "ecosystem_development": 0.25,
+        "core_contributors": 0.245,
+        "investors": 0.1621
       },
       "vesting": {
-        "Team": "4 years",
-        "Investors": "1-2 years"
+        "community_growth": "Airdrops and community incentives over time",
+        "ecosystem_development": "Ongoing ecosystem funding",
+        "core_contributors": "3-year vesting with 1-year cliff",
+        "investors": "3-year vesting with 1-year cliff"
       },
       "emissions": "Staking rewards and MEV distribution",
       "burn": "No explicit programmatic burn"
@@ -6015,16 +6096,28 @@
       "team": "Moonbeam Foundation, PureStake (core team)"
     },
     "tokenomics": {
-      "total_supply": 10000000,
+      "total_supply": 1000000000,
       "allocation": {
-        "crowdloan": 0.3,
-        "team": 0.2,
-        "investors": 0.2,
-        "foundation": 0.3
+        "inflation": 0.3565,
+        "long_term_protocol_development": 0.1078,
+        "crowdloan_2021": 0.097,
+        "seed_funding": 0.0905,
+        "strategic_funding": 0.0776,
+        "founders_and_early_employees": 0.0647,
+        "take_flight_community": 0.0635,
+        "liquidity_programs": 0.0323,
+        "future_employee_incentives": 0.0297,
+        "key_partners_and_advisors": 0.0255,
+        "developer_adoption": 0.023,
+        "parachain_bond_funding": 0.0194,
+        "purestake_early_backers": 0.0091,
+        "treasury": 0.0032
       },
       "vesting": {
-        "team": "4 year vesting",
-        "investors": "2-4 year vesting"
+        "crowdloan": "30% immediate, 70% linear over 96 weeks",
+        "strategic_funding": "12-month vesting with 2-month lock",
+        "seed_funding": "Linear vesting schedule",
+        "inflation": "5% annual (1% collators, 1.5% staking, 2.5% parachain bond)"
       },
       "emissions": "11.5% annually to collators and incentives",
       "burn": "None, inflation-based model"

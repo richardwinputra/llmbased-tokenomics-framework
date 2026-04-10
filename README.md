@@ -1,82 +1,73 @@
-# 🪙 Tokenomics Design & Analysis Tool
+# LLM-Based Tokenomics Screening Framework
 
-An AI-powered framework for designing, simulating, and validating token economic models. This tool leverages OpenAI's GPT-4 to generate comprehensive tokenomics proposals while providing rigorous analytical validation through Monte Carlo simulations, Gini-based fairness metrics, and historical benchmarking.
+An LLM-assisted framework for designing, screening, and evaluating token economic models. The system uses a three-module pipeline — Generation, Control & Filter, and Simulation & Evaluation — grounded in the Token Design Thinking methodology (Voshmgir) and benchmarked against a knowledge base of 119 real-world token projects.
 
----
+## Architecture
 
-## 🚀 Key Features
+```
+Input Base → Tokenomics Generation Module → Output Control & Filter Module → Simulation & Evaluation Module
+```
 
-### 🤖 AI-Driven Tokenomics Engine
-- **Two Input Modes**:
-  - **Structured Intake**: Detailed questionnaire for precise control over project parameters (legal, technical, economic).
-  - **Generic Description**: Natural language project descriptions for rapid prototyping.
-- **Context-Aware Design**: Automatically infers constraints, legal risk profiles, and economic signals from inputs.
+**Tokenomics Generation Module**: Accepts structured or generic project descriptions, retrieves relevant precedents from the knowledge base (RAG), and prompts an LLM to produce a complete tokenomics proposal including allocation, vesting, and governance parameters.
 
-### 📊 Advanced Analytics & Simulations
-- **Monte Carlo Simulations**: Predict potential token supply scenarios and distribution paths over time.
-- **Agent Market Simulation**: Simulate price impact, liquidity depth, and market sentiment based on proposed allocations.
-- **Fairness Metrics**: Calculate Gini coefficients at T=0, 12m, and 24m to measure wealth concentration and decentralization.
-- **Governance Risk Assessment**: Automated scoring of capture risks and voter turnout projections.
+**Output Control & Filter Module**: A two-layer validation gate. The Control Layer (Table II) runs diagnostic checks on allocation concentration, vesting adequacy, and fairness. The Filter Layer (Table III) enforces hard constraints — completeness, non-negativity, supply consistency — and recalculates on failure.
 
-### 📚 Knowledge Base & Benchmarking
-- **Historical Analysis**: Built-in dataset of successful Web3 projects (Aave, Chainlink, Uniswap, etc.) for similarity matching and benchmarking.
-- **Risk Flagging**: Identify potential failure modes by comparing new proposals with historical drawdown and inflation data.
+**Simulation & Evaluation Module**: Evaluates the screened proposal through supply release simulation (cliff-and-linear vesting over 60 months), fairness evaluation (insider share, distributed share, Gini tracking), and sustainability stress testing (5 scenarios, 70% pass criterion).
+## Quick Start
 
----
-
-## 🛠 Quick Start
-
-### 1. Prerequisites
+### Prerequisites
 - Python 3.8+
-- OpenAI API Key
+- OpenAI API key
 
-### 2. Installation
+### Installation
 ```bash
-git clone <repository-url>
-cd llmbased-tokenomics
-pip install -r requirements.txt
-```
-*Note: If `requirements.txt` is missing, install core dependencies:*
-```bash
-pip install openai python-dotenv matplotlib numpy
+pip install openai python-dotenv numpy
 ```
 
-### 3. Setup
-Create a `.env` file in the project root:
+### Setup
+Create a `.env` file:
 ```env
-OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_API_KEY=your_key_here
 ```
 
-### 4. Run the Pipeline
+### Run
 ```bash
+# Interactive mode
 python main.py
+
+# From JSON input file
+python main.py --input-file sample_input.json
+
+# Batch experiment runner
+python run_full_experiment.py
+
+# Post-experiment analysis
+python analyze_results.py
+
+# Generate publication-quality figures
+python visualize.py
 ```
 
----
+## CLI Options
 
-## 📖 Usage Guide
+| Flag | Description |
+|------|-------------|
+| `--seed` | Random seed for reproducibility (default: 42) |
+| `--input-file` | Path to JSON input (bypasses interactive mode) |
+| `--model-override` | Override the OpenAI model name |
+| `--output-dir` | Output directory (default: pipeline_exports) |
 
-### Simulation & Analysis Options
-When running the tool, you can select various analysis depths:
-- **A/B Testing**: Benchmarks your proposal against the most similar successful project in the knowledge base.
-- **Monte Carlo Simulation**: Generates probabilistic outcomes for supply inflation and distribution.
-- **Full Comprehensive Analysis**: Runs all simulations, fairness checks, and risk assessments.
+## Project Structure
 
-### CLI Arguments
-- `--historical-dataset`: Path to a custom JSON dataset (defaults to `TokenomicsKnowledge.json`).
-- `--dataset-report`: Prints a summary of the current historical dataset and exits.
-- `--seed`: Set a random seed for deterministic simulation results.
-
----
-
-## 📂 Project Structure
-
-- `main.py`: Core logic for input handling, AI orchestration, and analysis pipeline.
-- `advanced_simulations.py`: Market and agent-based simulation engines.
-- `TokenomicsKnowledge.json`: Curated dataset of historical tokenomics models.
-- `exported_charts/`: Directory where visualization outputs (pie charts, distribution graphs) are saved.
-
----
-
-## 🤝 Contributing
-Contributions are welcome! Please ensure you follow the existing code structure and add unit tests for any new simulation logic.
+| File | Purpose |
+|------|---------|
+| `models.py` | Data structures for all pipeline stages |
+| `utils.py` | Parsing, normalization, Gini computation, allocation classification |
+| `llm_engine.py` | Prompt construction, OpenAI API interaction, proposal generation |
+| `control_filter.py` | Control Layer (Table II) and Filter Layer (Table III) |
+| `simulation.py` | Supply release, fairness evaluation, stress testing |
+| `main.py` | Pipeline orchestration and CLI |
+| `run_full_experiment.py` | Full experiment runner (batch execution of structured inputs) |
+| `analyze_results.py` | Post-experiment data analysis and tabular exports |
+| `visualize.py` | Generates figures based on experiment outputs |
+| `TokenomicsKnowledge.json` | Knowledge base of 119 token projects |

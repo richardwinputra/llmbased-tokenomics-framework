@@ -1,5 +1,11 @@
 """
-LLM interaction: prompt engineering, OpenAI API calls, proposal generation.
+Tokenomics Generation Module (Section III.B, Algorithm 1).
+
+Handles:
+  - Interactive and file-based input collection (structured)
+  - Prompt engineering with RAG from knowledge base
+  - OpenAI API calls with fallback
+  - Proposal construction: LLM text -> structured GeneratedTokenomics
 """
 
 import os
@@ -35,20 +41,13 @@ def _get_client() -> OpenAI:
     return _client
 
 
-# ── Interactive input collection ──────────────────────────────
+# ── Interactive input collection ─────────────────────────────
 
-def get_input_mode() -> str:
-    print("Choose your input method:")
-    print("1. Structured Input - Detailed project specifications (Recommended)")
-    print("2. Generic Input - Simple project description")
-    while True:
-        choice = input("\nSelect input mode (1 or 2): ").strip()
-        if choice in ['1', '2']:
-            return choice
-        print("Invalid choice.")
+
 
 
 def get_structured_input() -> Dict:
+    """Collect structured input following the Token Design Thinking framework."""
     data = {
         "input_type": "structured",
         "project_name": input("Project name: "),
@@ -71,65 +70,38 @@ def get_structured_input() -> Dict:
     return data
 
 
-def get_generic_input() -> Dict:
-    print("Tell us about your project in your own words.")
-    project_name = input("Project name (optional): ").strip()
-    print("\nDescribe your project. Type 'DONE' on a new line when finished:")
-    description_lines = []
-    while True:
-        line = input()
-        if line.strip().upper() == 'DONE':
-            break
-        description_lines.append(line)
-    full_description = '\n'.join(description_lines).strip()
-    if not full_description:
-        print("Project description cannot be empty.")
-        return get_generic_input()
-    return {
-        "input_type": "generic",
-        "project_name": project_name if project_name else "Not specified",
-        "project_description": full_description,
-        "description_length": len(full_description.split()),
-        "timestamp": datetime.now().isoformat(),
-    }
+# ── Prompt engineering (Algorithm 1, lines 2-12) ────────────
 
+_SYSTEM_MESSAGE = """You are a tokenomics design expert grounded in the Token Design Thinking framework.
 
-# ── Prompt engineering ────────────────────────────────────────
-
-_SYSTEM_MESSAGE = """
-You are Dr. Tokenomics, a world-renowned blockchain economist and tokenomics architect with over a decade of experience designing sustainable token economies for projects across DeFi, GameFi, infrastructure protocols, DAOs, and beyond—many of which have achieved billions in market capitalization.
-
-You ground all of your reasoning in the Token Design Thinking framework (Token Kitchen / Shermin Voshmgir) as represented in the TOKEN DESIGN TOOL. You understand that token design is *not* only about math or price action, but about socio-technical systems, governance, and power structures.
-
-Whenever you design or critique a token model, you mentally walk through the following lenses:
-
-1. PURPOSE - Clarify the core PURPOSE of the project.
-2. PRINCIPLES & VALUES - Extract the project's mission, vision, and guiding PRINCIPLES.
-3. POSITIONING & BUSINESS MODEL - Determine whether for-profit, non-profit, or mixed.
-4. SYSTEM FUNCTIONS & TOKEN FUNCTIONS - Separate system functions from token functions.
-5. STAKEHOLDERS & STAKEHOLDER MATRIX - Identify all key STAKEHOLDER types.
-6. TOKENS: NUMBER, TYPES, AND ROLES - Decide how many token TYPES are necessary.
-7. ECONOMIC DESIGN TOOLBOX - Think through supply, issuance, sinks, pricing, safety, sustainability.
-8. LEGAL & REGULATORY DESIGN - Reflect on functional classification and regulatory constraints.
-9. TECHNICAL DESIGN - Assess on-chain vs off-chain; L1 vs L2; custody models.
-10. POWER STRUCTURES - Analyze VOTING, INFORMATION, MARKET, MEDIATION power.
-11. TEAM, ROADMAP & EVOLUTION - Consider progressive decentralization.
-
-Your design philosophy emphasizes long-term sustainability, clear utility-value relationships,
-progressive decentralization, and transparent articulation of trade-offs.
-
-Your communication style is precise, implementation-focused, and analytical.
-All responses must be professional, comprehensive, and directly actionable.
+When designing tokenomics, you consider:
+1. PURPOSE - Core purpose of the project
+2. PRINCIPLES & VALUES - Mission, vision, guiding principles
+3. POSITIONING & BUSINESS MODEL - For-profit, non-profit, or mixed
+4. SYSTEM FUNCTIONS & TOKEN FUNCTIONS - Separate system from token functions
+5. STAKEHOLDERS - All key stakeholder types and their incentives
+6. TOKEN TYPES AND ROLES - Number and types of tokens needed
+7. ECONOMIC DESIGN - Supply, issuance, sinks, pricing, sustainability
+8. LEGAL & REGULATORY DESIGN - Functional classification and constraints
+9. TECHNICAL DESIGN - On-chain vs off-chain, L1 vs L2, custody
+10. POWER STRUCTURES - Voting, information, market, mediation power
+11. TEAM, ROADMAP & EVOLUTION - Progressive decentralization
 
 Formatting Requirements:
 - Use exact numbers for total supply
 - Format allocations as "Category: XX%"
 - Ensure all percentages sum to 100%
+- Include vesting schedules with cliff and duration in months
 - Justify decisions using reasoning and references from similar projects
 """
 
 
 def create_structured_prompt(user_input: Dict, project_summaries: str) -> str:
+    """
+    Algorithm 1, lines 3-7: Build prompt from structured input.
+    Appends project overview, design constraints, similar projects,
+    stakeholders, and all knowledge base summaries.
+    """
     similar_projects_context = ""
     if user_input.get('similar_projects'):
         similar_projects_context = (
@@ -143,59 +115,42 @@ def create_structured_prompt(user_input: Dict, project_summaries: str) -> str:
             "Ensure their roles and incentives are mapped."
         )
 
-    return f"""
-    Transform the structured data below into a coherent tokenomics model.
+    return f"""Transform the structured data below into a coherent tokenomics model.
 
-    Project Overview:
-    - Project Name: {user_input['project_name']}
-    - Token Symbol: {user_input['token_symbol']}
-    - Core Principles: {', '.join(user_input.get('core_principles', []))}
-    - Token Purpose: {', '.join(user_input.get('token_purpose', []))}
-    - Core Functions: {', '.join(user_input.get('token_functions', []))}
+Project Overview:
+- Project Name: {user_input['project_name']}
+- Token Symbol: {user_input['token_symbol']}
+- Core Principles: {', '.join(user_input.get('core_principles', []))}
+- Token Purpose: {', '.join(user_input.get('token_purpose', []))}
+- Core Functions: {', '.join(user_input.get('token_functions', []))}
 
-    Design Preferences:
-    - Supply Model: {user_input.get('total_supply_preference', 'Not specified')}
-    - Inflation Strategy: {user_input.get('inflation_preference', 'Not specified')}
-    - Economic Design: {user_input.get('economic_design', 'Not specified')}
-    - Legal Context: {user_input.get('legal_design', 'Not specified')}
-    - Technical Approach: {user_input.get('technical_design', 'Not specified')}
-    - Governance Structures: {user_input.get('gov_structures', 'Not specified')}
+Design Preferences:
+- Supply Model: {user_input.get('total_supply_preference', 'Not specified')}
+- Inflation Strategy: {user_input.get('inflation_preference', 'Not specified')}
+- Economic Design: {user_input.get('economic_design', 'Not specified')}
+- Legal Context: {user_input.get('legal_design', 'Not specified')}
+- Technical Approach: {user_input.get('technical_design', 'Not specified')}
+- Governance Structures: {user_input.get('gov_structures', 'Not specified')}
 
-    {stakeholder_context}
-    {similar_projects_context}
+{stakeholder_context}
+{similar_projects_context}
 
-    Reference Projects:
-    {project_summaries}
+Reference Projects:
+{project_summaries}
 
-    Provide: token role, total supply, allocation (Category: XX%), vesting schedule,
-    governance design, economic model, and phased roadmap.
-    """
-
-
-def create_generic_prompt(user_input: Dict, project_summaries: str) -> str:
-    return f"""
-    Given the project description below, extract key design insights and produce a tokenomics model.
-
-    USER'S PROJECT DESCRIPTION:
-    {user_input.get('project_description', '')}
-
-    PROJECT NAME: {user_input.get('project_name', 'Extract from description')}
-
-    Reference Projects:
-    {project_summaries}
-
-    Provide: token role, total supply, allocation (Category: XX%), vesting schedule,
-    governance design, economic model, and phased roadmap. Ensure allocations sum to 100%.
-    """
+Provide: token role, total supply, allocation (Category: XX%), vesting schedule
+(cliff and duration in months for each category), governance design, economic model.
+"""
 
 
 def ask_openai_enhanced(prompt: str, input_type: str = "structured",
                         model_override: Optional[str] = None) -> str:
+    """
+    Algorithm 1, line 13: LLM_Response_Text <- LLM_API(prompt).
+    Calls OpenAI with primary model and fallback.
+    """
     system_msg = str(_SYSTEM_MESSAGE)
-    if input_type == "generic":
-        system_msg += "\n\nNOTE: Infer project details from the limited description and your expertise."
-    else:
-        system_msg += "\n\nNOTE: Use the structured input as primary source of truth."
+    system_msg += "\n\nNOTE: Use the structured input as primary source of truth."
 
     client = _get_client()
     primary = model_override or os.getenv("OPENAI_MODEL", "gpt-4o")
@@ -223,19 +178,25 @@ def ask_openai_enhanced(prompt: str, input_type: str = "structured",
         return f"Error generating recommendation: {e}"
 
 
-# ── Proposal construction ─────────────────────────────────────
+# ── Proposal construction (Algorithm 1, lines 14-24) ────────
 
-def generate_tokenomics_proposal(user_input: Dict,
-                                 result_text: str) -> Tuple[GeneratedTokenomics, ProjectContext]:
+def generate_tokenomics_proposal(
+    user_input: Dict, result_text: str
+) -> Tuple[GeneratedTokenomics, ProjectContext]:
+    """
+    Parse LLM response text into structured GeneratedTokenomics and ProjectContext.
+    Implements Algorithm 1 lines 14-24: parse to JSON, regex scan, extract labels/values.
+    """
     payload = extract_json_payload(result_text) or {}
-
     params = extract_tokenomics_parameters(payload, result_text)
 
+    # Design thinking
     design_thinking_raw = payload.get("token_design_thinking", {}) or {}
     if "purpose" not in design_thinking_raw:
         design_thinking_raw["purpose"] = user_input.get("project_description", "")[:150]
     design_thinking = parse_design_thinking(design_thinking_raw)
 
+    # Metadata
     meta_raw = payload.get("project_metadata", {})
     metadata = ProjectMetadata(
         project=meta_raw.get("project") or user_input.get("project_name", "Unknown"),
@@ -252,10 +213,8 @@ def generate_tokenomics_proposal(user_input: Dict,
         references=refs,
     )
 
-    if user_input.get("input_type") == "generic":
-        description = user_input.get("project_description", "")
-    else:
-        description = "Structured intake provided via questionnaire."
+    # Build context
+    description = "Structured intake provided via questionnaire."
 
     goals = [g.strip() for g in user_input.get("core_principles", []) if g.strip()]
     priorities = [p.strip() for p in user_input.get("token_purpose", []) if p.strip()]
@@ -274,64 +233,3 @@ def generate_tokenomics_proposal(user_input: Dict,
 
     gen_tokenomics = enforce_tokenomics_constraints(gen_tokenomics, context)
     return gen_tokenomics, context
-
-
-def proposal_from_dataset_entry(entry: Dict) -> Tuple[GeneratedTokenomics, ProjectContext]:
-    allocation = {}
-    raw_alloc = entry.get("allocation", {})
-    if isinstance(raw_alloc, dict):
-        for k, v in raw_alloc.items():
-            try:
-                allocation[k] = float(v)
-            except:
-                pass
-    else:
-        allocation = {"Community": 100.0}
-
-    initial_supply = entry.get("tokenomics", {}).get("total_supply") or entry.get("total_supply")
-    token_supply = parse_token_supply(initial_supply)
-
-    notes = entry.get("notes", "Historical project context")
-    from models import TokenomicsParameters, TokenDesignThinking, VestingDetail
-
-    params = TokenomicsParameters(total_supply=token_supply, allocation=allocation, vesting={})
-    design = TokenDesignThinking(
-        purpose=notes, principles=[], positioning="", functions=[], stakeholders=[],
-        economic_design="", legal_design="", tech_design="", power_structures="", team={},
-    )
-    metadata = ProjectMetadata(
-        project=entry.get("project", "Historical"),
-        token=entry.get("token", "TKN"),
-    )
-    gen = GeneratedTokenomics(
-        project_metadata=metadata, token_design_thinking=design,
-        tokenomics_parameters=params, references={},
-    )
-    context = ProjectContext(
-        description=notes, goals=[], priorities=[], constraints={},
-        legal_risk_tolerance="balanced", economic_signals={},
-    )
-    return gen, context
-
-
-def proposal_from_entry_via_llm(entry: Dict,
-                                project_summaries: str) -> Tuple[GeneratedTokenomics, ProjectContext]:
-    description_lines = []
-    if entry.get("notes"):
-        description_lines.append(f"Notes: {entry['notes']}")
-    if entry.get("allocation"):
-        try:
-            alloc_str = ", ".join(f"{k}: {v}%" for k, v in entry["allocation"].items())
-            description_lines.append(f"Known historical allocation: {alloc_str}")
-        except Exception:
-            pass
-    description = "\n".join(description_lines) or "Historical project without detailed notes."
-
-    user_input = {
-        "input_type": "generic",
-        "project_name": entry.get("project", "Historical Project"),
-        "project_description": description,
-    }
-    prompt = create_generic_prompt(user_input, project_summaries)
-    llm_result = ask_openai_enhanced(prompt, input_type="generic")
-    return generate_tokenomics_proposal(user_input, llm_result)

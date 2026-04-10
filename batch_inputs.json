@@ -1,0 +1,3986 @@
+[
+  {
+    "project_name": "FluidLend Protocol",
+    "input_type": "structured",
+    "positioning": "Democratized lending for retail borrowers and institutional capital providers",
+    "stakeholders": [
+      "Liquidity Providers",
+      "Borrowers",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Floating supply capped at 200M; 50% to LPs, 20% governance, 20% team, 10% treasury",
+    "legal_design": "Decentralized governance with legal entity for regulatory liaison; US-focused compliance",
+    "team": {
+      "description": "Former financial engineers from lending platforms; 15+ person core team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Aave",
+      "Compound",
+      "Curve"
+    ],
+    "token_symbol": "FLID",
+    "token_purpose": [
+      "Decentralized lending protocol enabling peer-to-peer loans with algorithmic interest rate discovery. Provides liquidity providers with sustainable yield through collateralized lending."
+    ],
+    "core_principles": [
+      "Decentralized Risk Management",
+      "Transparent Interest Mechanisms",
+      "Community Governance"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Accrual",
+      "Collateral",
+      "Incentive Distribution"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Solidity on Ethereum with L2 scaling; multi-signature treasury controls",
+    "gov_structures": "Tiered voting: token-weighted DAO with quorum requirements; core team interim guidance",
+    "category": "DeFi"
+  },
+  {
+    "project_name": "SynthSwap DEX",
+    "input_type": "structured",
+    "positioning": "On-chain synthetic asset exchange for sophisticated traders",
+    "stakeholders": [
+      "Market Makers",
+      "Traders",
+      "Protocol Treasury",
+      "Governance Council"
+    ],
+    "economic_design": "Fixed supply of 100M; 45% liquidity mining, 25% team, 20% treasury, 10% advisors",
+    "legal_design": "Bahamas-registered foundation; derivatives focused regulatory strategy",
+    "team": {
+      "description": "Quantitative finance PhDs and former exchange architects; 12-person team"
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "progressive",
+    "similar_projects": [
+      "Synthetix",
+      "dYdX",
+      "Uniswap"
+    ],
+    "token_symbol": "SYNC",
+    "token_purpose": [
+      "Automated market maker specializing in synthetic asset trading with minimal slippage. Enables traders to speculate on real-world assets without underlying collateral fragmentation."
+    ],
+    "core_principles": [
+      "Capital Efficiency",
+      "Minimal Slippage",
+      "Composable Derivatives"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Sharing",
+      "Liquidity Incentive",
+      "Protocol Revenue"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Custom Rust-based virtual machine; advanced math libraries for pricing",
+    "gov_structures": "Snapshot-based voting with multisig treasury; gradual decentralization",
+    "category": "DeFi"
+  },
+  {
+    "project_name": "YieldFarm Collective",
+    "input_type": "structured",
+    "positioning": "Yield aggregator for passive income seekers in DeFi",
+    "stakeholders": [
+      "Liquidity Providers",
+      "Strategy Designers",
+      "Treasury",
+      "Governance Members"
+    ],
+    "economic_design": "Capped at 500M; 35% to protocol treasury, 30% users, 20% core team, 15% strategic partners",
+    "legal_design": "Swiss foundation structure; neutral regulatory positioning",
+    "team": {
+      "description": "DeFi protocol veterans; 20-person engineering and operations team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Yearn",
+      "Harvest Finance",
+      "Convex"
+    ],
+    "token_symbol": "YIFI",
+    "token_purpose": [
+      "Automated yield optimization platform that routes capital to highest-risk-adjusted returns across DeFi protocols. Simplifies yield farming for retail users."
+    ],
+    "core_principles": [
+      "Capital Optimization",
+      "Risk Management",
+      "Transparency"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Reduction",
+      "Strategy Voting",
+      "Reward Distribution"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Multi-chain compatible (Ethereum, Polygon, Avalanche); modular strategy system",
+    "gov_structures": "Direct democracy with time-locks; strategy whitelisting committee",
+    "category": "DeFi"
+  },
+  {
+    "project_name": "StableAsset USD",
+    "input_type": "structured",
+    "positioning": "Most transparent stablecoin with real-time collateral audits",
+    "stakeholders": [
+      "Collateral Providers",
+      "Minters",
+      "Treasury",
+      "Arbitrage Bots"
+    ],
+    "economic_design": "Dynamic supply pegged to USD; governance token capped at 50M",
+    "legal_design": "Multi-jurisdictional compliance; Reserve audits by Big 4 accounting firm",
+    "team": {
+      "description": "Fintech and banking professionals; 18-person compliance and engineering team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "MakerDAO",
+      "Frax",
+      "TerraUSD"
+    ],
+    "token_symbol": "SUSD",
+    "token_purpose": [
+      "Collateralized stablecoin with dual-collateral backing and redemption guarantees. Maintains peg through automated arbitrage incentives and treasury management."
+    ],
+    "core_principles": [
+      "Capital Efficiency",
+      "Redemption Guarantee",
+      "Decentralized Collateral"
+    ],
+    "token_functions": [
+      "Medium of Exchange",
+      "Governance",
+      "Fee Accrual",
+      "Stability Mechanism"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Custom oracle system with consensus feeds; instant settlement",
+    "gov_structures": "Collateral committee votes on backing; DAO governance of fees",
+    "category": "DeFi"
+  },
+  {
+    "project_name": "InsureChain Protocol",
+    "input_type": "structured",
+    "positioning": "Community-governed insurance alternative to centralized underwriters",
+    "stakeholders": [
+      "Liquidity Providers",
+      "Claims Adjudicators",
+      "Insured Users",
+      "Arbiters"
+    ],
+    "economic_design": "Fixed supply 150M; 40% claims pool, 25% LPs, 20% team, 15% treasury",
+    "legal_design": "Cooperative model structure; decentralized underwriting negates traditional licensing",
+    "team": {
+      "description": "Insurance industry experts and solidity developers; 14-person core team"
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "progressive",
+    "similar_projects": [
+      "Nexus Mutual",
+      "Cover Protocol",
+      "Bancor"
+    ],
+    "token_symbol": "INSU",
+    "token_purpose": [
+      "Decentralized insurance marketplace for smart contract risks and DeFi protocol failures. Uses prediction markets and claims voting for fair payouts."
+    ],
+    "core_principles": [
+      "Fair Claims Adjudication",
+      "Transparent Pricing",
+      "Risk Pooling"
+    ],
+    "token_functions": [
+      "Governance",
+      "Claims Voting",
+      "Premium Distribution",
+      "Treasury Management"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Ethereum-based with Polygon scaling; kleros integration for dispute resolution",
+    "gov_structures": "Liquid democracy for claims; token-weighted DAO for fee structures",
+    "category": "DeFi"
+  },
+  {
+    "project_name": "CurveRoute Exchange",
+    "input_type": "structured",
+    "positioning": "Most capital-efficient stablecoin swap protocol on the market",
+    "stakeholders": [
+      "Market Makers",
+      "Governance Participants",
+      "Treasury",
+      "Boost Holders"
+    ],
+    "economic_design": "Infinite supply with 3% annual inflation; voting escrow model for governance power",
+    "legal_design": "Cayman Islands registered; no regulatory claims on specific assets",
+    "team": {
+      "description": "Mathematical optimization specialists; 16-person team"
+    },
+    "inflation_preference": "moderate_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Curve Finance",
+      "Balancer",
+      "Uniswap V3"
+    ],
+    "token_symbol": "CRVE",
+    "token_purpose": [
+      "Specialized AMM for stablecoin swaps and correlated asset pairs with ultra-low fees. Optimized for cryptocurrency pairs with high volume and low volatility."
+    ],
+    "core_principles": [
+      "Fee Efficiency",
+      "LP Concentration",
+      "Stablecoin Optimization"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Sharing",
+      "Gauge Voting",
+      "Liquidity Incentive"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Optimized curve mathematics; gauge-weighted distribution system",
+    "gov_structures": "Voting escrow with vetoken mechanics; incentive distribution through gauges",
+    "category": "DeFi"
+  },
+  {
+    "project_name": "PlayAxis Gaming",
+    "input_type": "structured",
+    "positioning": "Competitive esports platform bridging traditional gaming and blockchain rewards",
+    "stakeholders": [
+      "Players",
+      "Tournament Organizers",
+      "Team Owners",
+      "Governance DAO"
+    ],
+    "economic_design": "Capped at 1B; 40% play-to-earn rewards, 25% team, 20% treasury, 15% investors",
+    "legal_design": "Decentralized prize distribution model; tournament operator licensing framework",
+    "team": {
+      "description": "Professional esports organizers and game developers; 45-person studio"
+    },
+    "inflation_preference": "moderate_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Axie Infinity",
+      "The Sandbox",
+      "Gala Games"
+    ],
+    "token_symbol": "AXIS",
+    "token_purpose": [
+      "Play-to-earn gaming platform featuring skill-based esports tournaments with real-world prize pools. Players earn tokens through competitive performance and asset ownership."
+    ],
+    "core_principles": [
+      "Fair Skill Assessment",
+      "Asset Ownership Rights",
+      "Sustainable Rewards"
+    ],
+    "token_functions": [
+      "Reward Distribution",
+      "Governance",
+      "Access Control",
+      "In-game Currency"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Solidity smart contracts with anti-cheat oracle system; cross-chain asset bridging",
+    "gov_structures": "Player council elected quarterly; team controls game balance with DAO input",
+    "category": "Gaming and Metaverse"
+  },
+  {
+    "project_name": "MetaEstate Virtual Realty",
+    "input_type": "structured",
+    "positioning": "Decentralized real estate market for virtual worlds and metaverses",
+    "stakeholders": [
+      "Land Developers",
+      "Property Investors",
+      "Renters",
+      "Governance Token Holders"
+    ],
+    "economic_design": "Fixed 500M supply; 35% development grants, 25% team, 20% treasury, 20% investors",
+    "legal_design": "Property rights framework based on smart contract ownership; jurisdiction-agnostic",
+    "team": {
+      "description": "Game designers and real estate professionals; 35-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Decentraland",
+      "The Sandbox",
+      "Enjin"
+    ],
+    "token_symbol": "MERC",
+    "token_purpose": [
+      "Metaverse real estate platform with fractional land ownership and rental income mechanisms. Enables developers to monetize virtual properties through tenant fees."
+    ],
+    "core_principles": [
+      "Fractional Ownership",
+      "Income Generation",
+      "Creative Freedom"
+    ],
+    "token_functions": [
+      "Governance",
+      "Treasury",
+      "Fee Accrual",
+      "Incentive Distribution"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Multi-chain metaverse integration; NFT property records with metadata standards",
+    "gov_structures": "District governance councils; community voting on zoning policies",
+    "category": "Gaming and Metaverse"
+  },
+  {
+    "project_name": "NFTBattle Arena",
+    "input_type": "structured",
+    "positioning": "Next-generation NFT gaming with deep economic systems and competitive esports",
+    "stakeholders": [
+      "Players",
+      "NFT Collectors",
+      "Breeders",
+      "Tournament Organizers"
+    ],
+    "economic_design": "1.5B tokens; 50% play-to-earn, 20% team, 15% treasury, 15% investors",
+    "legal_design": "Singapore-based with gaming license; NFT ownership rights framework",
+    "team": {
+      "description": "Mobile game veterans and NFT specialists; 40-person development team"
+    },
+    "inflation_preference": "moderate_inflation",
+    "legal_risk_tolerance": "progressive",
+    "similar_projects": [
+      "Axie Infinity",
+      "Sorare",
+      "Gods Unchained"
+    ],
+    "token_symbol": "NFBA",
+    "token_purpose": [
+      "NFT gaming platform where players battle collectible characters for rewards and breeding rights. Features deep character economy with rarity tiers and skill progression."
+    ],
+    "core_principles": [
+      "Character Ownership",
+      "Competitive Balance",
+      "Breeding Mechanics"
+    ],
+    "token_functions": [
+      "Reward Distribution",
+      "Governance",
+      "Breeding Control",
+      "Tournament Fees"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Optimized for high-frequency battles; custom combat simulation engine",
+    "gov_structures": "Balance committee controls character stats; community votes on new mechanics",
+    "category": "Gaming and Metaverse"
+  },
+  {
+    "project_name": "EsportsLeague Token",
+    "input_type": "structured",
+    "positioning": "Community-owned esports league leveraging blockchain for transparent governance",
+    "stakeholders": [
+      "Fans",
+      "Professional Teams",
+      "Players",
+      "Broadcasters"
+    ],
+    "economic_design": "Fixed 200M; 30% fan rewards, 25% teams, 25% league operations, 20% investors",
+    "legal_design": "Sports league cooperative structure; franchise registration requirements",
+    "team": {
+      "description": "Esports organization executives and blockchain engineers; 25-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Eternal",
+      "Misfits Gaming",
+      "100 Thieves"
+    ],
+    "token_symbol": "ESGM",
+    "token_purpose": [
+      "Esports league governance token enabling fans to vote on league rules, team salaries, and tournament schedules. Creates fan-owned esports ecosystem with transparent revenue sharing."
+    ],
+    "core_principles": [
+      "Fan Governance",
+      "Revenue Transparency",
+      "Competitive Fairness"
+    ],
+    "token_functions": [
+      "Voting Rights",
+      "Revenue Sharing",
+      "Governance",
+      "Reward Distribution"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Timelock governance for rule changes; automated revenue distribution contracts",
+    "gov_structures": "One-person-one-vote with token weighting; seasonal governance cycles",
+    "category": "Gaming and Metaverse"
+  },
+  {
+    "project_name": "Layer2Surge Scaling",
+    "input_type": "structured",
+    "positioning": "Enterprise-grade L2 scaling for institutional DeFi applications",
+    "stakeholders": [
+      "Validators",
+      "Token Holders",
+      "Application Developers",
+      "Treasury"
+    ],
+    "economic_design": "Capped 100M; 40% staking rewards, 30% team, 20% treasury, 10% foundation",
+    "legal_design": "International foundation structure; no regulated activity claims",
+    "team": {
+      "description": "Ethereum core developers and cryptography researchers; 30-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Arbitrum",
+      "Optimism",
+      "StarkNet"
+    ],
+    "token_symbol": "L2SG",
+    "token_purpose": [
+      "Optimistic rollup L2 solution with novel light client verification. Achieves 100x throughput improvement while maintaining full Ethereum security guarantees."
+    ],
+    "core_principles": [
+      "Security Equivalence",
+      "Throughput Maximization",
+      "Validator Participation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Staking Rewards",
+      "Fee Distribution",
+      "Validator Incentives"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Rust-based prover; WebAssembly for light client verification",
+    "gov_structures": "Validator council with governance role; token holder treasury control",
+    "category": "Infrastructure"
+  },
+  {
+    "project_name": "OracleSync Network",
+    "input_type": "structured",
+    "positioning": "Most reliable oracle infrastructure for critical DeFi price feeds",
+    "stakeholders": [
+      "Node Operators",
+      "Data Providers",
+      "Token Holders",
+      "Protocol Treasury"
+    ],
+    "economic_design": "Fixed 50M; 45% operator rewards, 25% team, 20% treasury, 10% initial operators",
+    "legal_design": "Switzerland-based foundation; no liability for data accuracy",
+    "team": {
+      "description": "Distributed systems engineers and cryptographers; 20-person team"
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Chainlink",
+      "Band Protocol",
+      "Pyth Network"
+    ],
+    "token_symbol": "ORCS",
+    "token_purpose": [
+      "Decentralized oracle network with cryptographic commitments and crypto-economic slashing. Provides tamper-proof price feeds and event attestations to DeFi protocols."
+    ],
+    "core_principles": [
+      "Data Integrity",
+      "Economic Security",
+      "Transparency"
+    ],
+    "token_functions": [
+      "Staking Incentives",
+      "Governance",
+      "Fee Distribution",
+      "Slashing"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Byzantine fault-tolerant consensus; threshold cryptography for security",
+    "gov_structures": "Operator council with veto on data feeds; governance token voting on parameters",
+    "category": "Infrastructure"
+  },
+  {
+    "project_name": "StorageCloud Protocol",
+    "input_type": "structured",
+    "positioning": "Enterprise cloud storage at 1/10th the cost of AWS with blockchain guarantees",
+    "stakeholders": [
+      "Storage Providers",
+      "Data Consumers",
+      "Validators",
+      "Treasury"
+    ],
+    "economic_design": "Capped 200M; 50% provider rewards, 20% team, 15% treasury, 15% backers",
+    "legal_design": "Data sovereignty framework; no data hosting liability",
+    "team": {
+      "description": "Distributed systems researchers and storage specialists; 28-person team"
+    },
+    "inflation_preference": "moderate_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Filecoin",
+      "Arweave",
+      "Storj"
+    ],
+    "token_symbol": "STOR",
+    "token_purpose": [
+      "Decentralized cloud storage with erasure coding and sharding. Provides cheaper alternative to centralized storage with cryptographic guarantees of data persistence."
+    ],
+    "core_principles": [
+      "Data Persistence",
+      "Cost Efficiency",
+      "Provider Competition"
+    ],
+    "token_functions": [
+      "Staking Rewards",
+      "Governance",
+      "Collateral",
+      "Incentive Distribution"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Reed-Solomon erasure coding; distributed proof of replication",
+    "gov_structures": "Provider committee for quality standards; token voting on incentive changes",
+    "category": "Infrastructure"
+  },
+  {
+    "project_name": "ComputeChain Grid",
+    "input_type": "structured",
+    "positioning": "Decentralized compute provider for training large language models cost-effectively",
+    "stakeholders": [
+      "Compute Providers",
+      "Model Trainers",
+      "Token Holders",
+      "Validators"
+    ],
+    "economic_design": "Dynamic supply (inflation-based); 55% provider rewards, 20% team, 15% treasury, 10% foundation",
+    "legal_design": "International structure; compute provider independent contractor framework",
+    "team": {
+      "description": "ML engineers and distributed systems architects; 35-person team"
+    },
+    "inflation_preference": "moderate_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Render Network",
+      "iExec",
+      "Akash"
+    ],
+    "token_symbol": "GRID",
+    "token_purpose": [
+      "Peer-to-peer compute marketplace for AI model training and inference. Aggregates idle GPU capacity from distributed nodes for machine learning workloads."
+    ],
+    "core_principles": [
+      "Resource Utilization",
+      "Fair Compensation",
+      "AI Democratization"
+    ],
+    "token_functions": [
+      "Staking Rewards",
+      "Governance",
+      "Fee Distribution",
+      "Collateral"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Containerized workload distribution; hardware attestation with trusted execution",
+    "gov_structures": "Workload allocation committee; governance voting on fee structures",
+    "category": "Infrastructure"
+  },
+  {
+    "project_name": "InterChain Bridge",
+    "input_type": "structured",
+    "positioning": "Universal cross-chain bridge infrastructure for multi-chain DeFi",
+    "stakeholders": [
+      "Bridge Validators",
+      "Liquidity Providers",
+      "Token Holders",
+      "Ecosystem Participants"
+    ],
+    "economic_design": "Capped 75M; 40% validator rewards, 30% team, 20% treasury, 10% advisors",
+    "legal_design": "Multi-jurisdictional foundation; regulatory-agnostic bridge operation",
+    "team": {
+      "description": "Blockchain protocol engineers; 25-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Cosmos",
+      "Polkadot",
+      "Thorchain"
+    ],
+    "token_symbol": "BRDG",
+    "token_purpose": [
+      "Cross-chain interoperability protocol with light client verification across 20+ blockchains. Enables atomic swaps and liquidity provision across ecosystems."
+    ],
+    "core_principles": [
+      "Atomic Swaps",
+      "Minimal Trust",
+      "Fast Settlement"
+    ],
+    "token_functions": [
+      "Governance",
+      "Staking Rewards",
+      "Fee Distribution",
+      "Validator Incentives"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Light client verification; Byzantine consensus for validator security",
+    "gov_structures": "Validator council with operational control; token voting on supported chains",
+    "category": "Infrastructure"
+  },
+  {
+    "project_name": "IdentityChain Trust",
+    "input_type": "structured",
+    "positioning": "Privacy-first identity layer for decentralized internet applications",
+    "stakeholders": [
+      "Users",
+      "Credential Issuers",
+      "Verifiers",
+      "Protocol Treasury"
+    ],
+    "economic_design": "Fixed 150M; 35% issuer incentives, 30% team, 20% treasury, 15% investors",
+    "legal_design": "Privacy-focused; GDPR-aligned credential storage standards",
+    "team": {
+      "description": "Privacy researchers and credential system designers; 22-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "uPort",
+      "Sovrin",
+      "Veramo"
+    ],
+    "token_symbol": "IDNT",
+    "token_purpose": [
+      "Self-sovereign identity platform with privacy-preserving credentials and selective disclosure. Enables users to prove attributes without exposing personal data."
+    ],
+    "core_principles": [
+      "User Privacy",
+      "Credential Portability",
+      "Zero-Knowledge Proofs"
+    ],
+    "token_functions": [
+      "Governance",
+      "Credential Issuance Incentives",
+      "Fee Accrual",
+      "DAO Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Decentralized identifier registries; zero-knowledge proof verification",
+    "gov_structures": "Credential standard council; token holder governance of fee structures",
+    "category": "Social and Content"
+  },
+  {
+    "project_name": "CreatorHub Platform",
+    "input_type": "structured",
+    "positioning": "Community-owned creator economy platform with transparent revenue distribution",
+    "stakeholders": [
+      "Creators",
+      "Patrons",
+      "Community Curators",
+      "Treasury"
+    ],
+    "economic_design": "Capped 500M; 40% creator rewards, 25% team, 20% treasury, 15% early backers",
+    "legal_design": "Content creator cooperative framework; royalty payment transparency",
+    "team": {
+      "description": "Content platform veterans and blockchain engineers; 32-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Mirror",
+      "SuperRare",
+      "Royal"
+    ],
+    "token_symbol": "CRTR",
+    "token_purpose": [
+      "Creator monetization platform with direct fan support and revenue sharing. Enables artists, writers, and musicians to earn directly from audiences without platform intermediaries."
+    ],
+    "core_principles": [
+      "Creator Empowerment",
+      "Direct Patronage",
+      "Fair Revenue Splits"
+    ],
+    "token_functions": [
+      "Governance",
+      "Revenue Distribution",
+      "Tipping Mechanisms",
+      "Treasury Management"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "IPFS for content hosting; automated revenue splitting smart contracts",
+    "gov_structures": "Creator council for content policies; token voting on feature priorities",
+    "category": "Social and Content"
+  },
+  {
+    "project_name": "SocialChain Network",
+    "input_type": "structured",
+    "positioning": "Facebook alternative with genuine user ownership and transparent algorithms",
+    "stakeholders": [
+      "Users",
+      "Content Creators",
+      "Moderators",
+      "Governors"
+    ],
+    "economic_design": "Capped 1B; 45% user rewards, 25% team, 20% treasury, 10% investors",
+    "legal_design": "Decentralized content moderation; no platform liability model",
+    "team": {
+      "description": "Social media engineers and protocol designers; 48-person team"
+    },
+    "inflation_preference": "moderate_inflation",
+    "legal_risk_tolerance": "progressive",
+    "similar_projects": [
+      "Mastodon",
+      "Bluesky",
+      "Nostr"
+    ],
+    "token_symbol": "SCHN",
+    "token_purpose": [
+      "Decentralized social media platform with user-owned content and protocol-level monetization. Replaces corporate algorithmic curation with community-driven content discovery."
+    ],
+    "core_principles": [
+      "User Ownership",
+      "Algorithmic Transparency",
+      "Decentralized Moderation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Reward Distribution",
+      "Moderation Incentives",
+      "Feature Voting"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Graph-based social data; client-side algorithm customization",
+    "gov_structures": "Moderation councils per community; protocol governance by token holders",
+    "category": "Social and Content"
+  },
+  {
+    "project_name": "MusicRights Token",
+    "input_type": "structured",
+    "positioning": "Democratized music rights investment for fans and portfolio investors",
+    "stakeholders": [
+      "Artists",
+      "Investors",
+      "Rights Holders",
+      "Token Governance"
+    ],
+    "economic_design": "Fixed 100M; 30% artist incentives, 35% team, 20% treasury, 15% seed investors",
+    "legal_design": "Music publishing rights contracts with legal escrow; artist protection clauses",
+    "team": {
+      "description": "Music industry professionals and blockchain engineers; 28-person team"
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Royal",
+      "Audius",
+      "Splice"
+    ],
+    "token_symbol": "MRGT",
+    "token_purpose": [
+      "Fractional ownership of music royalties and publishing rights. Enables fans to invest in artists and receive perpetual streaming revenue shares."
+    ],
+    "core_principles": [
+      "Artist Funding",
+      "Fan Investment",
+      "Perpetual Royalties"
+    ],
+    "token_functions": [
+      "Governance",
+      "Royalty Distribution",
+      "Treasury",
+      "Rights Verification"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Rights registry with ownership tracking; automated royalty payment distribution",
+    "gov_structures": "Artist union with governance rights; investor voting on new signings",
+    "category": "Gaming and Metaverse"
+  },
+  {
+    "project_name": "StreamFlow Rewards",
+    "input_type": "structured",
+    "positioning": "YouTube alternative with transparent algorithms and direct creator funding",
+    "stakeholders": [
+      "Content Creators",
+      "Viewers",
+      "Advertisers",
+      "Governance Token Holders"
+    ],
+    "economic_design": "Capped 750M; 50% creator rewards, 20% team, 15% treasury, 15% backers",
+    "legal_design": "Content licensing framework; advertiser agreement standards",
+    "team": {
+      "description": "Video platform engineers and content strategists; 38-person team"
+    },
+    "inflation_preference": "moderate_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Odysee",
+      "Theta Network",
+      "Livepeer"
+    ],
+    "token_symbol": "STRM",
+    "token_purpose": [
+      "Streaming platform rewards token for video creators and viewers. Enables ad-free viewing with creator earnings and transparent algorithmic ranking."
+    ],
+    "core_principles": [
+      "Creator Support",
+      "Viewer Privacy",
+      "Algorithmic Fairness"
+    ],
+    "token_functions": [
+      "Governance",
+      "Creator Rewards",
+      "Viewer Incentives",
+      "Treasury"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Decentralized video hosting with CDN; creator analytics dashboard",
+    "gov_structures": "Creator council on content moderation; token voting on platform fees",
+    "category": "Social and Content"
+  },
+  {
+    "project_name": "NFTMarketX Exchange",
+    "input_type": "structured",
+    "positioning": "Most creator-friendly NFT marketplace with enforced royalties and collection governance",
+    "stakeholders": [
+      "Artists",
+      "NFT Collectors",
+      "Collection Curators",
+      "Governance Participants"
+    ],
+    "economic_design": "Capped 200M; 40% creator incentives, 30% team, 20% treasury, 10% advisors",
+    "legal_design": "Creator rights protection; collection ownership recognition framework",
+    "team": {
+      "description": "NFT platform engineers and art curation specialists; 26-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "OpenSea",
+      "LooksRare",
+      "X2Y2"
+    ],
+    "token_symbol": "NMEX",
+    "token_purpose": [
+      "Decentralized NFT marketplace with multi-collection pools and collection-based incentives. Features fractional NFT sales and royalty standard enforcement."
+    ],
+    "core_principles": [
+      "Creator Royalties",
+      "Fractional Ownership",
+      "Fair Discovery"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Distribution",
+      "Royalty Management",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Multi-chain NFT bridging; collection-based AMM pools",
+    "gov_structures": "Creator committees per collection; token voting on marketplace policies",
+    "category": "Marketplace"
+  },
+  {
+    "project_name": "DataMarket Exchange",
+    "input_type": "structured",
+    "positioning": "Privacy-first alternative to traditional data brokers for consumer insights",
+    "stakeholders": [
+      "Data Sellers",
+      "Data Buyers",
+      "Privacy Auditors",
+      "Governors"
+    ],
+    "economic_design": "Fixed 150M; 45% seller rewards, 25% team, 20% treasury, 10% auditors",
+    "legal_design": "GDPR-compliant data handling; privacy certification requirements",
+    "team": {
+      "description": "Privacy researchers and database engineers; 24-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Ocean Protocol",
+      "Numerai",
+      "Wala"
+    ],
+    "token_symbol": "DMAX",
+    "token_purpose": [
+      "Privacy-preserving data marketplace where users monetize personal data safely. Sellers retain full control with differential privacy guarantees; buyers get aggregated insights."
+    ],
+    "core_principles": [
+      "User Privacy",
+      "Fair Valuation",
+      "Data Control"
+    ],
+    "token_functions": [
+      "Governance",
+      "Seller Incentives",
+      "Privacy Audits",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Differential privacy integration; federated learning for aggregation",
+    "gov_structures": "Privacy council with audit authority; token voting on data categories",
+    "category": "Marketplace"
+  },
+  {
+    "project_name": "FreelanceDAO Network",
+    "input_type": "structured",
+    "positioning": "Freelancer-owned alternative to Upwork with governance rights",
+    "stakeholders": [
+      "Freelancers",
+      "Clients",
+      "Arbitrators",
+      "Token Holders"
+    ],
+    "economic_design": "Fixed 300M; 40% freelancer incentives, 25% team, 20% treasury, 15% arbitrators",
+    "legal_design": "Dispute resolution through DAO arbitration; independent contractor framework",
+    "team": {
+      "description": "Platform engineers and labor economists; 22-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Braintrust",
+      "dwork",
+      "Opium"
+    ],
+    "token_symbol": "FDAO",
+    "token_purpose": [
+      "Decentralized freelance marketplace with escrow-free payments and reputation scoring. Eliminates platform fees while protecting both freelancers and clients."
+    ],
+    "core_principles": [
+      "Fee-Free Work",
+      "Reputation Transparency",
+      "Dispute Resolution"
+    ],
+    "token_functions": [
+      "Governance",
+      "Dispute Resolution Rewards",
+      "Treasury",
+      "Reputation Voting"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Smart contract escrow with milestone-based release; reputation on-chain",
+    "gov_structures": "Freelancer council for platform policies; arbitrator voting on disputes",
+    "category": "Marketplace"
+  },
+  {
+    "project_name": "RealEstate Token",
+    "input_type": "structured",
+    "positioning": "Real estate democratization platform for small investors",
+    "stakeholders": [
+      "Property Owners",
+      "Investors",
+      "Property Managers",
+      "Governance Token Holders"
+    ],
+    "economic_design": "Capped 100M; 35% property owner incentives, 30% team, 20% treasury, 15% seed investors",
+    "legal_design": "Securities law compliance in each jurisdiction; property deed recording",
+    "team": {
+      "description": "Real estate professionals and blockchain engineers; 30-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Propy",
+      "Harbor",
+      "Meridio"
+    ],
+    "token_symbol": "RETS",
+    "token_purpose": [
+      "Fractional real estate investment platform with rental income distribution. Enables $100 minimum investments in residential and commercial properties globally."
+    ],
+    "core_principles": [
+      "Fractional Ownership",
+      "Income Distribution",
+      "Global Access"
+    ],
+    "token_functions": [
+      "Governance",
+      "Rental Distribution",
+      "Property Management",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Real-world asset (RWA) tokenization; rental payment automation",
+    "gov_structures": "Property committee for acquisition approval; investor voting on management",
+    "category": "Marketplace"
+  },
+  {
+    "project_name": "SupplyChain Verify",
+    "input_type": "structured",
+    "positioning": "Enterprise supply chain solution for luxury goods and organic products",
+    "stakeholders": [
+      "Producers",
+      "Retailers",
+      "Verifiers",
+      "Consumers"
+    ],
+    "economic_design": "Fixed 250M; 40% verifier incentives, 28% team, 20% treasury, 12% early backers",
+    "legal_design": "Compliance with sustainability standards; verification provider certification",
+    "team": {
+      "description": "Supply chain experts and IoT engineers; 28-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "VeChain",
+      "Waltonchain",
+      "Everledger"
+    ],
+    "token_symbol": "SPLY",
+    "token_purpose": [
+      "Supply chain transparency platform with blockchain traceability and sustainability certifications. Enables consumers to verify product authenticity and ethical sourcing."
+    ],
+    "core_principles": [
+      "Transparency",
+      "Sustainability Verification",
+      "Consumer Trust"
+    ],
+    "token_functions": [
+      "Governance",
+      "Verification Rewards",
+      "Certification Incentives",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "IoT sensor integration for real-time tracking; immutable chain of custody",
+    "gov_structures": "Verifier council for standard setting; token voting on new product categories",
+    "category": "Marketplace"
+  },
+  {
+    "project_name": "IoTLink Protocol",
+    "input_type": "structured",
+    "positioning": "IoT infrastructure standard for connecting billions of devices",
+    "stakeholders": [
+      "Device Owners",
+      "Data Consumers",
+      "Network Validators",
+      "Token Holders"
+    ],
+    "economic_design": "Capped 500M; 50% device rewards, 22% team, 18% treasury, 10% validators",
+    "legal_design": "Device ownership rights framework; data usage licensing",
+    "team": {
+      "description": "IoT hardware engineers and embedded systems specialists; 32-person team"
+    },
+    "inflation_preference": "moderate_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "IOTA",
+      "Helium",
+      "Fetch.ai"
+    ],
+    "token_symbol": "IOTL",
+    "token_purpose": [
+      "Decentralized IoT data marketplace connecting sensors, devices, and data consumers. Enables smart city applications and industrial monitoring with trustless data feeds."
+    ],
+    "core_principles": [
+      "Device Autonomy",
+      "Data Monetization",
+      "Interoperability"
+    ],
+    "token_functions": [
+      "Governance",
+      "Device Incentives",
+      "Data Access Control",
+      "Treasury"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Lightweight protocols for edge devices; mesh network topology",
+    "gov_structures": "Device owner council for standard adoption; validator voting on parameters",
+    "category": "Infrastructure"
+  },
+  {
+    "project_name": "HealthChain Records",
+    "input_type": "structured",
+    "positioning": "Self-sovereign health records with opt-in research participation",
+    "stakeholders": [
+      "Patients",
+      "Healthcare Providers",
+      "Researchers",
+      "Privacy Auditors"
+    ],
+    "economic_design": "Fixed 200M; 40% patient incentives, 30% team, 20% treasury, 10% auditors",
+    "legal_design": "HIPAA compliance; patient consent frameworks for research use",
+    "team": {
+      "description": "Healthcare IT professionals and privacy researchers; 26-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Guardtime",
+      "Verifiable Credentials",
+      "MedRec"
+    ],
+    "token_symbol": "HLTH",
+    "token_purpose": [
+      "Patient-owned health records platform with healthcare provider access control. Enables individuals to sell anonymized health data for medical research with privacy guarantees."
+    ],
+    "core_principles": [
+      "Patient Control",
+      "Privacy Protection",
+      "Research Contribution"
+    ],
+    "token_functions": [
+      "Governance",
+      "Data Sharing Incentives",
+      "Privacy Audits",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Healthcare data standards (HL7); encryption with patient-controlled keys",
+    "gov_structures": "Patient advisory board on privacy policies; researcher voting on data access",
+    "category": "Utility"
+  },
+  {
+    "project_name": "LearnToken Education",
+    "input_type": "structured",
+    "positioning": "Decentralized education marketplace replacing traditional course platforms",
+    "stakeholders": [
+      "Students",
+      "Educators",
+      "Credential Verifiers",
+      "Governors"
+    ],
+    "economic_design": "Capped 400M; 45% student rewards, 25% team, 20% treasury, 10% early adopters",
+    "legal_design": "Accreditation through educational partnerships; credential standards compliance",
+    "team": {
+      "description": "EdTech professionals and blockchain engineers; 30-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Coursera Token",
+      "EARN",
+      "TUTIX"
+    ],
+    "token_symbol": "LRNT",
+    "token_purpose": [
+      "Educational platform with peer-to-peer learning incentives and credential verification. Enables students to earn for course completion and teachers to monetize expertise directly."
+    ],
+    "core_principles": [
+      "Accessible Learning",
+      "Verified Credentials",
+      "Educator Empowerment"
+    ],
+    "token_functions": [
+      "Governance",
+      "Student Rewards",
+      "Teacher Incentives",
+      "Treasury"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Learning management system with blockchain credentials; progress verification",
+    "gov_structures": "Educator council for curriculum standards; student voting on course offerings",
+    "category": "Utility"
+  },
+  {
+    "project_name": "EnergySwap Grid",
+    "input_type": "structured",
+    "positioning": "Microgrid enabler for local renewable energy trading",
+    "stakeholders": [
+      "Energy Producers",
+      "Energy Consumers",
+      "Grid Operators",
+      "Governors"
+    ],
+    "economic_design": "Dynamic supply with inflation; 50% producer rewards, 20% team, 20% grid ops, 10% treasury",
+    "legal_design": "Utility regulation compliance; renewable energy credit accounting",
+    "team": {
+      "description": "Energy engineers and distributed systems developers; 28-person team"
+    },
+    "inflation_preference": "moderate_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Power Ledger",
+      "Sun Exchange",
+      "Brooklyn Microgrid"
+    ],
+    "token_symbol": "EGSP",
+    "token_purpose": [
+      "Peer-to-peer energy trading platform for residential solar producers and EV owners. Enables direct energy sales between neighbors without utility intermediaries."
+    ],
+    "core_principles": [
+      "Decentralized Energy",
+      "Renewable Incentives",
+      "Grid Stability"
+    ],
+    "token_functions": [
+      "Governance",
+      "Grid Balancing Incentives",
+      "Producer Rewards",
+      "Treasury"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Smart meter integration; real-time energy trading with dispatch optimization",
+    "gov_structures": "Utility council on grid management; community voting on trading rules",
+    "category": "Marketplace"
+  },
+  {
+    "project_name": "CarbonOffset Credits",
+    "input_type": "structured",
+    "positioning": "Most transparent carbon credit market with instant verification",
+    "stakeholders": [
+      "Offset Projects",
+      "Corporates",
+      "Verifiers",
+      "Carbon Traders"
+    ],
+    "economic_design": "Fixed 100M; 35% verifier incentives, 30% team, 25% treasury, 10% seed backers",
+    "legal_design": "Compliance with Kyoto Protocol and Paris Agreement standards",
+    "team": {
+      "description": "Climate scientists and blockchain engineers; 24-person team"
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Toucan Protocol",
+      "Nori",
+      "Moss.Earth"
+    ],
+    "token_symbol": "COFF",
+    "token_purpose": [
+      "Decentralized carbon credit marketplace with real-time verification of offset projects. Enables direct connection between emission reducers and carbon offset buyers."
+    ],
+    "core_principles": [
+      "Verified Offsets",
+      "Additionality Verification",
+      "Direct Market Access"
+    ],
+    "token_functions": [
+      "Governance",
+      "Project Verification",
+      "Treasury",
+      "Market Operation"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Satellite verification for deforestation projects; IoT sensors for renewables",
+    "gov_structures": "Verifier council for offset validation standards; corporate voting on project approval",
+    "category": "Utility"
+  },
+  {
+    "project_name": "GovStack Protocol",
+    "input_type": "structured",
+    "positioning": "Enterprise governance suite for organizations transitioning to decentralized decision-making",
+    "stakeholders": [
+      "Organizations",
+      "Governors",
+      "Auditors",
+      "Community Members"
+    ],
+    "economic_design": "Capped 150M; 40% organizational incentives, 30% team, 20% treasury, 10% advisors",
+    "legal_design": "Governance framework compliance; audit trail for regulatory requirements",
+    "team": {
+      "description": "Governance specialists and blockchain engineers; 20-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Tally",
+      "Snapshot",
+      "Commonwealth"
+    ],
+    "token_symbol": "GVST",
+    "token_purpose": [
+      "Blockchain-based governance toolkit for DAOs, municipalities, and cooperatives. Provides voting mechanisms, budget management, and proposal systems with transparency."
+    ],
+    "core_principles": [
+      "Transparent Governance",
+      "Efficient Voting",
+      "Auditability"
+    ],
+    "token_functions": [
+      "Governance",
+      "Treasury Management",
+      "Voting Rights",
+      "Proposal Creation"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Modular voting systems; encrypted ballot storage with public verifiability",
+    "gov_structures": "Governance working group for standard setting; token voting on protocol upgrades",
+    "category": "Social and Content"
+  },
+  {
+    "project_name": "ArtPlatform Collective",
+    "input_type": "structured",
+    "positioning": "Gallery alternative for emerging and established artists with global audience reach",
+    "stakeholders": [
+      "Artists",
+      "Collectors",
+      "Curators",
+      "Governance Token Holders"
+    ],
+    "economic_design": "Capped 350M; 45% artist rewards, 25% team, 20% treasury, 10% early collectors",
+    "legal_design": "Art copyright and attribution standards; escrow for physical art shipping",
+    "team": {
+      "description": "Art platform specialists and blockchain engineers; 26-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Foundation",
+      "Art Blocks",
+      "SuperRare"
+    ],
+    "token_symbol": "ARTC",
+    "token_purpose": [
+      "Artist-owned marketplace for digital and physical art with direct patronage. Combines physical art shipping with digital edition certificates for hybrid artworks."
+    ],
+    "core_principles": [
+      "Artist Empowerment",
+      "Hybrid Art",
+      "Community Curation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Artist Rewards",
+      "Curation Incentives",
+      "Treasury"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "NFT minting with metadata for physical provenance; IPFS for art storage",
+    "gov_structures": "Artist collective for exhibition decisions; collector voting on gallery design",
+    "category": "Gaming and Metaverse"
+  },
+  {
+    "project_name": "MovieFinance Token",
+    "input_type": "structured",
+    "positioning": "Decentralized film studio for indie filmmakers and film fans",
+    "stakeholders": [
+      "Filmmakers",
+      "Investors",
+      "Distributors",
+      "Protocol Treasury"
+    ],
+    "economic_design": "Fixed 200M; 35% filmmaker incentives, 30% team, 25% treasury, 10% seed investors",
+    "legal_design": "Film rights licensing; revenue auditing by third parties",
+    "team": {
+      "description": "Film industry professionals and blockchain engineers; 24-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Decentralized Films",
+      "Mogul Productions",
+      "FilmChain"
+    ],
+    "token_symbol": "MFIN",
+    "token_purpose": [
+      "Film financing platform with fan investment and box office revenue sharing. Enables independent filmmakers to raise capital and investors to earn from film success."
+    ],
+    "core_principles": [
+      "Independent Filmmaking",
+      "Fan Investment",
+      "Revenue Transparency"
+    ],
+    "token_functions": [
+      "Governance",
+      "Filmmaker Incentives",
+      "Investor Rewards",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Smart contracts for revenue distribution; streaming API integration",
+    "gov_structures": "Producer council for film selection; investor voting on distribution channels",
+    "category": "Gaming and Metaverse"
+  },
+  {
+    "project_name": "PredictionMarket Hub",
+    "input_type": "structured",
+    "positioning": "Most liquid prediction market for event forecasting and speculative trading",
+    "stakeholders": [
+      "Market Creators",
+      "Traders",
+      "Liquidity Providers",
+      "Governors"
+    ],
+    "economic_design": "Capped 75M; 45% LP rewards, 25% team, 20% treasury, 10% market creators",
+    "legal_design": "Gambling regulations vary by jurisdiction; outcome verification through oracles",
+    "team": {
+      "description": "Prediction market experts and DeFi engineers; 20-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "progressive",
+    "similar_projects": [
+      "Polymarket",
+      "Gnosis Protocol",
+      "Augur"
+    ],
+    "token_symbol": "PRED",
+    "token_purpose": [
+      "Decentralized prediction market platform for events, sports, and crypto prices. Uses AMM mechanics for efficient price discovery with no central counterparty."
+    ],
+    "core_principles": [
+      "Accurate Price Discovery",
+      "Fair Odds",
+      "Permissionless Markets"
+    ],
+    "token_functions": [
+      "Governance",
+      "Market Creator Incentives",
+      "Liquidity Rewards",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "AMM for automated market making; event resolution through decentralized oracles",
+    "gov_structures": "Resolution committee for disputed outcomes; token voting on market types",
+    "category": "Social and Content"
+  },
+  {
+    "project_name": "LiquidityPool Protocol",
+    "input_type": "structured",
+    "positioning": "Most capital-efficient DEX for trading concentrated liquidity pairs",
+    "stakeholders": [
+      "Liquidity Providers",
+      "Traders",
+      "Token Holders",
+      "DAO Treasury"
+    ],
+    "economic_design": "Fixed 50M; 50% LP rewards, 25% team, 15% treasury, 10% advisors",
+    "legal_design": "Decentralized exchange regulatory framework; no specific asset claims",
+    "team": {
+      "description": "Quantitative traders and Solidity developers; 18-person team"
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Uniswap V3",
+      "Bancor V3",
+      "Balancer"
+    ],
+    "token_symbol": "LIQD",
+    "token_purpose": [
+      "Concentrated liquidity AMM optimizing capital efficiency for tightly correlated pairs. Enables LPs to earn higher yields through precise price range concentration."
+    ],
+    "core_principles": [
+      "Capital Efficiency",
+      "LP Yield Optimization",
+      "Composable Liquidity"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Sharing",
+      "LP Rewards",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Custom concentrated liquidity math; position management UI",
+    "gov_structures": "LP council for fee tier decisions; token voting on new token pairs",
+    "category": "DeFi"
+  },
+  {
+    "project_name": "TokenBridge Enterprise",
+    "input_type": "structured",
+    "positioning": "Enterprise bridge solution for risk-averse institutions moving assets across chains",
+    "stakeholders": [
+      "Enterprise Users",
+      "Validators",
+      "Auditors",
+      "Token Holders"
+    ],
+    "economic_design": "Fixed 100M; 40% validator rewards, 30% team, 20% treasury, 10% auditors",
+    "legal_design": "Enterprise service agreements; insurance coverage for bridge failures",
+    "team": {
+      "description": "Enterprise blockchain architects and security experts; 22-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "wBTC",
+      "Stargate",
+      "Across Protocol"
+    ],
+    "token_symbol": "TBEE",
+    "token_purpose": [
+      "Enterprise-focused bridge for corporations to move tokens across public blockchains safely. Provides insurance, auditing, and compliance reporting for institutional cross-chain transfers."
+    ],
+    "core_principles": [
+      "Institutional Safety",
+      "Compliance Reporting",
+      "Insurance Coverage"
+    ],
+    "token_functions": [
+      "Governance",
+      "Insurance Incentives",
+      "Audit Rewards",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Multi-signature security with audit logs; automated compliance reporting",
+    "gov_structures": "Audit council for security verification; token voting on new chain support",
+    "category": "Infrastructure"
+  },
+  {
+    "project_name": "DeFiCompose Suite",
+    "input_type": "structured",
+    "positioning": "Infrastructure layer for building next-generation DeFi applications",
+    "stakeholders": [
+      "Developers",
+      "Protocol Treasury",
+      "Token Holders",
+      "Application Builders"
+    ],
+    "economic_design": "Capped 150M; 45% developer grants, 25% team, 20% treasury, 10% investors",
+    "legal_design": "Open-source development governance; developer licensing framework",
+    "team": {
+      "description": "DeFi protocol engineers and developer advocates; 24-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Aave Protocol",
+      "Compound Protocol",
+      "MakerDAO"
+    ],
+    "token_symbol": "DFCS",
+    "token_purpose": [
+      "Composable DeFi primitives enabling developers to build complex financial strategies. Provides modular smart contract components for lending, swapping, and derivatives."
+    ],
+    "core_principles": [
+      "Composability",
+      "Developer Empowerment",
+      "Modular Finance"
+    ],
+    "token_functions": [
+      "Governance",
+      "Developer Incentives",
+      "Treasury",
+      "Feature Voting"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Modular smart contract architecture; developer documentation and SDKs",
+    "gov_structures": "Developer council for API standards; token voting on feature requests",
+    "category": "Utility"
+  },
+  {
+    "project_name": "RiskPool Insurance",
+    "input_type": "structured",
+    "positioning": "Smart contract insurance with transparent claims and fast payouts",
+    "stakeholders": [
+      "Liquidity Providers",
+      "Claims Voters",
+      "Insured Protocols",
+      "Treasury"
+    ],
+    "economic_design": "Fixed 180M; 40% claims pool, 28% team, 20% treasury, 12% validators",
+    "legal_design": "Insurance cooperative model; decentralized risk assessment framework",
+    "team": {
+      "description": "Insurance actuaries and blockchain engineers; 20-person team"
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "progressive",
+    "similar_projects": [
+      "Nexus Mutual",
+      "Cover Protocol",
+      "Evertas"
+    ],
+    "token_symbol": "RSKP",
+    "token_purpose": [
+      "Automated risk pooling for smart contract exploits and economic attacks. Uses prediction markets and claims voting to determine fair payouts efficiently."
+    ],
+    "core_principles": [
+      "Risk Pooling",
+      "Fair Adjudication",
+      "Economic Efficiency"
+    ],
+    "token_functions": [
+      "Governance",
+      "Claims Adjudication",
+      "Premium Distribution",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Kleros integration for dispute resolution; automated claims settlement",
+    "gov_structures": "Claims adjudicator committee; token voting on coverage terms",
+    "category": "Utility"
+  },
+  {
+    "project_name": "SwapRouter Advanced",
+    "input_type": "structured",
+    "positioning": "Most trader-friendly DEX aggregator with MEV protection",
+    "stakeholders": [
+      "Traders",
+      "Liquidity Providers",
+      "MEV Mitigators",
+      "Governors"
+    ],
+    "economic_design": "Capped 120M; 40% routing rewards, 30% team, 20% treasury, 10% early traders",
+    "legal_design": "Decentralized trading protocol; no market-making on behalf of traders",
+    "team": {
+      "description": "MEV researchers and DEX developers; 22-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "1inch",
+      "0x Protocol",
+      "CowSwap"
+    ],
+    "token_symbol": "SRTA",
+    "token_purpose": [
+      "Advanced DEX aggregator with MEV-resistant routing and batch settlement. Optimizes swap routes across multiple protocols while protecting against front-running."
+    ],
+    "core_principles": [
+      "MEV Resistance",
+      "Slippage Minimization",
+      "Trader Protection"
+    ],
+    "token_functions": [
+      "Governance",
+      "Routing Incentives",
+      "Treasury",
+      "Feature Voting"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Intent-based ordering; threshold encryption for MEV protection",
+    "gov_structures": "Routing committee for path optimization; token voting on supported protocols",
+    "category": "Marketplace"
+  },
+  {
+    "project_name": "StakingDerive Finance",
+    "input_type": "structured",
+    "positioning": "Most decentralized staking derivative with minimal hidden fees",
+    "stakeholders": [
+      "Stakers",
+      "Validators",
+      "Liquidity Providers",
+      "Governance Token Holders"
+    ],
+    "economic_design": "Capped 80M; 45% staker rewards, 25% team, 20% treasury, 10% validators",
+    "legal_design": "Validator operator independence; no performance guarantees",
+    "team": {
+      "description": "Proof-of-stake protocol experts; 18-person team"
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Lido",
+      "Rocket Pool",
+      "Stader Labs"
+    ],
+    "token_symbol": "STDV",
+    "token_purpose": [
+      "Staking derivatives platform enabling liquidity for proof-of-stake validators. Issues liquid staking tokens while maintaining validator rewards and governance participation."
+    ],
+    "core_principles": [
+      "Staking Liquidity",
+      "Validator Independence",
+      "Reward Transparency"
+    ],
+    "token_functions": [
+      "Governance",
+      "Staking Rewards",
+      "Fee Distribution",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Liquid staking token minting; validator set management",
+    "gov_structures": "Validator council for slashing policies; token voting on fee tiers",
+    "category": "DeFi"
+  },
+  {
+    "project_name": "YieldPerp Futures",
+    "input_type": "structured",
+    "positioning": "Derivatives for yield farmers seeking leverage and hedging",
+    "stakeholders": [
+      "Yield Farmers",
+      "Leverage Users",
+      "Liquidity Providers",
+      "Governors"
+    ],
+    "economic_design": "Capped 90M; 42% funding rewards, 28% team, 20% treasury, 10% liquidity pool",
+    "legal_design": "Derivative trading compliance; risk disclosure requirements",
+    "team": {
+      "description": "Quantitative traders and derivatives engineers; 20-person team"
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "progressive",
+    "similar_projects": [
+      "dYdX",
+      "GMX",
+      "Hyperliquid"
+    ],
+    "token_symbol": "YPER",
+    "token_purpose": [
+      "Perpetual futures protocol for leveraged yield farming positions. Enables farmers to hedge yield risk and access leverage without liquidation risk at stable rates."
+    ],
+    "core_principles": [
+      "Yield Hedging",
+      "Stable Leverage",
+      "Risk Customization"
+    ],
+    "token_functions": [
+      "Governance",
+      "Funding Rate Distribution",
+      "Fee Sharing",
+      "Treasury"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Custom perpetuals engine; dynamic funding rate algorithm",
+    "gov_structures": "Risk committee for leverage limits; token voting on product parameters",
+    "category": "DeFi"
+  },
+  {
+    "project_name": "VoteDAO Governance",
+    "input_type": "structured",
+    "positioning": "Governance infrastructure layer for DAOs.",
+    "stakeholders": [
+      "DAO members",
+      "Delegates",
+      "Protocol teams",
+      "Validators"
+    ],
+    "economic_design": "Fixed supply with staking rewards from protocol fees.",
+    "legal_design": "DAO-based with Swiss foundation.",
+    "team": {
+      "description": "Governance researchers and smart contract engineers."
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Compound",
+      "Uniswap",
+      "Gitcoin"
+    ],
+    "token_symbol": "VOTE",
+    "token_purpose": [
+      "Decentralized governance coordination platform for cross-protocol decision making."
+    ],
+    "core_principles": [
+      "Transparent voting",
+      "Delegation mechanisms",
+      "Sybil resistance"
+    ],
+    "token_functions": [
+      "Voting",
+      "Delegation",
+      "Proposal creation",
+      "Staking"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Cross-chain governance with ZK-proof voting.",
+    "gov_structures": "Quadratic voting with delegation.",
+    "category": "Social and Content"
+  },
+  {
+    "project_name": "AgriChain Supply",
+    "input_type": "structured",
+    "positioning": "Blockchain for agricultural supply chain.",
+    "stakeholders": [
+      "Farmers",
+      "Distributors",
+      "Retailers",
+      "Consumers",
+      "Validators"
+    ],
+    "economic_design": "Capped supply with transaction fee burns.",
+    "legal_design": "Compliance with food safety regulations across jurisdictions.",
+    "team": {
+      "description": "Supply chain experts and blockchain developers."
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "VeChain",
+      "OriginTrail"
+    ],
+    "token_symbol": "AGRI",
+    "token_purpose": [
+      "Agricultural supply chain verification and fair trade tokenization."
+    ],
+    "core_principles": [
+      "Farm-to-table transparency",
+      "Fair producer payments",
+      "Sustainability tracking"
+    ],
+    "token_functions": [
+      "Traceability",
+      "Payment settlement",
+      "Certification",
+      "Staking"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Polygon-based with IoT sensor integration.",
+    "gov_structures": "Stakeholder council with weighted voting.",
+    "category": "Marketplace"
+  },
+  {
+    "project_name": "PrivacyVault Network",
+    "input_type": "structured",
+    "positioning": "Privacy layer for enterprise blockchain applications.",
+    "stakeholders": [
+      "Compute providers",
+      "Data owners",
+      "Developers",
+      "Enterprise clients"
+    ],
+    "economic_design": "Dynamic supply with usage-based emissions and fee burns.",
+    "legal_design": "GDPR-compliant with privacy-first architecture.",
+    "team": {
+      "description": "Cryptography researchers and distributed systems engineers."
+    },
+    "inflation_preference": "moderate_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Secret Network",
+      "Oasis Network",
+      "Phala Network"
+    ],
+    "token_symbol": "PRIV",
+    "token_purpose": [
+      "Privacy-preserving computation network for secure data processing."
+    ],
+    "core_principles": [
+      "Zero-knowledge privacy",
+      "Data sovereignty",
+      "Minimal trust assumptions"
+    ],
+    "token_functions": [
+      "Computation fees",
+      "Node staking",
+      "Governance",
+      "Data access control"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "FHE and ZK-SNARK based compute network.",
+    "gov_structures": "Technical council with validator governance.",
+    "category": "Social and Content"
+  },
+  {
+    "project_name": "TutorChain Education",
+    "input_type": "structured",
+    "positioning": "Web3 education marketplace with verifiable credentials.",
+    "stakeholders": [
+      "Students",
+      "Tutors",
+      "Institutions",
+      "Credential verifiers"
+    ],
+    "economic_design": "Fixed supply with platform fee redistribution.",
+    "legal_design": "Education sector compliance with data protection.",
+    "team": {
+      "description": "EdTech entrepreneurs and blockchain developers."
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Galxe",
+      "Gitcoin"
+    ],
+    "token_symbol": "TUTR",
+    "token_purpose": [
+      "Peer-to-peer decentralized tutoring and credential verification platform."
+    ],
+    "core_principles": [
+      "Accessible education",
+      "Skill verification",
+      "Fair compensation for tutors"
+    ],
+    "token_functions": [
+      "Payment for tutoring",
+      "Credential minting",
+      "Reputation staking",
+      "Governance"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Ethereum L2 with credential NFTs.",
+    "gov_structures": "Community voting with educator council.",
+    "category": "Utility"
+  },
+  {
+    "project_name": "SolarGrid Energy",
+    "input_type": "structured",
+    "positioning": "DeFi meets clean energy infrastructure.",
+    "stakeholders": [
+      "Solar producers",
+      "Energy consumers",
+      "Grid operators",
+      "Environmental auditors"
+    ],
+    "economic_design": "Capped supply with energy-production-linked rewards.",
+    "legal_design": "Energy regulation compliance with utility token classification.",
+    "team": {
+      "description": "Renewable energy engineers and DeFi developers."
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Power Ledger",
+      "Energy Web Token"
+    ],
+    "token_symbol": "SOLG",
+    "token_purpose": [
+      "Decentralized solar energy trading and renewable energy certificate tokenization."
+    ],
+    "core_principles": [
+      "Clean energy access",
+      "Peer-to-peer energy trading",
+      "Carbon neutrality"
+    ],
+    "token_functions": [
+      "Energy trading",
+      "REC certification",
+      "Staking for grid validators",
+      "Governance"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Polygon with IoT smart meter integration.",
+    "gov_structures": "Producer-consumer balanced governance with environmental advisory board.",
+    "category": "Utility"
+  },
+  {
+    "project_name": "MedVault Health",
+    "input_type": "structured",
+    "positioning": "Health data infrastructure for Web3.",
+    "stakeholders": [
+      "Patients",
+      "Healthcare providers",
+      "Researchers",
+      "Insurance companies"
+    ],
+    "economic_design": "Fixed supply with data licensing fee distribution.",
+    "legal_design": "HIPAA-compliant with global health data regulations.",
+    "team": {
+      "description": "Health informatics specialists and privacy engineers."
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "conservative",
+    "similar_projects": [
+      "Medibloc",
+      "Solve.Care"
+    ],
+    "token_symbol": "MEDV",
+    "token_purpose": [
+      "Decentralized health records management with patient-controlled data sharing."
+    ],
+    "core_principles": [
+      "Patient data ownership",
+      "Interoperability",
+      "Privacy-first design"
+    ],
+    "token_functions": [
+      "Data access control",
+      "Research data licensing",
+      "Provider staking",
+      "Governance"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Zero-knowledge proofs on Ethereum L2 for health data.",
+    "gov_structures": "Patient-majority governance with medical advisory council.",
+    "category": "Utility"
+  },
+  {
+    "project_name": "FanToken Sports",
+    "input_type": "structured",
+    "positioning": "Fan token platform for sports leagues.",
+    "stakeholders": [
+      "Sports fans",
+      "Teams and clubs",
+      "Sponsors",
+      "Content creators"
+    ],
+    "economic_design": "Dynamic supply with event-driven minting and quarterly burns.",
+    "legal_design": "Sports licensing compliance with consumer protection.",
+    "team": {
+      "description": "Sports industry veterans and blockchain developers."
+    },
+    "inflation_preference": "moderate_inflation",
+    "legal_risk_tolerance": "progressive",
+    "similar_projects": [
+      "Chiliz",
+      "Socios"
+    ],
+    "token_symbol": "FANT",
+    "token_purpose": [
+      "Sports fan engagement platform with tokenized voting on team decisions."
+    ],
+    "core_principles": [
+      "Fan empowerment",
+      "Community engagement",
+      "Revenue sharing"
+    ],
+    "token_functions": [
+      "Fan voting",
+      "Merchandise discounts",
+      "VIP access",
+      "Staking rewards"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Chiliz-compatible sidechain with NFT ticketing.",
+    "gov_structures": "Fan voting weighted by token holding and engagement score.",
+    "category": "Gaming and Metaverse"
+  },
+  {
+    "project_name": "DerivaPro Finance",
+    "input_type": "structured",
+    "positioning": "Advanced DeFi derivatives with cross-margin.",
+    "stakeholders": [
+      "Traders",
+      "Liquidity providers",
+      "Insurance stakers",
+      "Protocol developers"
+    ],
+    "economic_design": "Fixed supply with trading fee buyback-and-burn.",
+    "legal_design": "Non-US focus with regulatory sandbox participation.",
+    "team": {
+      "description": "Quantitative finance experts and DeFi protocol engineers."
+    },
+    "inflation_preference": "deflationary",
+    "legal_risk_tolerance": "progressive",
+    "similar_projects": [
+      "dYdX",
+      "GMX",
+      "Synthetix"
+    ],
+    "token_symbol": "DRVP",
+    "token_purpose": [
+      "Decentralized derivatives protocol for synthetic asset trading."
+    ],
+    "core_principles": [
+      "Capital efficiency",
+      "Composability",
+      "Risk management"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee sharing",
+      "Collateral",
+      "Insurance fund staking"
+    ],
+    "total_supply_preference": "fixed",
+    "technical_design": "Arbitrum-native with custom AMM for derivatives.",
+    "gov_structures": "Token-weighted governance with risk committee veto.",
+    "category": "Utility"
+  },
+  {
+    "project_name": "MeshNet Wireless",
+    "input_type": "structured",
+    "positioning": "DePIN for wireless broadband access.",
+    "stakeholders": [
+      "Node operators",
+      "Internet users",
+      "Hardware manufacturers",
+      "Protocol developers"
+    ],
+    "economic_design": "Capped supply with bandwidth-proportional mining rewards.",
+    "legal_design": "Telecommunications compliance with ISP regulations.",
+    "team": {
+      "description": "Wireless engineers and decentralized infrastructure builders."
+    },
+    "inflation_preference": "low_inflation",
+    "legal_risk_tolerance": "balanced",
+    "similar_projects": [
+      "Helium",
+      "XNET",
+      "Althea"
+    ],
+    "token_symbol": "MESH",
+    "token_purpose": [
+      "Decentralized wireless mesh network with community-owned infrastructure."
+    ],
+    "core_principles": [
+      "Network neutrality",
+      "Community ownership",
+      "Universal connectivity"
+    ],
+    "token_functions": [
+      "Bandwidth provisioning",
+      "Node staking",
+      "Network governance",
+      "Service payments"
+    ],
+    "total_supply_preference": "capped",
+    "technical_design": "Custom mesh protocol with proof-of-coverage validation.",
+    "gov_structures": "Operator-weighted governance with technical standards committee.",
+    "category": "Infrastructure"
+  },
+  {
+    "project_name": "LendMate Protocol",
+    "input_type": "structured",
+    "token_symbol": "LEND",
+    "token_purpose": [
+      "Decentralized lending protocol enabling peer-to-peer loans with algorithmic interest rate mechanisms."
+    ],
+    "core_principles": [
+      "Liquidity",
+      "Decentralized Finance"
+    ],
+    "token_functions": [
+      "Liquidity Provision",
+      "Governance",
+      "Staking"
+    ],
+    "stakeholders": [
+      "Liquidity Providers",
+      "Borrowers",
+      "Users/Traders",
+      "Strategic Partners"
+    ],
+    "economic_design": "Capped supply with token distribution through mining/yield rewards.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on Ethereum blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "fixed",
+    "inflation_preference": "stable",
+    "similar_projects": [
+      "Aave",
+      "Compound"
+    ],
+    "category": "DeFi",
+    "positioning": "LendMate Protocol offers innovative defi solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "SwapFlow DEX",
+    "input_type": "structured",
+    "token_symbol": "SWAP",
+    "token_purpose": [
+      "Decentralized exchange protocol facilitating peer-to-peer asset trading with minimal slippage."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Capital Efficiency"
+    ],
+    "token_functions": [
+      "Fee Accrual",
+      "Governance",
+      "Staking"
+    ],
+    "stakeholders": [
+      "Users/Traders",
+      "Users",
+      "Governance Participants"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "deflationary",
+    "similar_projects": [
+      "Uniswap",
+      "Curve"
+    ],
+    "category": "DeFi",
+    "positioning": "SwapFlow DEX provides optimized defi solutions for cost-conscious users.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "Vault AI Finance",
+    "input_type": "structured",
+    "token_symbol": "VAF",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Decentralized Finance"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Accrual"
+    ],
+    "stakeholders": [
+      "Users/Traders",
+      "Governance Participants",
+      "Users"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Yearn Finance",
+      "Set Protocol"
+    ],
+    "category": "DeFi",
+    "positioning": "Vault AI Finance provides fully decentralized defi services.",
+    "team": {
+      "description": "Experienced team with background in decentralized finance and protocol development."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "CryptoCredit Hub",
+    "input_type": "structured",
+    "token_symbol": "CHXX",
+    "token_purpose": [
+      "Decentralized lending protocol enabling peer-to-peer loans with algorithmic interest rate mechanisms."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Decentralized Finance"
+    ],
+    "token_functions": [
+      "Governance",
+      "Staking",
+      "Fee Accrual"
+    ],
+    "stakeholders": [
+      "Borrowers",
+      "Governance Participants",
+      "Users"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Goldfinch",
+      "Maple Finance"
+    ],
+    "category": "DeFi",
+    "positioning": "CryptoCredit Hub provides fully decentralized defi services.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "FlashSwap Exchange",
+    "input_type": "structured",
+    "token_symbol": "FEXX",
+    "token_purpose": [
+      "Decentralized lending protocol enabling peer-to-peer loans with algorithmic interest rate mechanisms."
+    ],
+    "core_principles": [
+      "Decentralized Finance",
+      "Community Governance"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Accrual"
+    ],
+    "stakeholders": [
+      "Borrowers",
+      "Governance Participants",
+      "Users"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on Solana blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "fixed",
+    "inflation_preference": "deflationary",
+    "similar_projects": [
+      "dYdX",
+      "Aave"
+    ],
+    "category": "DeFi",
+    "positioning": "FlashSwap Exchange offers innovative defi solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "StakingMax Protocol",
+    "input_type": "structured",
+    "token_symbol": "STAK",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Decentralized Finance"
+    ],
+    "token_functions": [
+      "Governance",
+      "Staking",
+      "Fee Accrual",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "deflationary",
+    "similar_projects": [
+      "Lido",
+      "Rocket Pool"
+    ],
+    "category": "DeFi",
+    "positioning": "StakingMax Protocol offers innovative defi solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "BridgeChain Tech",
+    "input_type": "structured",
+    "token_symbol": "BTXX",
+    "token_purpose": [
+      "Decentralized exchange protocol facilitating peer-to-peer asset trading with minimal slippage.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Liquidity"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Accrual",
+      "Incentive Distribution",
+      "Liquidity Provision"
+    ],
+    "stakeholders": [
+      "Liquidity Providers",
+      "Users",
+      "Governance Participants"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on Ethereum blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Stargate",
+      "Connext"
+    ],
+    "category": "DeFi",
+    "positioning": "BridgeChain Tech offers innovative defi solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "RiskShield Insurance",
+    "input_type": "structured",
+    "token_symbol": "RIXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Decentralized Finance"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Accrual",
+      "Collateral"
+    ],
+    "stakeholders": [
+      "Users/Traders",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Smart contract implementation on EVM-compatible blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "deflationary",
+    "similar_projects": [
+      "Nexus Mutual",
+      "InsureDAO"
+    ],
+    "category": "DeFi",
+    "positioning": "RiskShield Insurance provides fully decentralized defi services.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "conservative"
+  },
+  {
+    "project_name": "TradingLeverage Pro",
+    "input_type": "structured",
+    "token_symbol": "TPXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Liquidity"
+    ],
+    "token_functions": [
+      "Governance",
+      "Staking",
+      "Fee Accrual",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Users/Traders",
+      "Governance Participants",
+      "Users"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on Arbitrum blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "fixed",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "dYdX",
+      "Perpetual Protocol"
+    ],
+    "category": "DeFi",
+    "positioning": "TradingLeverage Pro offers innovative defi solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "conservative"
+  },
+  {
+    "project_name": "CryptoQuest Adventure",
+    "input_type": "structured",
+    "token_symbol": "CAXX",
+    "token_purpose": [
+      "NFT protocol enabling creation, trading, and management of digital assets.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Incentive Distribution",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Axie Infinity",
+      "Decentraland"
+    ],
+    "category": "Gaming and Metaverse",
+    "positioning": "CryptoQuest Adventure offers innovative gaming and metaverse solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "MetaVerse City",
+    "input_type": "structured",
+    "token_symbol": "MCXX",
+    "token_purpose": [
+      "NFT protocol enabling creation, trading, and management of digital assets.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on Polygon blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "The Sandbox",
+      "Roblox"
+    ],
+    "category": "Gaming and Metaverse",
+    "positioning": "MetaVerse City offers innovative gaming and metaverse solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "SoulBound Battles",
+    "input_type": "structured",
+    "token_symbol": "SBXX",
+    "token_purpose": [
+      "NFT protocol enabling creation, trading, and management of digital assets.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Fee Accrual",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Core Team",
+      "Users",
+      "Governance Participants"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "deflationary",
+    "similar_projects": [
+      "Gods Unchained",
+      "Sorare"
+    ],
+    "category": "Gaming and Metaverse",
+    "positioning": "SoulBound Battles offers innovative gaming and metaverse solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "VRChat Token Platform",
+    "input_type": "structured",
+    "token_symbol": "VTXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Users/Traders",
+      "Governance Participants",
+      "Users"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "VRChat",
+      "Rec Room"
+    ],
+    "category": "Gaming and Metaverse",
+    "positioning": "VRChat Token Platform offers innovative gaming and metaverse solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "ChampionArena League",
+    "input_type": "structured",
+    "token_symbol": "CLXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Staking",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Core Team",
+      "Users"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on Solana blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "fixed",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "The Esports Kingdom",
+      "ESL"
+    ],
+    "category": "Gaming and Metaverse",
+    "positioning": "ChampionArena League offers innovative gaming and metaverse solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "HybridWorld Metaverse",
+    "input_type": "structured",
+    "token_symbol": "HMXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management."
+    ],
+    "core_principles": [
+      "Composability",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "moderate_inflation",
+    "similar_projects": [
+      "Decentraland",
+      "Roblox"
+    ],
+    "category": "Gaming and Metaverse",
+    "positioning": "HybridWorld Metaverse offers innovative gaming and metaverse solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "PixelCraft Studios",
+    "input_type": "structured",
+    "token_symbol": "PSXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management."
+    ],
+    "core_principles": [
+      "Community-Driven",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Roblox",
+      "Minecraft"
+    ],
+    "category": "Gaming and Metaverse",
+    "positioning": "PixelCraft Studios offers innovative gaming and metaverse solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "PvP Tournament System",
+    "input_type": "structured",
+    "token_symbol": "PTS",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Accrual",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Twitch",
+      "ESL"
+    ],
+    "category": "Gaming and Metaverse",
+    "positioning": "PvP Tournament System offers innovative gaming and metaverse solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "DualChain Interop",
+    "input_type": "structured",
+    "token_symbol": "DIXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Aligned Incentives"
+    ],
+    "token_functions": [
+      "Governance",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Deployed on Ethereum blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Wormhole",
+      "IBC"
+    ],
+    "category": "Infrastructure",
+    "positioning": "DualChain Interop provides fully decentralized infrastructure services.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "DataRegistry Protocol",
+    "input_type": "structured",
+    "token_symbol": "DATA",
+    "token_purpose": [
+      "DataRegistry Protocol provides decentralized Public data availability layer for blockchain. Pro..."
+    ],
+    "core_principles": [
+      "Innovation",
+      "Accessibility"
+    ],
+    "token_functions": [
+      "Staking",
+      "Fee Accrual"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "fixed",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Arweave",
+      "Filecoin"
+    ],
+    "category": "Infrastructure",
+    "positioning": "DataRegistry Protocol offers innovative infrastructure solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "ValidatorCloud Compute",
+    "input_type": "structured",
+    "token_symbol": "VCXX",
+    "token_purpose": [
+      "ValidatorCloud Compute provides decentralized Decentralized compute network where miners contrib...",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Aligned Incentives"
+    ],
+    "token_functions": [
+      "Staking",
+      "Fee Accrual",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Akash Network",
+      "Render"
+    ],
+    "category": "Infrastructure",
+    "positioning": "ValidatorCloud Compute provides fully decentralized infrastructure services.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "RollupSync Scale",
+    "input_type": "structured",
+    "token_symbol": "RSXX",
+    "token_purpose": [
+      "RollupSync Scale provides decentralized Unified settlement layer for rollups, letting diff..."
+    ],
+    "core_principles": [
+      "Liquidity",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Accrual",
+      "Liquidity Provision"
+    ],
+    "stakeholders": [
+      "Liquidity Providers",
+      "Users",
+      "Governance Participants"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Built on EVM-compatible blockchain with Layer 2 scaling solutions.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "fixed",
+    "inflation_preference": "deflationary",
+    "similar_projects": [
+      "StarkNet",
+      "Optimism"
+    ],
+    "category": "Infrastructure",
+    "positioning": "RollupSync Scale offers innovative infrastructure solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "OracleVault Network",
+    "input_type": "structured",
+    "token_symbol": "ONXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Staking",
+      "Fee Accrual"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Chainlink",
+      "Pyth Network"
+    ],
+    "category": "Infrastructure",
+    "positioning": "OracleVault Network provides fully decentralized infrastructure services.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "conservative"
+  },
+  {
+    "project_name": "VerifyChain Proofs",
+    "input_type": "structured",
+    "token_symbol": "VPXX",
+    "token_purpose": [
+      "VerifyChain Proofs provides decentralized Zero-knowledge proof generation as a service. User...",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Fee Accrual",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Users/Traders",
+      "Users",
+      "Governance Participants"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "StarkWare",
+      "Aztec"
+    ],
+    "category": "Infrastructure",
+    "positioning": "VerifyChain Proofs offers innovative infrastructure solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "SovereignNode Mesh",
+    "input_type": "structured",
+    "token_symbol": "SMXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Mysterium",
+      "Pocket Network"
+    ],
+    "category": "Infrastructure",
+    "positioning": "SovereignNode Mesh offers innovative infrastructure solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "DeFiShield Analytics",
+    "input_type": "structured",
+    "token_symbol": "DAXX",
+    "token_purpose": [
+      "DeFiShield Analytics provides decentralized Real-time security analytics for DeFi protocols. W..."
+    ],
+    "core_principles": [
+      "Security & Transparency",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Fee Accrual",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Developers",
+      "Users",
+      "Governance Participants"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Smart contract implementation on EVM-compatible blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "deflationary",
+    "similar_projects": [
+      "Certora",
+      "Immunefi"
+    ],
+    "category": "Infrastructure",
+    "positioning": "DeFiShield Analytics offers innovative infrastructure solutions.",
+    "team": {
+      "description": "Core engineering team with expertise in blockchain technology and smart contracts."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "StoryChain Creator",
+    "input_type": "structured",
+    "token_symbol": "SCXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Community-Driven",
+      "Aligned Incentives"
+    ],
+    "token_functions": [
+      "Governance",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Mirror",
+      "Substack"
+    ],
+    "category": "Social and Content",
+    "positioning": "StoryChain Creator offers innovative social and content solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "MusicDAO Collective",
+    "input_type": "structured",
+    "token_symbol": "MCXX",
+    "token_purpose": [
+      "MusicDAO Collective provides decentralized Independent musicians coordinate through a DAO, sh..."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Staking",
+      "Fee Accrual",
+      "Access Rights"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Royal",
+      "SoundXYZ"
+    ],
+    "category": "Social and Content",
+    "positioning": "MusicDAO Collective offers innovative social and content solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "PodcastShare Network",
+    "input_type": "structured",
+    "token_symbol": "PNXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "fixed",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Audius",
+      "Mirror"
+    ],
+    "category": "Social and Content",
+    "positioning": "PodcastShare Network provides fully decentralized social and content services.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "PhotographyRights Token",
+    "input_type": "structured",
+    "token_symbol": "PTXX",
+    "token_purpose": [
+      "PhotographyRights Token provides decentralized Photographers license work through smart contracts..."
+    ],
+    "core_principles": [
+      "Innovation",
+      "Accessibility"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Accrual"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Smart contract implementation on EVM-compatible blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "deflationary",
+    "similar_projects": [
+      "Getty Images",
+      "Shutterstock"
+    ],
+    "category": "Social and Content",
+    "positioning": "PhotographyRights Token offers innovative social and content solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "ResearchFund DAO",
+    "input_type": "structured",
+    "token_symbol": "RESE",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Transparency",
+      "Aligned Incentives"
+    ],
+    "token_functions": [
+      "Governance",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "dYdX",
+      "AngelList"
+    ],
+    "category": "Social and Content",
+    "positioning": "ResearchFund DAO offers innovative social and content solutions.",
+    "team": {
+      "description": "Research-focused team with academic background in cryptography and distributed systems."
+    },
+    "legal_risk_tolerance": "conservative"
+  },
+  {
+    "project_name": "CommentaryDAO Consensus",
+    "input_type": "structured",
+    "token_symbol": "CCXX",
+    "token_purpose": [
+      "CommentaryDAO Consensus provides decentralized Decentralized media commentary platform\u2014users earn..."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Community-Driven"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Users/Traders",
+      "Users",
+      "Governance Participants"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "deflationary",
+    "similar_projects": [
+      "Twitter",
+      "Medium"
+    ],
+    "category": "Social and Content",
+    "positioning": "CommentaryDAO Consensus provides fully decentralized social and content services.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "InfluenceShare Platform",
+    "input_type": "structured",
+    "token_symbol": "INFL",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management."
+    ],
+    "core_principles": [
+      "Scalability",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Built on EVM-compatible blockchain with Layer 2 scaling solutions.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Patreon",
+      "OnlyFans"
+    ],
+    "category": "Social and Content",
+    "positioning": "InfluenceShare Platform enables scalable social and content operations across networks.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "CommunityVote Protocol",
+    "input_type": "structured",
+    "token_symbol": "COMM",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Community-Driven"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Snapshot",
+      "Aragon"
+    ],
+    "category": "Social and Content",
+    "positioning": "CommunityVote Protocol offers innovative social and content solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "ArtSale Marketplace",
+    "input_type": "structured",
+    "token_symbol": "AMXX",
+    "token_purpose": [
+      "NFT protocol enabling creation, trading, and management of digital assets."
+    ],
+    "core_principles": [
+      "Innovation",
+      "Accessibility"
+    ],
+    "token_functions": [
+      "Governance",
+      "Utility"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "fixed",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "OpenSea",
+      "Blur"
+    ],
+    "category": "Marketplace",
+    "positioning": "ArtSale Marketplace offers innovative marketplace solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "PhysicalGoods Exchange",
+    "input_type": "structured",
+    "token_symbol": "PEXX",
+    "token_purpose": [
+      "PhysicalGoods Exchange provides decentralized Peer-to-peer marketplace for physical goods with e..."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Transparency"
+    ],
+    "token_functions": [
+      "Staking",
+      "Fee Accrual",
+      "Collateral"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Smart contract implementation on EVM-compatible blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "eBay",
+      "Amazon"
+    ],
+    "category": "Marketplace",
+    "positioning": "PhysicalGoods Exchange provides fully decentralized marketplace services.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "ComputeGig Exchange",
+    "input_type": "structured",
+    "token_symbol": "CEXX",
+    "token_purpose": [
+      "ComputeGig Exchange provides decentralized Freelance marketplace where developers bid on comp..."
+    ],
+    "core_principles": [
+      "Innovation",
+      "Accessibility"
+    ],
+    "token_functions": [
+      "Governance",
+      "Fee Accrual"
+    ],
+    "stakeholders": [
+      "Developers",
+      "Users",
+      "Governance Participants"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "deflationary",
+    "similar_projects": [
+      "Fiverr",
+      "Upwork"
+    ],
+    "category": "Marketplace",
+    "positioning": "ComputeGig Exchange offers innovative marketplace solutions.",
+    "team": {
+      "description": "Core engineering team with expertise in blockchain technology and smart contracts."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "LandTitle Registry",
+    "input_type": "structured",
+    "token_symbol": "LRXX",
+    "token_purpose": [
+      "LandTitle Registry provides decentralized Real-world property marketplace using blockchain t..."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Treasury",
+      "Users"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Smart contract implementation on EVM-compatible blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Propy",
+      "Verifi Media"
+    ],
+    "category": "Marketplace",
+    "positioning": "LandTitle Registry offers innovative marketplace solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "WholesaleHub B2B",
+    "input_type": "structured",
+    "token_symbol": "WBXX",
+    "token_purpose": [
+      "WholesaleHub B2B provides decentralized B2B wholesale marketplace where businesses trade i..."
+    ],
+    "core_principles": [
+      "Innovation",
+      "Accessibility"
+    ],
+    "token_functions": [
+      "Fee Accrual",
+      "Access Rights"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Alibaba",
+      "Global Sources"
+    ],
+    "category": "Marketplace",
+    "positioning": "WholesaleHub B2B offers innovative marketplace solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "SkillBarter Exchange",
+    "input_type": "structured",
+    "token_symbol": "SEXX",
+    "token_purpose": [
+      "Decentralized exchange protocol facilitating peer-to-peer asset trading with minimal slippage.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Users/Traders",
+      "Governance Participants",
+      "Users"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Upwork",
+      "TaskRabbit"
+    ],
+    "category": "Marketplace",
+    "positioning": "SkillBarter Exchange offers innovative marketplace solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "EventTicket DAO",
+    "input_type": "structured",
+    "token_symbol": "EVEN",
+    "token_purpose": [
+      "NFT protocol enabling creation, trading, and management of digital assets."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "fixed",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Ticketmaster",
+      "Eventbrite"
+    ],
+    "category": "Marketplace",
+    "positioning": "EventTicket DAO provides fully decentralized marketplace services.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "EnergyTrading P2P",
+    "input_type": "structured",
+    "token_symbol": "EPXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management.",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Power Ledger",
+      "Restart Energy"
+    ],
+    "category": "Marketplace",
+    "positioning": "EnergyTrading P2P offers innovative marketplace solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "MedicalData Exchange",
+    "input_type": "structured",
+    "token_symbol": "MEXX",
+    "token_purpose": [
+      "MedicalData Exchange provides decentralized Privacy-preserving health data marketplace. Patien...",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Incentive Distribution"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Guardtime",
+      "Verily"
+    ],
+    "category": "Utility",
+    "positioning": "MedicalData Exchange offers innovative utility solutions.",
+    "team": {
+      "description": "Research-focused team with academic background in cryptography and distributed systems."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "IdentityVerify Network",
+    "input_type": "structured",
+    "token_symbol": "INXX",
+    "token_purpose": [
+      "IdentityVerify Network provides decentralized Decentralized identity verification using biometri..."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Utility"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized governance structure with autonomous protocol operations.",
+    "technical_design": "Smart contract implementation on EVM-compatible blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Civic",
+      "Sovrin"
+    ],
+    "category": "Utility",
+    "positioning": "IdentityVerify Network provides fully decentralized utility services.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "EmissionTracker Protocol",
+    "input_type": "structured",
+    "token_symbol": "EMIS",
+    "token_purpose": [
+      "EmissionTracker Protocol provides decentralized Supply chain carbon tracking on blockchain. Every ..."
+    ],
+    "core_principles": [
+      "Innovation",
+      "Accessibility"
+    ],
+    "token_functions": [
+      "Fee Accrual",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Strategic Partners",
+      "Users",
+      "Governance Participants"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "deflationary",
+    "similar_projects": [
+      "Everledger",
+      "VeChain"
+    ],
+    "category": "Utility",
+    "positioning": "EmissionTracker Protocol offers innovative utility solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "VotingChain Governance",
+    "input_type": "structured",
+    "token_symbol": "VGXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management."
+    ],
+    "core_principles": [
+      "Transparency",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Voatz",
+      "Horizon State"
+    ],
+    "category": "Utility",
+    "positioning": "VotingChain Governance offers innovative utility solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "QualityAssurance Token",
+    "input_type": "structured",
+    "token_symbol": "QTXX",
+    "token_purpose": [
+      "QualityAssurance Token provides decentralized QA testers earn tokens for finding bugs in apps an..."
+    ],
+    "core_principles": [
+      "Security & Transparency",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Smart contract implementation on EVM-compatible blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Immunefi",
+      "HackerOne"
+    ],
+    "category": "Utility",
+    "positioning": "QualityAssurance Token offers innovative utility solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "PropertyInsurance Crypto",
+    "input_type": "structured",
+    "token_symbol": "PCXX",
+    "token_purpose": [
+      "Decentralized insurance protocol providing coverage for protocol and user risks."
+    ],
+    "core_principles": [
+      "Innovation",
+      "Accessibility"
+    ],
+    "token_functions": [
+      "Staking",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Smart contract implementation on EVM-compatible blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Nexus Mutual",
+      "Lemonade"
+    ],
+    "category": "Utility",
+    "positioning": "PropertyInsurance Crypto offers innovative utility solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "CustomerLoyalty Web3",
+    "input_type": "structured",
+    "token_symbol": "CWXX",
+    "token_purpose": [
+      "CustomerLoyalty Web3 provides decentralized Loyalty points on blockchain\u2014use your points acros...",
+      "Token holders receive proportional rewards from protocol fees and ecosystem growth."
+    ],
+    "core_principles": [
+      "Aligned Incentives",
+      "Innovation"
+    ],
+    "token_functions": [
+      "Incentive Distribution",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Users",
+      "Governance Participants",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Token-weighted governance with community proposal voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Rewards Network",
+      "Swych"
+    ],
+    "category": "Utility",
+    "positioning": "CustomerLoyalty Web3 offers innovative utility solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "WaterRights Trading",
+    "input_type": "structured",
+    "token_symbol": "WTXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management."
+    ],
+    "core_principles": [
+      "Decentralized Governance",
+      "Transparency"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Governance Participants",
+      "Users",
+      "Treasury"
+    ],
+    "economic_design": "Supply mechanism with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Smart contract implementation on EVM-compatible blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "Water Swap",
+      "AgriChain"
+    ],
+    "category": "Utility",
+    "positioning": "WaterRights Trading offers innovative utility solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "balanced"
+  },
+  {
+    "project_name": "EducationCredit Token",
+    "input_type": "structured",
+    "token_symbol": "ETXX",
+    "token_purpose": [
+      "Governance token enabling decentralized decision-making for protocol development and treasury management."
+    ],
+    "core_principles": [
+      "Innovation",
+      "Accessibility"
+    ],
+    "token_functions": [
+      "Governance",
+      "Governance"
+    ],
+    "stakeholders": [
+      "Borrowers",
+      "Governance Participants",
+      "Users"
+    ],
+    "economic_design": "Capped supply with allocation to ecosystem participants.",
+    "legal_design": "Decentralized protocol with community-governed legal framework.",
+    "technical_design": "Deployed on EVM-compatible blockchain blockchain.",
+    "gov_structures": "Decentralized autonomous organization with community voting.",
+    "total_supply_preference": "capped",
+    "inflation_preference": "low_inflation",
+    "similar_projects": [
+      "MasterClass",
+      "Coursera"
+    ],
+    "category": "Utility",
+    "positioning": "EducationCredit Token offers innovative utility solutions.",
+    "team": {
+      "description": "Dedicated team building innovative solutions in decentralized finance."
+    },
+    "legal_risk_tolerance": "conservative"
+  }
+]

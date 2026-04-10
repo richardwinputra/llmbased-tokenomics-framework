@@ -1,17 +1,21 @@
 """
-Tokenomics Pipeline – Main entry point.
+LLM-Based Tokenomics Screening Framework - Main Pipeline.
 
-Modular architecture:
-  models.py         – Data structures (dataclasses)
-  utils.py          – Parsing, normalization, Gini, helpers
-  llm_engine.py     – Prompt engineering, OpenAI API, proposal generation
-  control_filter.py – Control layer + Filter layer
-  simulation.py     – All simulation sub-modules + backtesting helpers
-  advanced_simulations.py – Agent-based market simulation (ABM)
+System architecture (Figure 1):
+  Input Base -> Tokenomics Generation Module -> Output Control & Filter Module
+  -> Simulation & Evaluation Module
+
+Modules:
+  models.py              - Data structures
+  utils.py               - Parsing, normalization, Gini, helpers
+  llm_engine.py          - Prompt engineering, OpenAI API, proposal generation
+  control_filter.py      - Control layer (Table II) + Filter layer (Table III)
+  simulation.py          - Supply release, fairness evaluation, stress testing
+
+Pipeline always runs with RAG and Filter layers enabled.
 """
 
 import argparse
-import csv
 import json
 import os
 import random
@@ -22,53 +26,31 @@ from typing import Dict, List, Optional
 
 import numpy as np
 
-from models import (
-    GeneratedTokenomics, ProjectContext, FilterLayerResult,
-    SimulationReport,
-)
+from models import GeneratedTokenomics, ProjectContext, SimulationReport
 from utils import (
-    get_initial_supply, normalize_allocation_key,
-    extract_allocations_from_knowledge_base,
-    extract_allocation_enhanced, summarize_all_projects,
+    get_initial_supply, summarize_all_projects, extract_allocation_enhanced,
 )
 from llm_engine import (
-    get_input_mode, get_structured_input, get_generic_input,
-    create_structured_prompt, create_generic_prompt,
+    get_structured_input,
+    create_structured_prompt,
     ask_openai_enhanced, generate_tokenomics_proposal,
-    proposal_from_dataset_entry, proposal_from_entry_via_llm,
 )
-from control_filter import (
-    run_control_layer, run_filter_layer,
-    calculate_temporal_fairness,
-)
-from simulation import (
-    run_simulations_layer,
-    dataset_allocation_statistics, dataset_outcome_overview,
-    estimate_drawdown_from_prices, estimate_inflation_from_supply,
-)
+from control_filter import run_control_layer, run_filter_layer
+from simulation import run_simulation_module
 
 
-# ── Configuration ─────────────────────────────────────────────
+# ── Configuration ────────────────────────────────────────────
 
-DEFAULT_HISTORICAL_DATASET_PATH = "TokenomicsKnowledge.json"
+DEFAULT_KB_PATH = "TokenomicsKnowledge.json"
 
 
-def load_knowledge_base(path: str = "TokenomicsKnowledge.json") -> List[Dict]:
+def load_knowledge_base(path: str = DEFAULT_KB_PATH) -> List[Dict]:
     try:
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
-        print("Knowledge base file not found.")
+        print(f"Knowledge base file not found at {path}.")
         sys.exit(1)
-
-
-def load_historical_dataset(path: str) -> List[Dict]:
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        print(f"Historical dataset not found at {path}. Continuing without it.")
-        return []
 
 
 def seed_random_generators(seed: int) -> None:
@@ -76,231 +58,159 @@ def seed_random_generators(seed: int) -> None:
     random.seed(seed)
 
 
-# ── CLI ───────────────────────────────────────────────────────
+# ── CLI ──────────────────────────────────────────────────────
 
 def parse_cli_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Tokenomics pipeline controller")
-    parser.add_argument("--historical-dataset", dest="historical_dataset",
-                        default=DEFAULT_HISTORICAL_DATASET_PATH,
-                        help="Path to JSON dataset of historical project outcomes.")
-    parser.add_argument("--dataset-report", dest="dataset_report", action="store_true",
-                        help="Skip LLM flow and print dataset validation summary.")
-    parser.add_argument("--seed", dest="seed", type=int, default=42,
+    parser = argparse.ArgumentParser(
+        description="LLM-Based Tokenomics Screening Framework"
+    )
+    parser.add_argument("--seed", type=int, default=42,
                         help="Random seed for deterministic simulations.")
-    parser.add_argument("--input-file", dest="input_file", type=str, default=None,
+    parser.add_argument("--input-file", type=str, default=None,
                         help="Path to JSON input file (bypasses interactive mode).")
-    parser.add_argument("--disable-rag", dest="disable_rag", action="store_true",
-                        help="Disable RAG (knowledge base) for ablation testing.")
-    parser.add_argument("--disable-filter", dest="disable_filter", action="store_true",
-                        help="Disable the Filter layer for ablation testing.")
-    parser.add_argument("--model-override", dest="model_override", type=str, default=None,
+    parser.add_argument("--model-override", type=str, default=None,
                         help="Override the OpenAI model (e.g. gpt-3.5-turbo).")
-    parser.add_argument("--run-scenarios", dest="run_scenarios", action="store_true",
-                        help="Run 100+ scenario analysis with sensitivity sweeps (no LLM needed).")
-    parser.add_argument("--n-scenarios", dest="n_scenarios", type=int, default=100,
-                        help="Number of LHS scenarios to generate (default: 100).")
-    parser.add_argument("--scenario-output-dir", dest="scenario_output_dir",
-                        default="scenario_exports",
-                        help="Output directory for scenario analysis results.")
+    parser.add_argument("--output-dir", type=str, default="pipeline_exports",
+                        help="Output directory for pipeline results.")
     return parser.parse_args()
 
 
-# ── Dataset validation CLI ────────────────────────────────────
+# ── Pipeline output ──────────────────────────────────────────
 
-def run_dataset_validation_cli(dataset: List[Dict], knowledge_base: List[Dict]) -> None:
-    if not dataset:
-        print("No entries available in the historical dataset.")
-        return
-
-    print("Historical Dataset Validation")
-    print(f"Total reference projects: {len(dataset)}")
-
-    allocation_stats = dataset_allocation_statistics(dataset)
-    if allocation_stats:
-        print("\nAllocation aggregates (mean, min-max):")
-        for key, stats in allocation_stats.items():
-            print(f" - {key}: mean {stats['mean']:.1f}% (min {stats['min']:.1f}%, max {stats['max']:.1f}%)")
-
-    allocations = [entry.get("allocation", {}) for entry in dataset]
-    community_shares = [a.get("Community", 0.0) for a in allocations if isinstance(a, dict)]
-    insider_shares = [(a.get("Team", 0.0) + a.get("Investors", 0.0)) for a in allocations if isinstance(a, dict)]
-
-    if community_shares:
-        print(f"Avg community share: {np.mean(community_shares):.1f}%")
-    if insider_shares:
-        print(f"Avg insider share (team+investors): {np.mean(insider_shares):.1f}%")
-
-    overview = dataset_outcome_overview(dataset)
-    if overview.get("drawdowns"):
-        print(f"Median max drawdown: {overview['drawdowns']['median']:.2f}")
-    if overview.get("inflation"):
-        print(f"Median supply inflation: {overview['inflation']['median']:.2f}")
-    incident_rate = overview.get("incident_rate")
-    if incident_rate is not None:
-        print(f"Governance incidents recorded in {incident_rate*100:.1f}% of projects")
-
-    print(f"\nReference knowledge base entries available: {len(knowledge_base)}")
-
-
-# ── Pipeline output ───────────────────────────────────────────
-
-def save_pipeline_outputs(output_dir: str,
-                          tokenomics: GeneratedTokenomics,
-                          context: ProjectContext,
-                          control_result, filter_result,
-                          simulation_report: Optional[SimulationReport] = None) -> None:
+def save_pipeline_outputs(
+    output_dir: str,
+    tokenomics: GeneratedTokenomics,
+    context: ProjectContext,
+    control_result,
+    filter_result,
+    sim_report: SimulationReport,
+) -> None:
     os.makedirs(output_dir, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
+    # Proposal
     with open(os.path.join(output_dir, f"proposal_{timestamp}.json"), "w", encoding="utf-8") as f:
         json.dump(asdict(tokenomics), f, ensure_ascii=False, indent=2)
 
+    # Context
     with open(os.path.join(output_dir, f"context_{timestamp}.json"), "w", encoding="utf-8") as f:
         json.dump(asdict(context), f, ensure_ascii=False, indent=2)
 
+    # Control layer
     control_payload = {
         "aligned": control_result.aligned,
         "requires_iteration": control_result.requires_iteration,
-        "stakeholder_findings": [asdict(f) for f in control_result.stakeholder_findings],
-        "compliance_findings": [asdict(f) for f in control_result.compliance_findings],
-        "feasibility_findings": [asdict(f) for f in control_result.feasibility_findings],
+        "insider_pct": control_result.insider_pct,
+        "distributed_pct": control_result.distributed_pct,
+        "team_pct": control_result.team_pct,
+        "investor_pct": control_result.investor_pct,
+        "gini_t0": control_result.gini_t0,
+        "findings": [asdict(f) for f in control_result.findings],
     }
     with open(os.path.join(output_dir, f"control_{timestamp}.json"), "w", encoding="utf-8") as f:
         json.dump(control_payload, f, ensure_ascii=False, indent=2)
 
-    alloc = filter_result.adjusted_proposal.tokenomics_parameters.allocation
+    # Filter layer
     filter_payload = {
         "passed": filter_result.passed,
-        "allocation_issues": filter_result.allocation_issues,
-        "vesting_issues": filter_result.vesting_issues,
-        "economic_issues": filter_result.economic_issues,
-        "governance_issues": filter_result.governance_issues,
-        "adjusted_allocations": alloc,
+        "checks": [asdict(c) for c in filter_result.checks],
+        "adjusted_allocations": filter_result.adjusted_proposal.tokenomics_parameters.allocation,
     }
     with open(os.path.join(output_dir, f"filter_{timestamp}.json"), "w", encoding="utf-8") as f:
         json.dump(filter_payload, f, ensure_ascii=False, indent=2)
 
-    if simulation_report:
-        sim_payload = {
-            "scenarios": [asdict(s) for s in simulation_report.scenarios],
-            "gini_layers": asdict(simulation_report.gini_layers),
-            "supply_dynamics": asdict(simulation_report.supply_dynamics),
-            "baseline_comparison": asdict(simulation_report.baseline_comparison) if simulation_report.baseline_comparison else None,
-            "fairness_report": simulation_report.fairness_report,
-            "validated_model_summary": simulation_report.validated_model_summary,
-            "recommendations": simulation_report.recommendations,
-        }
-        with open(os.path.join(output_dir, f"simulation_{timestamp}.json"), "w", encoding="utf-8") as f:
-            json.dump(sim_payload, f, ensure_ascii=False, indent=2)
+    # Simulation report
+    sim_payload = {
+        "supply_release": {
+            "initial_circulating_pct": sim_report.supply_release.initial_circulating_pct,
+            "year1_circulating_pct": sim_report.supply_release.year1_circulating_pct,
+            "year2_circulating_pct": sim_report.supply_release.year2_circulating_pct,
+            "full_unlock_month": sim_report.supply_release.full_unlock_month,
+            "year1_inflation_proxy": sim_report.supply_release.year1_inflation_proxy,
+        },
+        "fairness_evaluation": {
+            "snapshots": [asdict(s) for s in sim_report.fairness_evaluation.snapshots],
+            "fairness_drift": sim_report.fairness_evaluation.fairness_drift,
+        },
+        "stress_test": {
+            "scenarios": [asdict(s) for s in sim_report.stress_test.scenarios],
+            "pass_rate": sim_report.stress_test.pass_rate,
+            "passed": sim_report.stress_test.passed,
+        },
+        "recommendations": sim_report.recommendations,
+    }
+
+    with open(os.path.join(output_dir, f"simulation_{timestamp}.json"), "w", encoding="utf-8") as f:
+        json.dump(sim_payload, f, ensure_ascii=False, indent=2)
 
 
-# ── Backtesting ───────────────────────────────────────────────
+# ── Print helpers ────────────────────────────────────────────
 
-def run_backtest(dataset: List[Dict], knowledge_base: List[Dict],
-                 include_kb: bool, seed: int, use_llm: bool) -> None:
-    seed_random_generators(seed)
-    entries = list(dataset)
-    if include_kb:
-        entries += knowledge_base
+def print_control_results(control_result) -> None:
+    print("\n--- Control Layer (Table II) ---")
+    print(f"  Insider allocation:     {control_result.insider_pct:.1f}%")
+    print(f"  Distributed allocation: {control_result.distributed_pct:.1f}%")
+    print(f"  Team allocation:        {control_result.team_pct:.1f}%")
+    print(f"  Investor allocation:    {control_result.investor_pct:.1f}%")
+    print(f"  Initial Gini:           {control_result.gini_t0:.3f}")
 
-    if not entries:
-        print("No entries available for backtesting.")
-        return
-
-    os.makedirs("backtest_exports", exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    csv_path = os.path.join("backtest_exports", f"backtest_report_{timestamp}.csv")
-
-    project_summaries = summarize_all_projects(knowledge_base)
-    rows = []
-    for entry in entries:
-        if use_llm:
-            proposal, context = proposal_from_entry_via_llm(entry, project_summaries)
-        else:
-            proposal, context = proposal_from_dataset_entry(entry)
-        control_result = run_control_layer(proposal, context)
-        filter_result = run_filter_layer(proposal, context)
-        sim_report = run_simulations_layer(filter_result.adjusted_proposal, context, knowledge_base, dataset)
-
-        outcomes = entry.get("outcomes", {}) or {}
-        predicted_drawdown = estimate_drawdown_from_prices(
-            sim_report.agent_market_detail.price_path if sim_report.agent_market_detail else [])
-        initial_supply = get_initial_supply(proposal)
-        predicted_inflation = estimate_inflation_from_supply(sim_report.supply_dynamics, initial_supply)
-        predicted_incident = 1 if sim_report.governance_risk.capture_risk_score >= 2.5 else 0
-
-        rows.append({
-            "project": proposal.project_metadata.project,
-            "token": proposal.project_metadata.token,
-            "control_requires_iteration": control_result.requires_iteration,
-            "filter_passed": filter_result.passed,
-            "t0_gini": sim_report.fairness_metrics.t0_gini,
-            "gini_12m": sim_report.fairness_metrics.gini_12m,
-            "gini_24m": sim_report.fairness_metrics.gini_24m,
-            "gov_influence_index": sim_report.governance_risk.governance_influence_index,
-            "baseline": sim_report.baseline_comparison.baseline_name if sim_report.baseline_comparison else "",
-            "pred_drawdown": predicted_drawdown,
-            "actual_drawdown": outcomes.get("max_drawdown"),
-            "drawdown_error": (predicted_drawdown - outcomes.get("max_drawdown")) if (predicted_drawdown is not None and outcomes.get("max_drawdown") is not None) else None,
-            "pred_inflation": predicted_inflation,
-            "actual_inflation": outcomes.get("supply_inflation"),
-            "inflation_error": (predicted_inflation - outcomes.get("supply_inflation")) if (predicted_inflation is not None and outcomes.get("supply_inflation") is not None) else None,
-            "pred_incident_flag": predicted_incident,
-            "actual_incidents": outcomes.get("governance_incidents"),
-        })
-
-    fieldnames = list(rows[0].keys())
-    with open(csv_path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
-    print(f"Backtest completed on {len(rows)} entries. Report saved to {csv_path}")
+    if control_result.findings:
+        for f in control_result.findings:
+            print(f"  [{f.severity.upper()}] {f.check}: {f.message}")
+    if control_result.aligned:
+        print("  Result: Proposal aligns with design criteria.")
+    elif control_result.requires_iteration:
+        print("  Result: High-risk findings detected; iteration recommended.")
+    else:
+        print("  Result: Warnings detected; review recommended.")
 
 
-# ── Main pipeline ─────────────────────────────────────────────
+def print_filter_results(filter_result) -> None:
+    print("\n--- Filter Layer (Table III) ---")
+    for c in filter_result.checks:
+        status = "PASS" if c.passed else "FAIL"
+        print(f"  [{status}] {c.rule}: {c.message}")
+    print(f"  Result: {'PASSED' if filter_result.passed else 'FAILED'}")
+
+
+def print_simulation_results(sim_report: SimulationReport) -> None:
+    sr = sim_report.supply_release
+    print("\n--- Supply Release Simulation ---")
+    print(f"  Initial circulating:  {sr.initial_circulating_pct:.1f}%")
+    print(f"  Year 1 circulating:   {sr.year1_circulating_pct:.1f}%")
+    print(f"  Year 2 circulating:   {sr.year2_circulating_pct:.1f}%")
+    if sr.full_unlock_month:
+        print(f"  Full unlock month:    {sr.full_unlock_month}")
+    if sr.year1_inflation_proxy is not None:
+        print(f"  Year 1 inflation proxy: {sr.year1_inflation_proxy:.1f}%")
+
+    print("\n--- Fairness Evaluation ---")
+    for snap in sim_report.fairness_evaluation.snapshots:
+        print(f"  Month {snap.month:>3}: Insider {snap.insider_share:.3f}, "
+              f"Distributed {snap.distributed_share:.3f}, Gini {snap.gini:.3f}")
+    print(f"  Fairness drift: {sim_report.fairness_evaluation.fairness_drift:.3f}")
+
+    print("\n--- Sustainability Stress Testing ---")
+    for s in sim_report.stress_test.scenarios:
+        viable = "VIABLE" if s.viable else "FAILED"
+        recovery = f", recovery {s.recovery_months}m" if s.recovery_months else ""
+        print(f"  {s.name:<20} [{viable}]{recovery}")
+        for note in s.notes:
+            print(f"    - {note}")
+    print(f"  Pass rate: {sim_report.stress_test.pass_rate:.0%} "
+          f"({'PASSED' if sim_report.stress_test.passed else 'FAILED'} >= 70% threshold)")
+
+    print("\n--- Recommendations ---")
+    for rec in sim_report.recommendations:
+        print(f"  - {rec}")
+
+
+# ── Main pipeline ────────────────────────────────────────────
 
 def main():
     args = parse_cli_args()
-
     knowledge_base = load_knowledge_base()
-    dataset = load_historical_dataset(args.historical_dataset)
-
-    if args.dataset_report:
-        run_dataset_validation_cli(dataset, knowledge_base)
-        return
-
-    if args.run_scenarios:
-        from scenario_generator import (
-            run_full_scenario_analysis,
-            export_scenario_results_csv,
-            export_sensitivity_results_csv,
-        )
-        seed_random_generators(args.seed)
-        os.makedirs(args.scenario_output_dir, exist_ok=True)
-        report = run_full_scenario_analysis(
-            n_scenarios=args.n_scenarios, seed=args.seed,
-            run_sensitivity=True, verbose=True,
-        )
-        print("\n" + "=" * 60)
-        print("SCENARIO ANALYSIS SUMMARY")
-        print("=" * 60)
-        for key, val in report.summary_statistics.items():
-            print(f"  {key}: {val:.4f}")
-        for note in report.notes:
-            print(f"  - {note}")
-        export_scenario_results_csv(
-            report.scenario_results,
-            os.path.join(args.scenario_output_dir, "scenario_results.csv"),
-        )
-        if report.sensitivity_results:
-            export_sensitivity_results_csv(
-                report.sensitivity_results,
-                os.path.join(args.scenario_output_dir, "sensitivity_results.csv"),
-            )
-        return
-
     seed_random_generators(args.seed)
-    os.makedirs("exported_charts", exist_ok=True)
 
     # --- Input ---
     if args.input_file:
@@ -314,120 +224,58 @@ def main():
             print(f"Error reading input file: {e}")
             return
     else:
-        input_mode = get_input_mode()
-        user_input = get_structured_input() if input_mode == '1' else get_generic_input()
+        user_input = get_structured_input()
 
-    # --- RAG ---
-    if args.disable_rag:
-        print("\n[ABLATION] RAG is disabled. Using empty project summaries.")
-        project_summaries = ""
-    else:
-        project_summaries = summarize_all_projects(knowledge_base)
+    # --- RAG (always enabled) ---
+    project_summaries = summarize_all_projects(knowledge_base)
 
-    # --- LLM generation ---
-    if user_input.get('input_type') == 'structured':
-        prompt = create_structured_prompt(user_input, project_summaries)
-    else:
-        prompt = create_generic_prompt(user_input, project_summaries)
+    # --- LLM Generation (Algorithm 1) ---
+    prompt = create_structured_prompt(user_input, project_summaries)
 
-    print("\nGenerating token design...")
+    print("\nGenerating tokenomics design...")
     result = ask_openai_enhanced(prompt, user_input.get('input_type', 'structured'),
                                  model_override=args.model_override)
-    print("Tokenomics Design")
+    print("\n--- LLM Response ---")
     print(result)
 
-    token_symbol = user_input.get('token_symbol', user_input.get('project_name', 'TOKEN'))
     labels, values = extract_allocation_enhanced(result)
     if len(values) <= 1:
-        print("Could not extract proper token allocation from the recommendation.")
+        print("Could not extract proper token allocation from the LLM response.")
         return
 
-    # --- Proposal ---
+    # --- Proposal construction ---
     proposal, context = generate_tokenomics_proposal(user_input, result)
 
-    # --- Control Layer ---
+    # --- Control Layer (Table II) ---
     control_result = run_control_layer(proposal, context)
-    for finding in control_result.stakeholder_findings:
-        print(f"[{finding.severity.upper()}] {finding.stakeholder}: {finding.message}")
-    for finding in control_result.compliance_findings:
-        print(f"[{finding.severity.upper()}] Compliance: {finding.message}")
-    for finding in control_result.feasibility_findings:
-        print(f"[{finding.severity.upper()}] Feasibility: {finding.message}")
-    if control_result.aligned:
-        print("Control Layer: proposal aligns with stated goals.")
+    print_control_results(control_result)
 
-    # --- Filter Layer ---
-    if args.disable_filter:
-        print("\n[ABLATION] Filter layer is disabled. Proceeding with raw proposal.")
-        filter_result = FilterLayerResult(
-            passed=True, adjusted_proposal=proposal,
-            allocation_issues=[], vesting_issues=[],
-            economic_issues=[], governance_issues=[],
-            fairness_metrics=None, governance_risk=None,
-        )
-    else:
-        filter_result = run_filter_layer(proposal, context)
-        for label, issues in [("Allocation", filter_result.allocation_issues),
-                              ("Vesting", filter_result.vesting_issues),
-                              ("Economic", filter_result.economic_issues),
-                              ("Governance", filter_result.governance_issues)]:
-            if issues:
-                print(f"{label} Issues:")
-                for issue in issues:
-                    print(f" - {issue}")
-        if filter_result.passed:
-            print("Filter Layer: Passed hard constraints check.")
-        else:
-            print("Filter Layer: Critical issues detected.")
+    # --- Filter Layer (Table III, always enabled) ---
+    filter_result = run_filter_layer(proposal, context)
+    print_filter_results(filter_result)
 
-    if control_result.requires_iteration or not filter_result.passed:
-        print("\n[INFO] Critical findings detected, continuing to simulations for insight-only run.")
+    if control_result.requires_iteration or (hasattr(filter_result, 'passed') and not filter_result.passed):
+        print("\n[INFO] Issues detected; continuing to simulation for diagnostic insight.")
 
-    # --- Simulation Layer ---
-    sim_report = run_simulations_layer(filter_result.adjusted_proposal, context, knowledge_base, dataset)
+    # --- Simulation & Evaluation Module ---
+    print("\nRunning simulation and evaluation module...")
+    sim_report = run_simulation_module(
+        filter_result.adjusted_proposal, context, knowledge_base,
+        dataset=knowledge_base,
+    )
+    print_simulation_results(sim_report)
 
-    for scenario in sim_report.scenarios:
-        print(f"\nScenario: {scenario.name}")
-        print(f"  {scenario.description}")
-        print(f"  Supply trajectory: {[int(x) for x in scenario.supply_over_time]}")
-        for note in scenario.notes:
-            print(f"   - {note}")
-
-    print("\nFairness Report:")
-    print(sim_report.fairness_report)
-
-    if sim_report.agent_market_detail:
-        detail = sim_report.agent_market_detail
-        print("Agent-based Market Simulation:")
-        print(f"  Avg price path sample: {detail.price_path[:5]} ...")
-        print(f"  Liquidity levels sample: {detail.liquidity_levels[:5]} ...")
-        for note in detail.notes:
-            print(f"   - {note}")
-
-    print("\nBaseline Comparison:")
-    if sim_report.baseline_comparison:
-        print(f"Closest baseline: {sim_report.baseline_comparison.baseline_name}")
-        for item in sim_report.baseline_comparison.similarities:
-            print(f"  - {item}")
-        for item in sim_report.baseline_comparison.differences:
-            print(f"  - {item}")
-
-    print("\nValidated Model Summary:")
-    print(sim_report.validated_model_summary)
-
-    print("\nRecommendations:")
-    for rec in sim_report.recommendations:
-        print(f" - {rec}")
-
-    # --- Save ---
+    # --- Save outputs ---
     save_pipeline_outputs(
-        output_dir="pipeline_exports", tokenomics=proposal, context=context,
+        output_dir=args.output_dir,
+        tokenomics=proposal, context=context,
         control_result=control_result, filter_result=filter_result,
-        simulation_report=sim_report,
+        sim_report=sim_report,
     )
 
     project_name = user_input.get('project_name', 'your project')
-    print(f"\nTokenomics design for {project_name} completed!")
+    print(f"\nTokenomics screening for {project_name} completed!")
+    print(f"Results saved to {args.output_dir}/")
 
 
 if __name__ == "__main__":

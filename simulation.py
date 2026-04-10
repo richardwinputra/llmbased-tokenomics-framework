@@ -1,472 +1,684 @@
 """
-Simulation Layer: market scenarios, stress testing, Gini layers, supply dynamics,
-baseline comparison, fairness reporting, and ABM integration.
+Simulation and Evaluation Module (Section III.D).
+
+Three components:
+  1) Supply Release Simulation - Monthly release over 60-month horizon
+     using cliff-and-linear vesting (equations from paper)
+  2) Fairness Evaluation - Insider/distributed shares and Gini at checkpoints
+  3) Sustainability Stress Testing - 5 scenarios (bull, neutral, bear,
+     unlock shock, liquidity pressure)
+
 """
 
-import csv
-import os
-import statistics
-import numpy as np
 from collections import defaultdict
-from datetime import datetime
 from typing import Dict, List, Optional
 
+import numpy as np
+
 from models import (
-    GeneratedTokenomics, ProjectContext, FairnessMetrics,
-    ScenarioResult, GiniLayerResult, SupplyDynamicsResult,
-    BaselineComparisonResult, SimulationReport, RealProjectValidationResult,
+    GeneratedTokenomics, ProjectContext,
+    SupplyReleaseResult, FairnessSnapshot, FairnessEvaluationResult,
+    StressScenarioResult, StressTestResult, SimulationReport,
 )
 from utils import (
-    normalize_allocation_key, normalize_allocation_dict, calculate_gini,
-    get_initial_supply, generate_emission_curve,
-    extract_allocations_from_knowledge_base,
-)
-from control_filter import (
-    calculate_temporal_fairness, evaluate_governance_risk,
-    validate_against_real_projects,
-)
-from advanced_simulations import (
-    run_agent_market_simulation, run_monte_carlo_abm,
-    MarketScenarioDetail, MonteCarloABMResult,
+    normalize_allocation_key, calculate_gini, get_initial_supply,
+    is_insider_category, is_distributed_category,
+    normalize_allocation_dict,
 )
 
 
-# ── Monte Carlo (supply burn) ─────────────────────────────────
+# ── 1) Supply Release Simulation (Section III.D.1) ──────────
 
-def monte_carlo_simulation(initial_supply: float, burn_rate: float = 0.02,
-                           months: int = 12, simulations: int = 1000) -> Dict:
-    """Monte Carlo simulation of token supply under stochastic burn."""
-    outcomes = []
-    monthly_burns = []
-    for _ in range(simulations):
-        current_supply = initial_supply
-        monthly_burn_record = []
-        for month in range(months):
-            market_factor = np.random.normal(1.0, 0.2)
-            seasonal_factor = 1 + 0.1 * np.sin(2 * np.pi * month / 12)
-            effective_burn_rate = max(0, min(burn_rate * market_factor * seasonal_factor, 0.1))
-            burned_amount = current_supply * effective_burn_rate
-            current_supply -= burned_amount
-            monthly_burn_record.append(burned_amount)
-        outcomes.append(current_supply)
-        monthly_burns.append(monthly_burn_record)
-    return {
-        'final_supplies': outcomes,
-        'monthly_burns': monthly_burns,
-        'mean_final_supply': np.mean(outcomes),
-        'std_final_supply': np.std(outcomes),
-        'median_final_supply': np.median(outcomes),
-        'percentile_5': np.percentile(outcomes, 5),
-        'percentile_95': np.percentile(outcomes, 95),
-    }
+def simulate_supply_release(
+    tokenomics: GeneratedTokenomics,
+    horizon_months: int = 60,
+) -> SupplyReleaseResult:
+    """
+    Model token release over time using cliff-and-linear vesting.
 
+    For each category i:
+      T_i = (p_i / 100) * S
 
-# ── Baseline generation from knowledge base ──────────────────
+    Circulating at month m:
+      C_i(m) = 0                              if m < c_i
+      C_i(m) = T_i * (m - c_i) / d_i          if c_i <= m < c_i + d_i
+      C_i(m) = T_i                             if m >= c_i + d_i
 
-def calculate_allocation_statistics(allocations_data: Dict) -> Dict:
-    all_allocations = allocations_data['all_allocations']
-    allocation_keys = allocations_data['allocation_keys']
-    common_categories = [key for key, _ in allocation_keys.most_common(10)]
-    category_stats = {}
-    for category in common_categories:
-        values = [a[category] for a in all_allocations if category in a]
-        if values:
-            category_stats[category] = {
-                'count': len(values),
-                'mean': statistics.mean(values),
-                'median': statistics.median(values),
-                'min': min(values),
-                'max': max(values),
-                'values': values,
-            }
-    return category_stats
+    If no vesting, C_i(m) = T_i for all m >= 0.
 
-
-def generate_dynamic_baseline_models(knowledge_base: List[Dict]) -> Dict:
-    allocations_data = extract_allocations_from_knowledge_base(knowledge_base)
-    category_stats = calculate_allocation_statistics(allocations_data)
-    baseline_models = {}
-
-    def _build_baseline(label, pick_fn):
-        alloc = {}
-        for cat, stats in category_stats.items():
-            if stats['count'] >= 3:
-                alloc[cat] = round(pick_fn(stats), 1)
-        total = sum(alloc.values())
-        if total > 0:
-            baseline_models[label] = {k: round(v * 100 / total, 1) for k, v in alloc.items()}
-
-    _build_baseline('Knowledge Base Average', lambda s: s['mean'])
-    _build_baseline('Knowledge Base Median', lambda s: s['median'])
-    _build_baseline('Conservative from Knowledge Based',
-                    lambda s: sorted(s['values'])[len(s['values']) // 4] if len(s['values']) > 3 else s['min'])
-    _build_baseline('Aggressive from Knowledge Based',
-                    lambda s: sorted(s['values'])[(3 * len(s['values'])) // 4] if len(s['values']) > 3 else s['max'])
-
-    return {'baseline_models': baseline_models, 'category_stats': category_stats,
-            'allocations_data': allocations_data}
-
-
-# ── Dataset helpers ───────────────────────────────────────────
-
-def dataset_allocation_statistics(dataset: List[Dict]) -> Dict[str, float]:
-    totals = defaultdict(list)
-    for entry in dataset:
-        allocation = entry.get('allocation', {})
-        if isinstance(allocation, dict):
-            normalized = normalize_allocation_dict(allocation)
-            for key, value in normalized.items():
-                totals[key].append(value)
-    stats = {}
-    for key, values in totals.items():
-        stats[key] = {
-            "mean": float(np.mean(values)), "median": float(np.median(values)),
-            "min": float(np.min(values)), "max": float(np.max(values)),
-        }
-    return stats
-
-
-def dataset_outcome_overview(dataset: List[Dict]) -> Dict:
-    drawdowns = [e.get('outcomes', {}).get('max_drawdown') for e in dataset if e.get('outcomes')]
-    inflation = [e.get('outcomes', {}).get('supply_inflation') for e in dataset if e.get('outcomes')]
-    incidents = [e.get('outcomes', {}).get('governance_incidents') for e in dataset if e.get('outcomes')]
-
-    def safe_stats(values):
-        filtered = [v for v in values if isinstance(v, (int, float))]
-        if not filtered:
-            return {}
-        return {"mean": float(np.mean(filtered)), "median": float(np.median(filtered)),
-                "max": float(np.max(filtered))}
-
-    return {
-        "drawdowns": safe_stats(drawdowns),
-        "inflation": safe_stats(inflation),
-        "incident_rate": sum(1 for v in incidents if v and v > 0) / max(1, len(dataset)),
-    }
-
-
-# ── Simulation sub-modules ────────────────────────────────────
-
-def run_historical_pattern_module(tokenomics: GeneratedTokenomics,
-                                  knowledge_base: List[Dict],
-                                  context: ProjectContext) -> ScenarioResult:
-    proposal_categories = defaultdict(float)
-    for k, v in tokenomics.tokenomics_parameters.allocation.items():
-        proposal_categories[normalize_allocation_key(k)] += v
-
-    best_match = None
-    best_overlap = -1.0
-    for project in knowledge_base:
-        allocation = project.get('tokenomics', {}).get('allocation', {})
-        if not isinstance(allocation, dict):
-            continue
-        normalized = normalize_allocation_dict(allocation)
-        overlap = sum(min(proposal_categories.get(cat, 0.0), v) for cat, v in normalized.items())
-        if overlap > best_overlap:
-            best_overlap = overlap
-            best_match = (project, normalized)
-
-    base_supply = get_initial_supply(tokenomics)
-    milestones = [0, 12, 24, 36, 48, 60]
-    if best_match:
-        project, _ = best_match
-        description = f"Historical Pattern anchored on {project.get('project', 'unknown')} allocations."
-        notes = [
-            f"Reference token: {project.get('token', 'N/A')}",
-            f"Overlap score: {best_overlap:.1f}%",
-            "Used to anchor expected distribution pressures.",
-        ]
-    else:
-        description = "No strong historical analog; using neutral pattern."
-        notes = ["Proceeding with generic release curve."]
-
-    emission_curve = generate_emission_curve(
-        context.economic_signals.get("emission_style", "steady"), len(milestones))
-    supply_over_time = [base_supply * 0.4 + base_supply * curve for curve in emission_curve]
-    return ScenarioResult(name="Historical Pattern", description=description,
-                          supply_over_time=supply_over_time, notes=notes)
-
-
-def run_market_scenarios_module(tokenomics: GeneratedTokenomics,
-                                context: ProjectContext) -> List[ScenarioResult]:
-    base_supply = get_initial_supply(tokenomics)
-    milestones = [0, 12, 24, 36, 48, 60]
-    demand_multiplier = context.economic_signals.get("demand_multiplier", 1.0)
-    burn_rate = context.economic_signals.get("burn_rate", 0.01)
-    emission_rate = context.economic_signals.get("emission_rate", 0.08)
-
-    scenarios = []
-    for name, growth_bias, burn_bias in [
-        ("Bull Market", 0.05, -0.005),
-        ("Neutral Market", 0.0, 0.0),
-        ("Bear Market", -0.03, 0.01),
-    ]:
-        supply_curve = []
-        circulating = base_supply * 0.35
-        for _ in milestones:
-            growth = emission_rate + growth_bias
-            burn = max(burn_rate + burn_bias, 0)
-            circulating = min(base_supply, circulating * (1 + growth * demand_multiplier) * (1 - burn))
-            supply_curve.append(circulating)
-        scenarios.append(ScenarioResult(
-            name=name,
-            description=f"Assumes {name.lower()} demand with {growth*100:.0f}% release cadence.",
-            supply_over_time=supply_curve,
-            notes=[f"Burn pressure {burn*100:.1f}% per period."],
-        ))
-    return scenarios
-
-
-def run_stress_testing_module(tokenomics: GeneratedTokenomics,
-                              context: ProjectContext) -> List[ScenarioResult]:
-    base_supply = get_initial_supply(tokenomics)
+    Total: C(m) = sum_i C_i(m)
+    Locked: L(m) = S - C(m)
+    """
     alloc = tokenomics.tokenomics_parameters.allocation
     vesting = tokenomics.tokenomics_parameters.vesting
+    S = get_initial_supply(tokenomics)
 
-    large_unlock = max(alloc.values()) if alloc else 20.0
-    cliffs = [v.cliff_months for v in vesting.values() if v.cliff_months is not None]
-    cliff_month = min(cliffs) if cliffs else 12
+    months = list(range(horizon_months + 1))  # [0, 1, 2, ..., 60]
+    category_circulating: Dict[str, List[float]] = {}
+    circulating_supply: List[float] = []
+    locked_supply: List[float] = []
 
-    volatility_bias = context.economic_signals.get("volatility_bias", 1.0)
-    shock = min(max(volatility_bias - 1, -0.5), 0.5)
+    # Compute T_i for each category
+    token_amounts = {}
+    for cat, pct in alloc.items():
+        token_amounts[cat] = (pct / 100.0) * S
 
-    bear_supply = [base_supply * (0.3 + shock), base_supply * (0.35 + shock),
-                   base_supply * 0.65, base_supply * 0.7, base_supply * 0.75, base_supply * 0.8]
-    bull_supply = [base_supply * 0.35, base_supply * (0.45 + shock),
-                   base_supply * 0.6, base_supply * 0.7, base_supply * 0.78, base_supply * 0.85]
+    # Compute C_i(m) for each category and month
+    for cat, T_i in token_amounts.items():
+        detail = vesting.get(cat)
+        cat_circ = []
 
-    return [
-        ScenarioResult(
-            name="Stress - Bear Shock",
-            description="Cliff expiry plus liquidity drought stress test.",
-            supply_over_time=bear_supply,
-            notes=[f"Models {large_unlock:.1f}% unlock at month {cliff_month}.",
-                   "Liquidity dries up for 2 quarters post unlock."],
-        ),
-        ScenarioResult(
-            name="Stress - Bull Overheating",
-            description="Sustained demand pressure with accelerated usage burns.",
-            supply_over_time=bull_supply,
-            notes=["High throughput scenario with validators saturated.",
-                   "Protocol-owned liquidity buffers mitigate dumps."],
-        ),
+        for m in months:
+            if not detail or (detail.cliff_months == 0 and detail.vesting_months == 0):
+                # No vesting: immediately circulating
+                cat_circ.append(T_i)
+            else:
+                c_i = detail.cliff_months
+                d_i = detail.vesting_months
+                if m < c_i:
+                    cat_circ.append(0.0)
+                elif d_i <= 0:
+                    # Zero duration means immediate unlock after cliff
+                    cat_circ.append(T_i)
+                else:
+                    progress = min((m - c_i) / d_i, 1.0)
+                    cat_circ.append(T_i * progress)
+
+        category_circulating[cat] = cat_circ
+
+    # Aggregate C(m) and L(m)
+    for idx in range(len(months)):
+        total_circ = sum(
+            category_circulating[cat][idx] for cat in category_circulating
+        )
+        circulating_supply.append(total_circ)
+        locked_supply.append(S - total_circ)
+
+    # Derived metrics
+    initial_circ_pct = (circulating_supply[0] / S * 100) if S > 0 else 0.0
+    year1_circ_pct = (circulating_supply[min(12, horizon_months)] / S * 100) if S > 0 else 0.0
+    year2_circ_pct = (circulating_supply[min(24, horizon_months)] / S * 100) if S > 0 else 0.0
+
+    # Full unlock month (>= 99% circulating)
+    full_unlock_month = None
+    for m in months:
+        if circulating_supply[m] >= 0.99 * S:
+            full_unlock_month = m
+            break
+
+    # Year 1 inflation proxy: (C(12) - C(0)) / C(0) * 100
+    year1_inflation = None
+    c0 = circulating_supply[0]
+    c12 = circulating_supply[min(12, horizon_months)]
+    if c0 > 0:
+        year1_inflation = ((c12 - c0) / c0) * 100
+    elif c12 > 0:
+        year1_inflation = float('inf')  # From zero to non-zero
+
+    return SupplyReleaseResult(
+        months=months,
+        circulating_supply=circulating_supply,
+        locked_supply=locked_supply,
+        category_circulating=category_circulating,
+        initial_circulating_pct=initial_circ_pct,
+        year1_circulating_pct=year1_circ_pct,
+        year2_circulating_pct=year2_circ_pct,
+        full_unlock_month=full_unlock_month,
+        year1_inflation_proxy=year1_inflation,
+    )
+
+
+# ── 2) Fairness Evaluation (Section III.D.2) ────────────────
+
+def evaluate_fairness(
+    supply_release: SupplyReleaseResult,
+    tokenomics: GeneratedTokenomics,
+) -> FairnessEvaluationResult:
+    """
+    Assess fairness drift over checkpoints: month 0, 12, 24, and full unlock.
+
+    I(m) = C_insider(m) / C(m)
+    D(m) = C_distributed(m) / C(m)
+    Gini(m) = Gini(C_1(m), C_2(m), ..., C_k(m))
+    """
+    alloc = tokenomics.tokenomics_parameters.allocation
+    cat_circ = supply_release.category_circulating
+    total_circ = supply_release.circulating_supply
+
+    # Determine checkpoint months
+    checkpoints = [0, 12, 24]
+    full_unlock = supply_release.full_unlock_month
+    if full_unlock is not None and full_unlock not in checkpoints:
+        checkpoints.append(full_unlock)
+    # Ensure we don't exceed the simulation horizon
+    max_month = len(supply_release.months) - 1
+    checkpoints = [m for m in checkpoints if m <= max_month]
+
+    snapshots: List[FairnessSnapshot] = []
+
+    for m in checkpoints:
+        C_m = total_circ[m]
+        if C_m <= 0:
+            snapshots.append(FairnessSnapshot(
+                month=m, insider_share=0.0, distributed_share=0.0, gini=0.0,
+            ))
+            continue
+
+        # Compute insider and distributed circulating
+        insider_circ = sum(
+            cat_circ[k][m] for k in cat_circ if is_insider_category(k)
+        )
+        distributed_circ = sum(
+            cat_circ[k][m] for k in cat_circ if is_distributed_category(k)
+        )
+
+        I_m = insider_circ / C_m
+        D_m = distributed_circ / C_m
+
+        # Gini over all category circulating balances
+        category_balances = [cat_circ[k][m] for k in cat_circ]
+        gini_m = calculate_gini(category_balances)
+
+        snapshots.append(FairnessSnapshot(
+            month=m, insider_share=I_m, distributed_share=D_m, gini=gini_m,
+        ))
+
+    # Fairness drift = max insider share - initial insider share
+    if len(snapshots) >= 2:
+        insider_shares = [s.insider_share for s in snapshots]
+        drift = max(insider_shares) - insider_shares[0]
+    else:
+        drift = 0.0
+
+    return FairnessEvaluationResult(snapshots=snapshots, fairness_drift=drift)
+
+
+# ── 3) Sustainability Stress Testing (Section III.D.3) ───────
+
+def _compute_supply_demand_ratio(
+    circulating_supply: List[float],
+    growth_rate: float,
+    horizon_months: int = 12,
+) -> tuple[List[float], float]:
+    """
+    Compute Supply-Demand Ratio (SDR) over a given horizon.
+
+    Args:
+        circulating_supply: List of circulating supply at each month
+        growth_rate: Monthly demand growth rate (e.g., 0.05 for 5%)
+        horizon_months: Number of months to compute ratio over (default 12)
+
+    Returns:
+        (sdr_list, max_sdr): List of SDR values and maximum SDR over horizon
+    """
+    if not circulating_supply or circulating_supply[0] <= 0:
+        return [], 0.0
+
+    initial_supply = circulating_supply[0]
+    demand = [initial_supply]  # Initial demand = initial circulating supply
+    sdr_list = [1.0]  # At month 0, SDR = 1.0
+
+    months_to_compute = min(horizon_months, len(circulating_supply) - 1)
+    for m in range(1, months_to_compute + 1):
+        # Demand grows (or shrinks if growth_rate is negative)
+        demand_m = demand[m - 1] * (1.0 + growth_rate)
+        demand.append(demand_m)
+
+        # SDR = circulating supply / demand
+        sdr_m = circulating_supply[m] / demand_m if demand_m > 0 else float('inf')
+        sdr_list.append(sdr_m)
+
+    max_sdr = max(sdr_list) if sdr_list else 0.0
+    return sdr_list, max_sdr
+
+
+def _calculate_max_monthly_spike(
+    circulating_supply: List[float],
+) -> tuple[float, int]:
+    """
+    Calculate the largest month-over-month supply spike.
+
+    Returns:
+        (max_inflation, shock_month): Maximum monthly inflation % and the month it occurs
+    """
+    max_inflation = 0.0
+    shock_month = 0
+
+    for m in range(1, len(circulating_supply)):
+        if circulating_supply[m - 1] > 0:
+            inflation = (circulating_supply[m] - circulating_supply[m - 1]) / circulating_supply[m - 1]
+            if inflation > max_inflation:
+                max_inflation = inflation
+                shock_month = m
+
+    return max_inflation, shock_month
+
+
+def run_stress_testing(
+    tokenomics: GeneratedTokenomics,
+    supply_release: SupplyReleaseResult,
+    context: ProjectContext,
+) -> StressTestResult:
+    """
+    Evaluate proposal under 5 predefined scenarios using data-driven analysis
+    of simulated supply release curves.
+
+    Enhancement A: Data-Driven Unlock Shock
+      - Detects largest month-over-month supply spike
+      - Fails if any single month dumps >15% new supply
+
+    Enhancement B: Sell Pressure via Supply-Demand Ratio (SDR)
+      - Models demand growth per scenario (Bull: +5%, Neutral: +1%, Bear: -2%)
+      - Unlock Shock: -5% at shock month, then flat
+      - Liquidity Pressure: +0.5% with 3x sell pressure multiplier
+      - Applies modifiers for burn, reserves, vesting duration
+
+    Enhancement C: No Free Passes
+      - Bull/Neutral now use SDR framework instead of automatic pass
+      - Bull fails if Year 1 inflation proxy > 200% (dilutive)
+      - Neutral fails if cumulative supply outpaces demand > 50%
+
+    Pass criterion: viable in >= 70% of scenarios.
+    """
+    alloc = tokenomics.tokenomics_parameters.allocation
+    vesting = tokenomics.tokenomics_parameters.vesting
+    S = get_initial_supply(tokenomics)
+
+    circulating_supply = supply_release.circulating_supply
+
+    # Extract design features for resilience assessment
+    reserve_pct = sum(
+        v for k, v in alloc.items()
+        if normalize_allocation_key(k) in {"Ecosystem", "Reserve"}
+    )
+    has_burn = tokenomics.tokenomics_parameters.burn is not None
+
+    avg_insider_vesting = 0
+    insider_vest_count = 0
+    for k in alloc:
+        if is_insider_category(k) and k in vesting:
+            avg_insider_vesting += vesting[k].vesting_months
+            insider_vest_count += 1
+    if insider_vest_count > 0:
+        avg_insider_vesting /= insider_vest_count
+
+    # ENHANCEMENT A: Calculate data-driven unlock shock metrics
+    max_monthly_spike, shock_month = _calculate_max_monthly_spike(circulating_supply)
+
+    # Year 1 circulating growth and inflation proxy
+    c0 = circulating_supply[0]
+    c12 = circulating_supply[min(12, len(circulating_supply) - 1)]
+    year1_inflation = supply_release.year1_inflation_proxy
+    if year1_inflation is None:
+        year1_inflation = ((c12 - c0) / max(c0, 1) * 100) if c0 > 0 else 0.0
+
+    scenarios: List[StressScenarioResult] = []
+
+    # ── Bull scenario (ENHANCEMENT C: Now uses SDR framework) ────────
+    _, max_sdr_bull = _compute_supply_demand_ratio(
+        circulating_supply, growth_rate=0.05, horizon_months=12
+    )
+
+    bull_sdr_threshold = 1.5  # Bull can tolerate up to 1.5x SDR
+    # Apply modifiers
+    if reserve_pct > 10.0:
+        bull_sdr_threshold += 0.1
+    if avg_insider_vesting > 24:
+        bull_sdr_threshold += 0.1
+
+    bull_sdr_viable = max_sdr_bull <= bull_sdr_threshold
+    bull_dilution_viable = year1_inflation <= 200.0  # ENHANCEMENT C check
+    bull_viable = bull_sdr_viable and bull_dilution_viable
+
+    bull_sufficient = reserve_pct >= 5.0 or has_burn
+    bull_recovery = None
+    bull_notes = ["Sustained demand growth (+5%/month), high market confidence."]
+
+    if not bull_dilution_viable:
+        bull_notes.append(
+            f"Year 1 inflation proxy {year1_inflation:.0f}% exceeds 200%; "
+            "supply unlocks too aggressive—dilutive even in bull conditions."
+        )
+
+    if not bull_sdr_viable:
+        bull_notes.append(
+            f"Max SDR {max_sdr_bull:.2f} exceeds threshold {bull_sdr_threshold:.2f}; "
+            "supply outpaces demand despite growth."
+        )
+        bull_recovery = 3
+
+    scenarios.append(StressScenarioResult(
+        name="Bull", description="High demand with sustained market growth.",
+        viable=bull_viable, sufficient_reserves=bull_sufficient,
+        recovery_months=bull_recovery, notes=bull_notes,
+    ))
+
+    # ── Neutral scenario (ENHANCEMENT C: Now uses SDR framework) ─────
+    _, max_sdr_neutral = _compute_supply_demand_ratio(
+        circulating_supply, growth_rate=0.01, horizon_months=12
+    )
+
+    # Cumulative check: does cumulative supply outpace cumulative demand > 50%?
+    cumulative_supply = sum(circulating_supply[:13]) if len(circulating_supply) > 12 else sum(circulating_supply)
+    cumulative_demand = (
+        c0 * sum((1.01 ** m) for m in range(13)) if c0 > 0 else 0
+    )
+    cumulative_outpace = (cumulative_supply - cumulative_demand) / max(cumulative_demand, 1)
+
+    neutral_sdr_threshold = 1.5  # Neutral uses same threshold as Bull
+    if reserve_pct > 10.0:
+        neutral_sdr_threshold += 0.1
+    if avg_insider_vesting > 24:
+        neutral_sdr_threshold += 0.1
+
+    neutral_sdr_viable = max_sdr_neutral <= neutral_sdr_threshold
+    neutral_cumulative_viable = cumulative_outpace <= 0.50  # ENHANCEMENT C check
+    neutral_viable = neutral_sdr_viable and neutral_cumulative_viable
+
+    neutral_sufficient = reserve_pct >= 10.0
+    neutral_notes = ["Stable market conditions (+1%/month demand)."]
+
+    if not neutral_cumulative_viable:
+        neutral_notes.append(
+            f"Cumulative supply outpaces demand by {cumulative_outpace*100:.1f}% over 12 months; "
+            "not viable in stable conditions."
+        )
+
+    if not neutral_sdr_viable:
+        neutral_notes.append(
+            f"Max SDR {max_sdr_neutral:.2f} exceeds threshold {neutral_sdr_threshold:.2f}."
+        )
+
+    if not neutral_sufficient:
+        neutral_notes.append(f"Reserve allocation {reserve_pct:.1f}% may be thin for sustained operations.")
+
+    scenarios.append(StressScenarioResult(
+        name="Neutral", description="Stable market with moderate participation.",
+        viable=neutral_viable, sufficient_reserves=neutral_sufficient,
+        recovery_months=None, notes=neutral_notes,
+    ))
+
+    # ── Bear scenario ────────────────────────────────────────
+    _, max_sdr_bear = _compute_supply_demand_ratio(
+        circulating_supply, growth_rate=-0.02, horizon_months=12
+    )
+
+    bear_sdr_threshold = 2.0  # Bear: higher tolerance (declining demand)
+    if reserve_pct > 10.0:
+        bear_sdr_threshold -= 0.1  # Reserves improve resilience
+    if avg_insider_vesting > 24:
+        bear_sdr_threshold -= 0.1  # Longer vesting improves resilience
+
+    bear_viable = max_sdr_bear <= bear_sdr_threshold
+    bear_sufficient = reserve_pct >= 15.0
+    bear_recovery = None
+
+    bear_notes = ["Declining demand (-2%/month), negative market sentiment."]
+    if not bear_viable:
+        bear_notes.append(
+            f"Max SDR {max_sdr_bear:.2f} exceeds threshold {bear_sdr_threshold:.2f}; "
+            "cannot sustain bear market downturn."
+        )
+        bear_recovery = 18
+    else:
+        bear_recovery = max(6, int(12 * (1 - reserve_pct / 30)))
+
+    if avg_insider_vesting < 24:
+        bear_notes.append(
+            f"Short insider vesting ({avg_insider_vesting:.0f}m) amplifies sell pressure in bear market."
+        )
+
+    scenarios.append(StressScenarioResult(
+        name="Bear", description="Sustained demand decline and negative sentiment.",
+        viable=bear_viable, sufficient_reserves=bear_sufficient,
+        recovery_months=bear_recovery, notes=bear_notes,
+    ))
+
+    # ── Unlock shock scenario (ENHANCEMENT A: Data-driven) ──────────
+    # Model shock: -5% demand drop at shock month, then flat
+    sdr_shock = [1.0]
+    demand_shock = [c0] if c0 > 0 else [1.0]
+
+    for m in range(1, min(len(circulating_supply), 13)):
+        if m == shock_month:
+            # Demand drops 5% at shock month
+            demand_m = demand_shock[m - 1] * 0.95
+        else:
+            # Flat demand after shock
+            demand_m = demand_shock[m - 1]
+        demand_shock.append(demand_m)
+
+        sdr_m = circulating_supply[m] / demand_m if demand_m > 0 else float('inf')
+        sdr_shock.append(sdr_m)
+
+    max_sdr_shock = max(sdr_shock) if sdr_shock else 0.0
+    shock_sdr_threshold = 2.0
+    if reserve_pct > 10.0:
+        shock_sdr_threshold -= 0.1
+
+    # ENHANCEMENT A: Major spike triggers failure
+    shock_spike_viable = max_monthly_spike < 0.15  # Fails if spike > 15%
+    shock_sdr_viable = max_sdr_shock <= shock_sdr_threshold
+    shock_viable = shock_spike_viable and shock_sdr_viable
+
+    shock_sufficient = reserve_pct >= 10.0
+    shock_recovery = None
+
+    shock_notes = [
+        f"Largest month-over-month supply spike: {max_monthly_spike*100:.1f}% at month {shock_month}.",
     ]
 
+    if not shock_spike_viable:
+        shock_notes.append(
+            f"Month {shock_month} spike of {max_monthly_spike*100:.1f}% exceeds 15% threshold; "
+            "severe supply shock risk."
+        )
+        shock_recovery = 12
 
-def evaluate_gini_layers(tokenomics: GeneratedTokenomics,
-                         scenarios: List[ScenarioResult]) -> GiniLayerResult:
-    alloc = tokenomics.tokenomics_parameters.allocation
-    overall_gini = calculate_gini(list(alloc.values()))
+    if not shock_sdr_viable:
+        shock_notes.append(
+            f"Shock SDR {max_sdr_shock:.2f} exceeds threshold {shock_sdr_threshold:.2f}."
+        )
+        if shock_recovery is None:
+            shock_recovery = 9
 
-    vesting_map = tokenomics.tokenomics_parameters.vesting
-    circulating_weights = []
-    for k, pct in alloc.items():
-        vesting_months = 12
-        if k in vesting_map:
-            vesting_months = vesting_map[k].vesting_months or 12
-        weight = 1.0 if vesting_months <= 12 else (0.7 if vesting_months <= 24 else 0.5)
-        circulating_weights.append(pct * weight)
-    circulating_gini = calculate_gini(circulating_weights)
+    if shock_viable and shock_recovery is None:
+        shock_recovery = max(3, int(6 * max_monthly_spike / 0.10))
 
-    governance_buckets = []
-    for k, pct in alloc.items():
-        cat = normalize_allocation_key(k)
-        if cat in {"Team", "Investors", "Advisors", "Community"}:
-            influence = pct * 0.8 if cat == "Community" else pct
-            governance_buckets.append(influence)
-    governance_gini = calculate_gini(governance_buckets)
+    scenarios.append(StressScenarioResult(
+        name="Unlock Shock",
+        description="Cliff expiry triggers concentrated token release.",
+        viable=shock_viable, sufficient_reserves=shock_sufficient,
+        recovery_months=shock_recovery, notes=shock_notes,
+    ))
 
-    return GiniLayerResult(overall_gini=overall_gini, circulating_gini=circulating_gini,
-                           governance_gini=governance_gini)
-
-
-def simulate_supply_dynamics(tokenomics: GeneratedTokenomics,
-                             scenarios: List[ScenarioResult],
-                             context: ProjectContext) -> SupplyDynamicsResult:
-    base_supply = get_initial_supply(tokenomics)
-    months = list(range(0, 61, 6))
-    circulating_supply, locked_supply, burned_supply = [], [], []
-
-    emission_curve = generate_emission_curve(
-        context.economic_signals.get("emission_style", "steady"), len(months))
-    alloc = tokenomics.tokenomics_parameters.allocation
-    vesting_map = tokenomics.tokenomics_parameters.vesting
-
-    for idx, month in enumerate(months):
-        released_ratio = 0.0
-        for k, pct in alloc.items():
-            vest = vesting_map[k].vesting_months if k in vesting_map and vesting_map[k].vesting_months else 24
-            released = min(month / vest, 1.0)
-            released_ratio += (pct / 100) * released
-        circulating = base_supply * released_ratio * (1 + emission_curve[idx] * 0.05)
-        burn = circulating * context.economic_signals.get("burn_rate", 0.01) * (month / 60)
-        circulating_supply.append(circulating - burn)
-        burned_supply.append(burn)
-        locked_supply.append(max(base_supply - circulating, 0))
-
-    return SupplyDynamicsResult(months=months, circulating_supply=circulating_supply,
-                                locked_supply=locked_supply, burned_supply=burned_supply)
-
-
-def compare_with_baselines(tokenomics: GeneratedTokenomics,
-                           knowledge_base: List[Dict]) -> BaselineComparisonResult:
-    baselines = generate_dynamic_baseline_models(knowledge_base)['baseline_models']
-    proposal_totals = defaultdict(float)
-    for k, v in tokenomics.tokenomics_parameters.allocation.items():
-        proposal_totals[normalize_allocation_key(k)] += v
-
-    best_name = None
-    best_distance = float('inf')
-    best_allocation = None
-    for name, allocation in baselines.items():
-        shared = set(allocation.keys()) | set(proposal_totals.keys())
-        distance = sum(abs(proposal_totals.get(c, 0) - allocation.get(c, 0)) for c in shared)
-        if distance < best_distance:
-            best_distance = distance
-            best_name = name
-            best_allocation = allocation
-
-    similarities, differences = [], []
-    if best_allocation:
-        for cat, value in best_allocation.items():
-            pv = proposal_totals.get(cat, 0.0)
-            if abs(pv - value) <= 5:
-                similarities.append(f"{cat}: proposal {pv:.1f}% vs baseline {value:.1f}% (aligned)")
-            else:
-                differences.append(f"{cat}: proposal {pv:.1f}% vs baseline {value:.1f}%")
-
-    return BaselineComparisonResult(baseline_name=best_name or "Knowledge Base Average",
-                                    similarities=similarities, differences=differences)
-
-
-# ── Main simulation orchestrator ──────────────────────────────
-
-def run_simulations_layer(tokenomics: GeneratedTokenomics,
-                          context: ProjectContext,
-                          knowledge_base: List[Dict],
-                          dataset: Optional[List[Dict]] = None,
-                          mc_replications: int = 100) -> SimulationReport:
-    historical = run_historical_pattern_module(tokenomics, knowledge_base, context)
-    market = run_market_scenarios_module(tokenomics, context)
-    stress = run_stress_testing_module(tokenomics, context)
-    scenarios = [historical] + market + stress
-
-    gini_layers = evaluate_gini_layers(tokenomics, scenarios)
-    supply_dynamics = simulate_supply_dynamics(tokenomics, scenarios, context)
-    baseline_comparison = compare_with_baselines(tokenomics, knowledge_base)
-    fairness_metrics = calculate_temporal_fairness(tokenomics)
-    governance_risk = evaluate_governance_risk(tokenomics, fairness_metrics)
-    real_project_validation = validate_against_real_projects(tokenomics, knowledge_base, dataset)
-
-    # ── Monte Carlo ABM (N replications) ──────────────────────
-    alloc = tokenomics.tokenomics_parameters.allocation
-    vesting_map = tokenomics.tokenomics_parameters.vesting
-    initial_supply = get_initial_supply(tokenomics)
-
-    mc_result = run_monte_carlo_abm(
-        proposal_initial_supply=initial_supply,
-        allocation=alloc,
-        vesting=vesting_map,
-        normalize_key_fn=normalize_allocation_key,
-        context_signals=context.economic_signals,
-        n_replications=mc_replications,
-        months=24,
+    # ── Liquidity pressure scenario ──────────────────────────
+    liquidity_pct = sum(
+        v for k, v in alloc.items()
+        if normalize_allocation_key(k) in {"Liquidity", "Staking"}
     )
 
-    # Use representative single run for backward-compatible agent_market_detail
-    agent_market_detail = mc_result.representative_run
-
-    # ── Enrich fairness metrics with agent-level ABM results ──
-    fairness_metrics.agent_gini_final = mc_result.mean_final_gini
-    fairness_metrics.agent_theil_final = float(mc_result.mean_theil_trajectory[-1]) if mc_result.mean_theil_trajectory else None
-    fairness_metrics.agent_atkinson_final = float(mc_result.mean_atkinson_trajectory[-1]) if mc_result.mean_atkinson_trajectory else None
-    fairness_metrics.agent_gini_ci_low = float(mc_result.p5_gini_trajectory[-1]) if mc_result.p5_gini_trajectory else None
-    fairness_metrics.agent_gini_ci_high = float(mc_result.p95_gini_trajectory[-1]) if mc_result.p95_gini_trajectory else None
-
-    dataset_overview = dataset_outcome_overview(dataset) if dataset else None
-
-    # ── Fairness report (now with agent-level metrics) ────────
-    fairness_report = (
-        f"Category-level: T0 Gini {fairness_metrics.t0_gini:.3f}, "
-        f"12m {fairness_metrics.gini_12m:.3f}, 24m {fairness_metrics.gini_24m:.3f}. "
-        f"Governance influence index {fairness_metrics.governance_influence_index:.2f}. "
-        f"Agent-level (MC N={mc_replications}): "
-        f"Gini {mc_result.mean_final_gini:.3f} "
-        f"[{mc_result.p5_gini_trajectory[-1]:.3f}, {mc_result.p95_gini_trajectory[-1]:.3f}] 90% CI, "
-        f"Theil-T {mc_result.mean_theil_trajectory[-1]:.3f}, "
-        f"Atkinson(0.5) {mc_result.mean_atkinson_trajectory[-1]:.3f}. "
-        f"Price stability coefficient: {mc_result.price_stability_coefficient:.3f}."
-    )
-    if dataset_overview and dataset_overview.get("incident_rate") is not None:
-        fairness_report += f" Historical incident rate baseline {dataset_overview['incident_rate']*100:.1f}%."
-
-    validated_model_summary = (
-        f"Monte Carlo ABM ({mc_replications} runs, {len(mc_result.mean_price_path)}-month horizon) "
-        f"validates model coherence. Mean max drawdown {mc_result.mean_max_drawdown:.3f} "
-        f"± {mc_result.std_max_drawdown:.3f}. Price volatility σ={mc_result.mean_price_volatility:.3f}. "
-        f"Price stability coefficient={mc_result.price_stability_coefficient:.3f}."
+    # ENHANCEMENT B: Sell pressure proxy with 3x multiplier and reduced growth
+    _, max_sdr_liq = _compute_supply_demand_ratio(
+        circulating_supply, growth_rate=0.005, horizon_months=12
     )
 
-    # ── Recommendations (incorporating ABM insights) ──────────
+    # Apply 3x sell pressure multiplier: effective SDR *= 3
+    max_sdr_liq_adjusted = max_sdr_liq * 3.0
+
+    liq_sdr_threshold = 1.5
+    if reserve_pct > 10.0:
+        liq_sdr_threshold += 0.1
+    if has_burn:
+        liq_sdr_threshold += 0.15  # Burn mechanism improves tolerance
+
+    liq_sdr_viable = max_sdr_liq_adjusted <= liq_sdr_threshold
+    liq_reserve_viable = liquidity_pct >= 5.0 and (has_burn or reserve_pct >= 10.0)
+    liq_viable = liq_sdr_viable and liq_reserve_viable
+
+    liq_sufficient = liquidity_pct >= 8.0
+    liq_recovery = None
+
+    liq_notes = [
+        f"Dedicated liquidity allocation: {liquidity_pct:.1f}%. "
+        f"Sell pressure 3x multiplier active (adjusted SDR: {max_sdr_liq_adjusted:.2f})."
+    ]
+
+    if not liq_sdr_viable:
+        liq_notes.append(
+            f"Adjusted SDR {max_sdr_liq_adjusted:.2f} exceeds threshold {liq_sdr_threshold:.2f}; "
+            "insufficient market-making capacity."
+        )
+        liq_recovery = 12
+
+    if not liq_reserve_viable:
+        liq_notes.append(
+            f"Insufficient liquidity ({liquidity_pct:.1f}%) and no burn/reserve buffer."
+        )
+        if liq_recovery is None:
+            liq_recovery = 12
+    elif liq_viable:
+        liq_recovery = max(3, int(9 * (1 - liquidity_pct / 15)))
+
+    scenarios.append(StressScenarioResult(
+        name="Liquidity Pressure",
+        description="Market liquidity dries up, widening spreads.",
+        viable=liq_viable, sufficient_reserves=liq_sufficient,
+        recovery_months=liq_recovery, notes=liq_notes,
+    ))
+
+    # Pass criterion: viable in >= 70% of scenarios
+    n_viable = sum(1 for s in scenarios if s.viable)
+    pass_rate = n_viable / len(scenarios)
+
+    return StressTestResult(
+        scenarios=scenarios,
+        pass_rate=pass_rate,
+        passed=pass_rate >= 0.70,
+    )
+
+
+# ── Generate recommendations ─────────────────────────────────
+
+def generate_recommendations(
+    fairness_eval: FairnessEvaluationResult,
+    stress_test: StressTestResult,
+    supply_release: SupplyReleaseResult,
+) -> List[str]:
+    """
+    Generate actionable recommendations based on evaluation results.
+    References data-driven findings from stress testing (e.g., specific shock months,
+    supply-demand ratio breaches) rather than generic observations.
+    """
     recommendations = []
-    if gini_layers.governance_gini > 0.25:
-        recommendations.append("Introduce delegated voting caps or quadratic voting to offset governance concentration.")
-    if mc_result.mean_final_gini > 0.6:
+
+    # Fairness drift
+    if fairness_eval.fairness_drift > 0.15:
         recommendations.append(
-            f"Agent-level Gini ({mc_result.mean_final_gini:.3f}) exceeds 0.6 threshold; "
-            "consider broader token distribution or community airdrops."
+            f"Fairness drift of {fairness_eval.fairness_drift:.2f} detected. "
+            "Consider staggering insider unlocks or adding community distribution events."
         )
-    if supply_dynamics.circulating_supply[-1] / initial_supply < 0.8:
-        recommendations.append("Extend emissions beyond 60 months or add sinks to avoid idle supply build-up.")
-    if agent_market_detail and min(agent_market_detail.liquidity_levels) < 0.2:
-        recommendations.append("Bolster liquidity reserves or stagger unlocks to avoid simulated liquidity floor breaches.")
-    if mc_result.mean_max_drawdown > 0.7:
+
+    # Gini at checkpoints
+    for snap in fairness_eval.snapshots:
+        if snap.gini > 0.60:
+            recommendations.append(
+                f"Gini coefficient {snap.gini:.3f} at month {snap.month} exceeds 0.60. "
+                "Consider broader token distribution mechanisms."
+            )
+            break
+
+    # Stress test failures with data-driven details
+    failed = [s for s in stress_test.scenarios if not s.viable]
+    if failed:
+        names = ", ".join(s.name for s in failed)
         recommendations.append(
-            f"Mean max drawdown ({mc_result.mean_max_drawdown:.1%}) is severe; "
-            "incorporate circuit breakers or protocol-owned liquidity buffers."
+            f"Failed stress scenarios: {names}. "
+            "Strengthen reserves, add burn mechanisms, or extend vesting."
         )
-    if mc_result.price_stability_coefficient < 0.4:
+
+        # Add specific insights from failed scenarios
+        for scenario in failed:
+            # Extract specific metrics from scenario notes
+            if "Unlock Shock" in scenario.name:
+                for note in scenario.notes:
+                    if "spike" in note.lower() and "month" in note.lower():
+                        recommendations.append(
+                            f"  • {note} "
+                            "Mitigation: extend vesting cliff or reduce single allocation size."
+                        )
+                        break
+            elif "Bear" in scenario.name:
+                if scenario.recovery_months:
+                    recommendations.append(
+                        f"  • Bear scenario recovery requires {scenario.recovery_months} months. "
+                        "Strengthen reserve buffer or implement token burn to reduce supply pressure."
+                    )
+            elif "Liquidity" in scenario.name:
+                recommendations.append(
+                    f"  • {scenario.name} scenario fails; increase dedicated liquidity allocation "
+                    "or implement dynamic burn tied to volume thresholds."
+                )
+
+    # Supply release metrics
+    if supply_release.year1_inflation_proxy and supply_release.year1_inflation_proxy > 200:
         recommendations.append(
-            f"Price stability coefficient ({mc_result.price_stability_coefficient:.3f}) indicates "
-            "high volatility; consider adding protocol-owned liquidity or treasury buyback buffers."
+            f"Year 1 inflation proxy {supply_release.year1_inflation_proxy:.0f}% is very high. "
+            "Consider longer vesting schedules to reduce early dilution, or stagger cliff releases."
         )
-    if dataset_overview and dataset_overview.get("drawdowns"):
-        median_drawdown = dataset_overview["drawdowns"].get("median")
-        if median_drawdown and median_drawdown > 0.5:
-            recommendations.append("Historical drawdowns above 50% suggest elevated volatility risk.")
+
+    # Check for unlock shock in notes (data-driven finding)
+    for scenario in stress_test.scenarios:
+        if scenario.name == "Unlock Shock":
+            for note in scenario.notes:
+                if "spike" in note.lower() and "month" in note.lower() and "%" in note:
+                    if not any("spike" in r.lower() for r in recommendations):
+                        recommendations.append(
+                            f"Supply release curve analysis: {note.split('.')[0]}. "
+                            "Recommend analyzing vesting schedules to smooth unlock curve."
+                        )
+                    break
+
     if not recommendations:
-        recommendations.append("Maintain current allocation but document KPI triggers for future reallocations.")
-    else:
-        recommendations.append("Run live governance drills before TGE to validate adaptive consent logic.")
+        recommendations.append(
+            "Design passes all stress tests. Maintain current allocation "
+            "and document KPI triggers (SDR thresholds, max monthly inflation) for future monitoring."
+        )
+
+    return recommendations
+
+
+# ── Main simulation orchestrator ─────────────────────────────
+
+def run_simulation_module(
+    tokenomics: GeneratedTokenomics,
+    context: ProjectContext,
+    knowledge_base: List[Dict],
+    dataset: Optional[List[Dict]] = None,
+) -> SimulationReport:
+    """
+    Run the complete simulation and evaluation module.
+    Integrates supply release, fairness evaluation, and stress testing.
+    """
+    # 1) Supply release simulation (60-month horizon)
+    supply_release = simulate_supply_release(tokenomics, horizon_months=60)
+
+    # 2) Fairness evaluation
+    fairness_eval = evaluate_fairness(supply_release, tokenomics)
+
+    # 3) Sustainability stress testing
+    stress_test = run_stress_testing(tokenomics, supply_release, context)
+
+    # 4) Generate recommendations
+    recommendations = generate_recommendations(
+        fairness_eval, stress_test, supply_release,
+    )
 
     return SimulationReport(
-        scenarios=scenarios, gini_layers=gini_layers, supply_dynamics=supply_dynamics,
-        baseline_comparison=baseline_comparison, fairness_report=fairness_report,
-        validated_model_summary=validated_model_summary, recommendations=recommendations,
-        fairness_metrics=fairness_metrics, governance_risk=governance_risk,
-        real_project_validation=real_project_validation,
-        agent_market_detail=agent_market_detail,
-        monte_carlo_result=mc_result,
+        supply_release=supply_release,
+        fairness_evaluation=fairness_eval,
+        stress_test=stress_test,
+        recommendations=recommendations,
     )
 
 
-# ── Backtesting helpers ───────────────────────────────────────
-
-def estimate_drawdown_from_prices(price_path: List[float]) -> Optional[float]:
-    if not price_path:
-        return None
-    peak = max(price_path)
-    trough = min(price_path)
-    if peak <= 0:
-        return None
-    return (peak - trough) / peak
-
-
-def estimate_inflation_from_supply(supply_result: SupplyDynamicsResult,
-                                   initial_supply: float) -> Optional[float]:
-    if not supply_result.circulating_supply:
-        return None
-    final_supply = supply_result.circulating_supply[-1]
-    if initial_supply <= 0:
-        return None
-    return (final_supply - initial_supply) / initial_supply

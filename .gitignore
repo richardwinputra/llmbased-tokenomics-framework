@@ -7,3 +7,6 @@ pipeline_exports/
 exported_charts/
 scenario_exports/
 OLD/
+experiment_results/
+figures/
+results/
