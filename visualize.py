@@ -6,7 +6,6 @@ Generates IEEE-style plots (Figures 5-8) for:
   - Figure 6: Circulating supply growth trajectories
   - Figure 7: Fairness drift (insider share + Gini over time)
   - Figure 8: Stress test scenario outcomes
-  - Supplementary: Ablation comparison
 
 All figures are publication-ready with:
   - Colorblind-friendly palettes (Okabe-Ito)
@@ -44,11 +43,11 @@ OKABE_ITO_PALETTE = [
 ]
 
 STRESS_COLORS = {
-    "bull": "#009E73",
-    "neutral": "#56B4E9",
-    "bear": "#D55E00",
-    "unlock_shock": "#F0E442",
-    "liquidity_pressure": "#CC79A7",
+    "Bull": "#009E73",
+    "Neutral": "#56B4E9",
+    "Bear": "#D55E00",
+    "Unlock Shock": "#F0E442",
+    "Liquidity Pressure": "#CC79A7",
 }
 
 FIGURE_SIZE_SINGLE = (8, 5)
@@ -296,7 +295,11 @@ def plot_fairness_drift(simulation_results: Union[str, List[Dict]], output_dir: 
     checkpoint_months = set()
 
     for result in results_list:
-        if isinstance(result, dict) and "fairness_evaluation" in result:
+        if not isinstance(result, dict):
+            continue
+
+        # Format 1: nested fairness_evaluation.snapshots
+        if "fairness_evaluation" in result:
             fair_eval = result["fairness_evaluation"]
             if "snapshots" in fair_eval:
                 for snap in fair_eval["snapshots"]:
@@ -304,6 +307,20 @@ def plot_fairness_drift(simulation_results: Union[str, List[Dict]], output_dir: 
                     if isinstance(snap, dict):
                         insider_shares.append((snap["month"], snap.get("insider_share", 0)))
                         gini_values.append((snap["month"], snap.get("gini", 0)))
+
+        # Format 2: flat checkpoint_results — reconstruct from aggregate metrics
+        elif result.get("status") == "Success" and "t0_gini" in result:
+            for month, gini_key, insider_key in [
+                (0, "t0_gini", "insider_share_t0"),
+                (12, "gini_12m", None),
+                (24, "gini_24m", None),
+            ]:
+                gini_val = result.get(gini_key)
+                if gini_val is not None:
+                    checkpoint_months.add(month)
+                    gini_values.append((month, gini_val))
+                    insider_val = result.get(insider_key, 0) if insider_key else 0
+                    insider_shares.append((month, insider_val))
 
     if not insider_shares or not gini_values:
         print(f"  Warning: No valid fairness data found in {simulation_results}")
@@ -389,24 +406,35 @@ def plot_stress_test_outcomes(simulation_results: Union[str, List[Dict]], output
     else:
         results_list = simulation_results
 
-    # Extract stress test results
+    # Extract stress test results — handle both data formats
     scenario_outcomes = {
-        "bull": [],
-        "neutral": [],
-        "bear": [],
-        "unlock_shock": [],
-        "liquidity_pressure": []
+        "Bull": [],
+        "Neutral": [],
+        "Bear": [],
+        "Unlock Shock": [],
+        "Liquidity Pressure": []
     }
 
     for result in results_list:
-        if isinstance(result, dict) and "stress_test" in result:
+        if not isinstance(result, dict):
+            continue
+
+        # Format 1: simulation_results.json — nested stress_test.scenarios
+        if "stress_test" in result:
             stress = result["stress_test"]
             if "scenarios" in stress:
                 for scenario in stress["scenarios"]:
-                    name = scenario.get("name", "").lower()
+                    name = scenario.get("name", "")
                     viable = scenario.get("viable", False)
                     if name in scenario_outcomes:
                         scenario_outcomes[name].append(1 if viable else 0)
+
+        # Format 2: checkpoint_results.json — flat scenario_details
+        elif "scenario_details" in result:
+            for name, details in result["scenario_details"].items():
+                if name in scenario_outcomes:
+                    viable = details.get("viable", False)
+                    scenario_outcomes[name].append(1 if viable else 0)
 
     # Calculate pass rates and confidence intervals
     scenarios = list(scenario_outcomes.keys())
@@ -446,7 +474,7 @@ def plot_stress_test_outcomes(simulation_results: Union[str, List[Dict]], output
                   yerr=errors, capsize=8, error_kw={"elinewidth": 2, "ecolor": "black"})
 
     # Labels and formatting
-    scenario_labels = [s.replace("_", " ").title() for s in scenarios]
+    scenario_labels = scenarios  # Already proper names
     ax.set_xticks(x_pos)
     ax.set_xticklabels(scenario_labels, fontsize=FONT_SIZE_TICK, rotation=15, ha="right")
     ax.set_ylabel("Pass Rate (%)", fontsize=FONT_SIZE_LABEL)
@@ -492,6 +520,17 @@ def generate_all_figures(data_dir: str, output_dir: str) -> None:
 
     # Figure 5: Allocation Distribution
     alloc_file = data_path / "allocation_results.csv"
+    # Fallback: build allocation CSV from batch_results.csv if it has the columns
+    if not alloc_file.exists():
+        batch_csv = data_path / "batch_results.csv"
+        if batch_csv.exists():
+            try:
+                df = pd.read_csv(batch_csv)
+                if all(col in df.columns for col in ["team_pct", "investor_pct", "insider_pct", "distributed_pct"]):
+                    alloc_file = batch_csv  # Use batch_results.csv directly
+            except Exception:
+                pass
+
     if alloc_file.exists():
         print("Figure 5: Allocation Distribution...")
         try:
@@ -499,10 +538,16 @@ def generate_all_figures(data_dir: str, output_dir: str) -> None:
         except Exception as e:
             print(f"  Error: {e}")
     else:
-        print(f"  Skipping (file not found: {alloc_file})")
+        print(f"  Skipping Fig 5 (no allocation data found)")
 
     # Figures 6, 7: Simulation results
     sim_file = data_path / "simulation_results.json"
+    # Fallback to checkpoint_results.json (which also has simulation data)
+    if not sim_file.exists():
+        checkpoint_file = data_path / "checkpoint_results.json"
+        if checkpoint_file.exists():
+            sim_file = checkpoint_file
+
     if sim_file.exists():
         print("Figure 6: Circulating Supply Growth...")
         try:
@@ -516,10 +561,16 @@ def generate_all_figures(data_dir: str, output_dir: str) -> None:
         except Exception as e:
             print(f"  Error: {e}")
     else:
-        print(f"  Skipping simulation figures (file not found: {sim_file})")
+        print(f"  Skipping simulation figures (no simulation data found)")
 
     # Figure 8: Stress Test Results
-    stress_file = data_path / "stress_test_results.json"
+    # Use simulation_results.json or checkpoint_results.json (both supported)
+    stress_file = data_path / "simulation_results.json"
+    if not stress_file.exists():
+        stress_file = data_path / "checkpoint_results.json"
+    if not stress_file.exists():
+        stress_file = data_path / "batch_results_full.json"
+
     if stress_file.exists():
         print("Figure 8: Stress Test Outcomes...")
         try:
@@ -527,7 +578,7 @@ def generate_all_figures(data_dir: str, output_dir: str) -> None:
         except Exception as e:
             print(f"  Error: {e}")
     else:
-        print(f"  Skipping (file not found: {stress_file})")
+        print(f"  Skipping Fig 8 (no stress test data found)")
 
     print(f"\nAll available figures generated in {output_dir}")
 
@@ -544,8 +595,8 @@ def main():
     parser.add_argument(
         "--data-dir", "-d",
         type=str,
-        default="./results",
-        help="Directory containing result CSV/JSON files (default: ./results)"
+        default="./experiment_results",
+        help="Directory containing result CSV/JSON files (default: ./experiment_results)"
     )
 
     parser.add_argument(

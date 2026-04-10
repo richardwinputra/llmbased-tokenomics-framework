@@ -102,6 +102,34 @@ def run_single(user_input, knowledge_base, dataset, project_summaries, seed):
             "notes": s.notes,
         }
 
+    # Detailed simulation data for visualization (Figs 6-8)
+    supply_release_data = {
+        "circulating_supply": sim_report.supply_release.circulating_supply,
+        "initial_circulating_pct": sim_report.supply_release.initial_circulating_pct,
+        "year1_circulating_pct": sim_report.supply_release.year1_circulating_pct,
+        "year2_circulating_pct": sim_report.supply_release.year2_circulating_pct,
+        "full_unlock_month": sim_report.supply_release.full_unlock_month,
+        "year1_inflation_proxy": sim_report.supply_release.year1_inflation_proxy,
+    }
+    fairness_data = {
+        "fairness_drift": fairness.fairness_drift,
+        "snapshots": [
+            {"month": s.month, "insider_share": s.insider_share,
+             "distributed_share": s.distributed_share, "gini": s.gini}
+            for s in snapshots
+        ],
+    }
+    stress_data = {
+        "pass_rate": stress.pass_rate,
+        "passed": stress.passed,
+        "scenarios": [
+            {"name": s.name, "viable": s.viable,
+             "sufficient_reserves": s.sufficient_reserves,
+             "recovery_months": s.recovery_months, "notes": s.notes}
+            for s in stress.scenarios
+        ],
+    }
+
     return {
         "status": "Success",
         "passed_filter": filter_result.passed,
@@ -127,6 +155,15 @@ def run_single(user_input, knowledge_base, dataset, project_summaries, seed):
         "n_allocations": len(alloc),
         "allocation": dict(alloc),
         "recommendations": sim_report.recommendations,
+        # Detailed simulation data for visualization
+        "supply_release": supply_release_data,
+        "fairness_evaluation": fairness_data,
+        "stress_test": stress_data,
+        # Control layer percentages for Fig 5
+        "insider_pct": control_result.insider_pct,
+        "distributed_pct": control_result.distributed_pct,
+        "team_pct": control_result.team_pct,
+        "investor_pct": control_result.investor_pct,
     }
 
 
@@ -202,10 +239,12 @@ def run_experiment():
             g24 = metrics.get("gini_24m")
             spr = metrics.get("stress_pass_rate")
             flt = "PASS" if metrics.get("passed_filter") else "FAIL"
-            print(f"    Filter={flt} | Gini24m={g24:.3f if g24 else 'N/A'} | StressPass={spr:.0%}" if g24 and spr else f"    {metrics['status']}")
+            if g24 is not None and spr is not None:
+                print(f"    Filter={flt} | Gini24m={g24:.3f} | StressPass={spr:.0%}")
+            else:
+                print(f"    {metrics['status']} (missing metrics)")
         else:
             print(f"    {metrics['status']}: {metrics.get('error', '')[:80]}")
-
         # Save checkpoint every result
         with open(checkpoint_results, "w") as f:
             json.dump(all_results, f, indent=2, default=str)
@@ -224,7 +263,7 @@ def run_experiment():
 
 
 def export_results(all_results):
-    """Export results to CSV and detailed JSON."""
+    """Export results to CSV, detailed JSON, and visualization-ready JSON."""
     import csv
 
     # CSV (flat metrics)
@@ -238,6 +277,7 @@ def export_results(all_results):
         "insider_share_t0", "t0_distributed_share", "fairness_drift",
         "stress_pass_rate", "stress_passed", "year1_inflation_proxy",
         "n_allocations",
+        "insider_pct", "distributed_pct", "team_pct", "investor_pct",
     ]
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=flat_fields, extrasaction="ignore")
@@ -245,11 +285,48 @@ def export_results(all_results):
         writer.writerows(all_results)
     print(f"  CSV exported: {csv_path}")
 
-    # Full JSON
+    # Full JSON (checkpoint data)
     json_path = os.path.join(OUTPUT_DIR, "batch_results_full.json")
     with open(json_path, "w") as f:
         json.dump(all_results, f, indent=2, default=str)
     print(f"  JSON exported: {json_path}")
+
+    # Visualization-ready simulation_results.json
+    # Contains supply_release, fairness_evaluation, stress_test per project
+    sim_results = []
+    for r in all_results:
+        if r.get("status") != "Success":
+            continue
+        sim_results.append({
+            "project_name": r.get("project_name", "Unknown"),
+            "supply_release": r.get("supply_release", {}),
+            "fairness_evaluation": r.get("fairness_evaluation", {}),
+            "stress_test": r.get("stress_test", {}),
+        })
+    sim_path = os.path.join(OUTPUT_DIR, "simulation_results.json")
+    with open(sim_path, "w") as f:
+        json.dump(sim_results, f, indent=2, default=str)
+    print(f"  Simulation results exported: {sim_path}")
+
+    # Allocation results CSV for Fig 5
+    alloc_rows = []
+    for r in all_results:
+        if r.get("status") != "Success":
+            continue
+        alloc_rows.append({
+            "project_name": r.get("project_name", "Unknown"),
+            "team_pct": r.get("team_pct", 0),
+            "investor_pct": r.get("investor_pct", 0),
+            "insider_pct": r.get("insider_pct", 0),
+            "distributed_pct": r.get("distributed_pct", 0),
+        })
+    alloc_path = os.path.join(OUTPUT_DIR, "allocation_results.csv")
+    if alloc_rows:
+        with open(alloc_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=alloc_rows[0].keys())
+            writer.writeheader()
+            writer.writerows(alloc_rows)
+        print(f"  Allocation results exported: {alloc_path}")
 
     # Summary statistics
     summary = compute_summary(all_results)

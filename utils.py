@@ -62,6 +62,8 @@ _DISTRIBUTED_KEYS = {
     'treasury', 'dao_treasury', 'reserve', 'reserves',
     'marketing', 'partnerships', 'development',
     'operations', 'operational', 'node_operators',
+    'governance', 'governance_fund',
+    'liquidity_providers', 'liquidity_provision',
 }
 
 _KEY_MAPPINGS = {
@@ -85,6 +87,7 @@ _KEY_MAPPINGS = {
     # Liquidity (distributed)
     'liquidity': 'Liquidity', 'liquidity_mining': 'Liquidity',
     'liquidity_pool': 'Liquidity', 'liquidity_incentives': 'Liquidity',
+    'liquidity_providers': 'Liquidity', 'liquidity_provision': 'Liquidity',
     # Staking (distributed)
     'staking': 'Staking', 'staking_rewards': 'Staking',
     'validator_rewards': 'Staking',
@@ -95,12 +98,41 @@ _KEY_MAPPINGS = {
     # Operations (distributed)
     'operations': 'Operations', 'operational': 'Operations',
     'node_operators': 'Operations',
+    # Governance (distributed)
+    'governance': 'Community', 'governance_fund': 'Community',
+    'dao': 'Community', 'dao_governance': 'Community',
 }
 
 
+def _strip_markdown(text: str) -> str:
+    """Strip markdown formatting (bold, italic markers) from text."""
+    # Remove **, *, __, _ wrappers and leading/trailing whitespace
+    text = re.sub(r'\*{1,2}', '', text)
+    text = re.sub(r'_{1,2}', ' ', text)  # underscores to spaces (often word separators)
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
+
+
 def normalize_allocation_key(key: str) -> str:
-    """Normalize an allocation label to a standard category name."""
-    return _KEY_MAPPINGS.get(key.lower().strip(), key.title().replace('_', ' '))
+    """Normalize an allocation label to a standard category name.
+
+    Strips markdown formatting (e.g., **Team** -> Team) and maps to
+    standard categories via _KEY_MAPPINGS lookup.
+    """
+    clean = _strip_markdown(key).lower().strip()
+    # Try direct lookup
+    if clean in _KEY_MAPPINGS:
+        return _KEY_MAPPINGS[clean]
+    # Try with underscores replacing spaces
+    underscore_key = clean.replace(' ', '_')
+    if underscore_key in _KEY_MAPPINGS:
+        return _KEY_MAPPINGS[underscore_key]
+    # Try partial matching for compound names like "liquidity providers"
+    for known_key, mapped_value in _KEY_MAPPINGS.items():
+        if known_key in clean or clean in known_key:
+            return mapped_value
+    # Fallback: title-case the cleaned key
+    return clean.title()
 
 
 def is_insider_category(key: str) -> bool:
@@ -282,7 +314,7 @@ def extract_allocation_enhanced(text: str) -> Tuple[List[str], List[float]]:
         matches = re.findall(pattern, text, re.IGNORECASE)
         if matches:
             for label, value in matches:
-                clean_label = label.strip().title()
+                clean_label = _strip_markdown(label).strip().title()
                 try:
                     clean_value = float(value)
                     if clean_label not in labels:
@@ -406,7 +438,8 @@ def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsPar
     if isinstance(raw_alloc, dict):
         for k, v in raw_alloc.items():
             try:
-                allocation[k] = float(v)
+                clean_k = _strip_markdown(k).strip()
+                allocation[clean_k] = float(v)
             except (ValueError, TypeError):
                 pass
     else:
