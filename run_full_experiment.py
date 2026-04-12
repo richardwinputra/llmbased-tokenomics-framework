@@ -61,16 +61,16 @@ def run_single(user_input, project_summaries, seed):
         return {"status": "LLM_Failed", "error": result_text[:200]}
 
 
-    proposal, context = generate_tokenomics_proposal(user_input, result_text)
+    proposal, _ = generate_tokenomics_proposal(user_input, result_text)
 
 
-    control_result = run_control_layer(proposal, context)
+    control_result = run_control_layer(proposal)
 
 
-    filter_result = run_filter_layer(proposal, context)
+    filter_result = run_filter_layer(proposal)
 
 
-    sim_report = run_simulation_module(filter_result.adjusted_proposal, context)
+    sim_report = run_simulation_module(filter_result.adjusted_proposal)
 
 
     alloc = filter_result.adjusted_proposal.tokenomics_parameters.allocation

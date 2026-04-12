@@ -15,7 +15,7 @@ from typing import Dict, List
 import numpy as np
 
 from models import (
-    GeneratedTokenomics, ProjectContext,
+    GeneratedTokenomics,
     SupplyReleaseResult, FairnessSnapshot, FairnessEvaluationResult,
     StressScenarioResult, StressTestResult, SimulationReport,
 )
@@ -268,7 +268,6 @@ def _calculate_max_monthly_spike(
 def run_stress_testing(
     tokenomics: GeneratedTokenomics,
     supply_release: SupplyReleaseResult,
-    context: ProjectContext,
 ) -> StressTestResult:
     """
     Evaluate proposal under 5 predefined scenarios using data-driven analysis
@@ -665,10 +664,7 @@ def generate_recommendations(
     return recommendations
 
 
-def run_simulation_module(
-    tokenomics: GeneratedTokenomics,
-    context: ProjectContext,
-) -> SimulationReport:
+def run_simulation_module(tokenomics: GeneratedTokenomics) -> SimulationReport:
     """
     Run the complete simulation and evaluation module.
     Integrates supply release, fairness evaluation, and stress testing.
@@ -680,7 +676,7 @@ def run_simulation_module(
     fairness_eval = evaluate_fairness(supply_release, tokenomics)
 
 
-    stress_test = run_stress_testing(tokenomics, supply_release, context)
+    stress_test = run_stress_testing(tokenomics, supply_release)
 
 
     recommendations = generate_recommendations(

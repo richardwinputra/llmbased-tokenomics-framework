@@ -242,11 +242,11 @@ def main():
     proposal, context = generate_tokenomics_proposal(user_input, result)
 
 
-    control_result = run_control_layer(proposal, context)
+    control_result = run_control_layer(proposal)
     print_control_results(control_result)
 
 
-    filter_result = run_filter_layer(proposal, context)
+    filter_result = run_filter_layer(proposal)
     print_filter_results(filter_result)
 
     if control_result.requires_iteration or (hasattr(filter_result, 'passed') and not filter_result.passed):
@@ -254,7 +254,7 @@ def main():
 
 
     print("\nRunning simulation and evaluation module...")
-    sim_report = run_simulation_module(filter_result.adjusted_proposal, context)
+    sim_report = run_simulation_module(filter_result.adjusted_proposal)
     print_simulation_results(sim_report)
 
 

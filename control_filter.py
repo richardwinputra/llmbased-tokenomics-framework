@@ -23,7 +23,7 @@ from dataclasses import replace
 from typing import Dict, List, Optional
 
 from models import (
-    GeneratedTokenomics, ProjectContext,
+    GeneratedTokenomics,
     ControlLayerResult, ControlFinding,
     FilterLayerResult, FilterCheck,
 )
@@ -35,10 +35,7 @@ from utils import (
 )
 
 
-def run_control_layer(
-    tokenomics: GeneratedTokenomics,
-    context: ProjectContext,
-) -> ControlLayerResult:
+def run_control_layer(tokenomics: GeneratedTokenomics) -> ControlLayerResult:
     """
     Diagnostic assessment per Table II.
     Returns findings with severity levels but does not block the pipeline.
@@ -161,10 +158,7 @@ def run_control_layer(
     )
 
 
-def run_filter_layer(
-    tokenomics: GeneratedTokenomics,
-    context: ProjectContext,
-) -> FilterLayerResult:
+def run_filter_layer(tokenomics: GeneratedTokenomics) -> FilterLayerResult:
     """
     Hard validity constraints per Table III.
     Designs that fail are recalculated (adjusted) before forwarding to simulation.
