@@ -9,9 +9,7 @@ Handles:
 """
 
 import os
-import json
-from datetime import datetime
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, Tuple, Optional
 
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -23,7 +21,6 @@ from utils import (
     extract_json_payload, extract_tokenomics_parameters,
     parse_design_thinking, infer_constraints, infer_legal_risk_tolerance,
     infer_economic_signals, enforce_tokenomics_constraints,
-    normalize_allocation_dict, parse_token_supply,
 )
 
 load_dotenv(override=True)
@@ -178,8 +175,8 @@ def ask_openai_enhanced(prompt: str, input_type: str = "structured",
     system_msg += "\n\nNOTE: Use the structured input as primary source of truth."
 
     client = _get_client()
-    primary = model_override or os.getenv("OPENAI_MODEL", "gpt-5.4")
-    fallback = model_override or os.getenv("OPENAI_MODEL_FALLBACK", "gpt-5.4")
+    primary = model_override or os.getenv("OPENAI_MODEL", "gpt-5.4-mini-2026-03-17")
+    fallback = model_override or os.getenv("OPENAI_MODEL_FALLBACK", "gpt-5.4-mini-2026-03-17")
 
     def call_model(model_name: str, effort_level: str = "medium") -> str:
         resp = client.responses.create(

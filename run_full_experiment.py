@@ -10,12 +10,11 @@ Features:
 
 import json
 import os
-import sys
+import re
 import time
 import random
 import traceback
 from datetime import datetime
-from typing import Dict, List, Optional
 from dataclasses import asdict
 
 import numpy as np
@@ -29,15 +28,15 @@ from llm_engine import (
 )
 from control_filter import run_control_layer, run_filter_layer
 from simulation import run_simulation_module
-from models import FilterLayerResult, FilterCheck
 from utils import summarize_all_projects, calculate_gini
 
 
 BATCH_FILE = "batch_inputs.json"
 KB_FILE = "TokenomicsKnowledge.json"
 OUTPUT_DIR = "experiment_results"
+RAW_LLM_DIR = os.path.join(OUTPUT_DIR, "raw_llm_responses")
 SEED = 42
-MODEL = None
+MODEL = "gpt-5.4-mini-2026-03-17"
 
 
 def load_data():
@@ -170,6 +169,19 @@ def run_single(user_input, knowledge_base, dataset, project_summaries, seed):
     }
 
 
+def _save_raw_llm_response(project_name: str, raw_text: str) -> None:
+    """Save raw LLM response to an individual file immediately after API call.
+
+    This is a safety net separate from the bulk checkpoint: if checkpoint_results.json
+    is ever corrupted, individual raw files let you re-parse without re-calling the API.
+    """
+    os.makedirs(RAW_LLM_DIR, exist_ok=True)
+    safe_name = re.sub(r'[^\w\-]', '_', project_name)
+    filepath = os.path.join(RAW_LLM_DIR, f"{safe_name}.txt")
+    with open(filepath, "w", encoding="utf-8") as f:
+        f.write(raw_text)
+
+
 def run_experiment():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     checkpoint_results = os.path.join(OUTPUT_DIR, "checkpoint_results.json")
@@ -233,6 +245,12 @@ def run_experiment():
         metrics["input_type"] = input_type
         metrics["category"] = user_input.get("category",
                                    batch_inputs[i].get("category", "Unknown"))
+
+        # Save raw LLM response to an individual file immediately — independent of
+        # checkpoint so a corrupted checkpoint never loses raw API outputs.
+        raw_text = metrics.get("raw_llm_response", "")
+        if raw_text:
+            _save_raw_llm_response(project_name, raw_text)
 
         all_results.append(metrics)
         completed_keys.add(project_name)

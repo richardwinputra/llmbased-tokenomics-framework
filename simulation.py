@@ -62,8 +62,14 @@ def simulate_supply_release(
         token_amounts[cat] = (pct / 100.0) * S
 
 
+    # Build a normalized lookup so mismatched casing/naming between allocation and
+    # vesting keys doesn't silently treat vested categories as immediately circulating.
+    normalized_vesting: Dict = {
+        normalize_allocation_key(vk): vd for vk, vd in vesting.items()
+    }
+
     for cat, T_i in token_amounts.items():
-        detail = vesting.get(cat)
+        detail = vesting.get(cat) or normalized_vesting.get(normalize_allocation_key(cat))
         cat_circ = []
 
         for m in months:
@@ -111,8 +117,10 @@ def simulate_supply_release(
     if c0 > 0:
         year1_inflation = ((c12 - c0) / c0) * 100
     elif c12 > 0:
-
-        year1_inflation = 999.0
+        # c0=0 means nothing circulates at launch (fully locked start).
+        # Traditional inflation formula is undefined; use % of total supply
+        # entering circulation in year 1 as a meaningful substitute.
+        year1_inflation = (c12 / S * 100) if S > 0 else 0.0
 
     return SupplyReleaseResult(
         months=months,
@@ -229,24 +237,33 @@ def _compute_supply_demand_ratio(
 
 def _calculate_max_monthly_spike(
     circulating_supply: List[float],
+    total_supply: float = 0.0,
 ) -> tuple[float, int]:
     """
-    Calculate the largest month-over-month supply spike.
+    Calculate the largest month-over-month supply spike as a fraction of total supply.
+
+    Normalizing by total_supply (not prior circulating) correctly captures cliff-expiry
+    shocks — a single month adding 20% of total supply is a shock regardless of how
+    much was already circulating. Normalizing by prior circulating instead produces
+    false 100% spikes when previous circulating is near zero (gradual linear vesting
+    from a locked start).
 
     Returns:
-        (max_inflation, shock_month): Maximum monthly inflation % and the month it occurs
+        (max_spike, shock_month): Max single-month addition as fraction of total supply,
+                                  and the month it occurs.
     """
-    max_inflation = 0.0
+    max_spike = 0.0
     shock_month = 0
+    denom = total_supply if total_supply > 0 else 1.0
 
     for m in range(1, len(circulating_supply)):
-        if circulating_supply[m - 1] > 0:
-            inflation = (circulating_supply[m] - circulating_supply[m - 1]) / circulating_supply[m - 1]
-            if inflation > max_inflation:
-                max_inflation = inflation
-                shock_month = m
+        delta = circulating_supply[m] - circulating_supply[m - 1]
+        spike = delta / denom
+        if spike > max_spike:
+            max_spike = spike
+            shock_month = m
 
-    return max_inflation, shock_month
+    return max_spike, shock_month
 
 
 def run_stress_testing(
@@ -290,15 +307,20 @@ def run_stress_testing(
 
     avg_insider_vesting = 0
     insider_vest_count = 0
+    stress_norm_vesting = {
+        normalize_allocation_key(vk): vd for vk, vd in vesting.items()
+    }
     for k in alloc:
-        if is_insider_category(k) and k in vesting:
-            avg_insider_vesting += vesting[k].vesting_months
-            insider_vest_count += 1
+        if is_insider_category(k):
+            detail = vesting.get(k) or stress_norm_vesting.get(normalize_allocation_key(k))
+            if detail:
+                avg_insider_vesting += detail.vesting_months
+                insider_vest_count += 1
     if insider_vest_count > 0:
         avg_insider_vesting /= insider_vest_count
 
 
-    max_monthly_spike, shock_month = _calculate_max_monthly_spike(circulating_supply)
+    max_monthly_spike, shock_month = _calculate_max_monthly_spike(circulating_supply, S)
 
 
     c0 = circulating_supply[0]
@@ -355,10 +377,14 @@ def run_stress_testing(
 
 
     cumulative_supply = sum(circulating_supply[:13]) if len(circulating_supply) > 12 else sum(circulating_supply)
-    cumulative_demand = (
-        c0 * sum((1.01 ** m) for m in range(13)) if c0 > 0 else 0
-    )
-    cumulative_outpace = (cumulative_supply - cumulative_demand) / max(cumulative_demand, 1)
+    if c0 > 0:
+        cumulative_demand = c0 * sum((1.01 ** m) for m in range(13))
+        cumulative_outpace = (cumulative_supply - cumulative_demand) / cumulative_demand
+    else:
+        # c0=0: no prior market exists, demand baseline is undefined.
+        # Gradual unlock from zero doesn't outpace demand — treat as no outpacing.
+        cumulative_demand = cumulative_supply
+        cumulative_outpace = 0.0
 
     neutral_sdr_threshold = 1.5
     if reserve_pct > 10.0:

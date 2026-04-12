@@ -313,7 +313,10 @@ def run_filter_layer(
     initial_circulating_pct = 0.0
     for k, v in adjusted_alloc.items():
         detail = vesting.get(k)
-        if not detail or detail.cliff_months == 0:
+        # Mirror simulation logic: only treat as immediately circulating if there is
+        # no vesting detail at all, or both cliff AND vesting duration are zero.
+        # cliff_months == 0 alone means vesting starts immediately (not fully unlocked).
+        if not detail or (detail.cliff_months == 0 and detail.vesting_months == 0):
             initial_circulating_pct += v
 
     if initial_circulating_pct <= 100.0:
