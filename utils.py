@@ -7,12 +7,10 @@ Gini coefficient computation, and text extraction helpers described in the paper
 
 import re
 import json
-import numpy as np
-from collections import Counter
 from typing import Dict, List, Tuple, Optional, Any
 
 from models import (
-    VestingDetail, TokenomicsParameters, TokenDesignThinking, ProjectContext,
+    VestingDetail, TokenomicsParameters, TokenDesignThinking,
     GeneratedTokenomics, TokenSupply, FixedSupply, CappedSupply, DynamicSupply,
 )
 
@@ -201,7 +199,7 @@ def infer_bucket_timing(label: str, text: str) -> Tuple[Optional[int], Optional[
     )
 
 
-def infer_constraints(goals: List[str], priorities: List[str]) -> Dict[str, float]:
+def infer_constraints() -> Dict[str, float]:
     """Infer control/filter thresholds from user goals per paper Table II."""
     constraints: Dict[str, float] = {}
 
@@ -223,50 +221,6 @@ def infer_legal_risk_tolerance(user_input: Dict) -> str:
     if any(w in legal_text for w in ["progressive", "experimental", "aggressive"]):
         return "aggressive"
     return "balanced"
-
-
-def infer_economic_signals(user_input: Dict, result_text: str) -> Dict[str, float]:
-    """Infer economic simulation parameters from user input and LLM output."""
-    signals: Dict[str, float] = {
-        "emission_rate": 0.08,
-        "burn_rate": 0.01,
-        "demand_multiplier": 1.0,
-        "volatility_bias": 1.0,
-    }
-
-
-    supply_pref = user_input.get("total_supply_preference", "").lower()
-    estimated_supply = 1_000_000_000
-    if "10b" in supply_pref or "10 b" in supply_pref:
-        estimated_supply = 10_000_000_000
-    elif "2b" in supply_pref or "2 b" in supply_pref:
-        estimated_supply = 2_000_000_000
-    elif "100m" in supply_pref or "100 m" in supply_pref:
-        estimated_supply = 100_000_000
-    target_mcap = 10_000_000
-    signals["base_price"] = target_mcap / estimated_supply
-
-    inflation_pref = user_input.get("inflation_preference", "").lower()
-    description = (user_input.get("project_description", "") + " " + result_text).lower()
-
-    if any(term in inflation_pref for term in ["deflation", "burn"]):
-        signals["emission_rate"] = 0.045
-        signals["burn_rate"] = 0.02
-    elif "aggressive" in inflation_pref or "high" in inflation_pref:
-        signals["emission_rate"] = 0.12
-        signals["burn_rate"] = 0.008
-    elif "stable" in inflation_pref:
-        signals["emission_rate"] = 0.07
-
-    if "liquidity mining" in description or "yield" in description:
-        signals["demand_multiplier"] += 0.15
-    if "staking" in description:
-        signals["demand_multiplier"] += 0.1
-        signals["burn_rate"] += 0.003
-    if "bear" in description or "resilient" in description:
-        signals["volatility_bias"] = 1.2
-
-    return signals
 
 
 def extract_json_payload(text: str) -> Optional[Dict]:
@@ -563,9 +517,7 @@ def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsPar
     )
 
 
-def enforce_tokenomics_constraints(
-    tokenomics: GeneratedTokenomics, context: ProjectContext
-) -> GeneratedTokenomics:
+def enforce_tokenomics_constraints(tokenomics: GeneratedTokenomics) -> GeneratedTokenomics:
     """Normalize allocation to 100% and ensure minimum category diversity."""
     alloc = tokenomics.tokenomics_parameters.allocation
     total = sum(alloc.values())

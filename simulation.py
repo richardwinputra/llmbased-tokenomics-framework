@@ -10,8 +10,7 @@ Three components:
 
 """
 
-from collections import defaultdict
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 
@@ -669,8 +668,6 @@ def generate_recommendations(
 def run_simulation_module(
     tokenomics: GeneratedTokenomics,
     context: ProjectContext,
-    knowledge_base: List[Dict],
-    dataset: Optional[List[Dict]] = None,
 ) -> SimulationReport:
     """
     Run the complete simulation and evaluation module.

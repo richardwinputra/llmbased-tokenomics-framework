@@ -14,7 +14,6 @@ import json
 import os
 import sys
 from collections import Counter
-from typing import Dict, List
 
 import numpy as np
 

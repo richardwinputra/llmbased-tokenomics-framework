@@ -47,20 +47,15 @@ def load_data():
     return batch_inputs, knowledge_base
 
 
-def run_single(user_input, knowledge_base, dataset, project_summaries, seed):
+def run_single(user_input, project_summaries, seed):
     """Run a single evaluation through the full pipeline and return detailed metrics."""
     np.random.seed(seed)
     random.seed(seed)
 
-    summaries = project_summaries
+    prompt = create_structured_prompt(user_input, project_summaries)
 
 
-    prompt = create_structured_prompt(user_input, summaries)
-
-
-    result_text = ask_openai_enhanced(
-        prompt, "structured", model_override=MODEL,
-    )
+    result_text = ask_openai_enhanced(prompt, model_override=MODEL)
 
     if not result_text or result_text.startswith("Error"):
         return {"status": "LLM_Failed", "error": result_text[:200]}
@@ -75,9 +70,7 @@ def run_single(user_input, knowledge_base, dataset, project_summaries, seed):
     filter_result = run_filter_layer(proposal, context)
 
 
-    sim_report = run_simulation_module(
-        filter_result.adjusted_proposal, context, knowledge_base, dataset,
-    )
+    sim_report = run_simulation_module(filter_result.adjusted_proposal, context)
 
 
     alloc = filter_result.adjusted_proposal.tokenomics_parameters.allocation
@@ -194,7 +187,6 @@ def run_experiment():
 
     print("\n[1/3] Loading data...")
     batch_inputs, knowledge_base = load_data()
-    dataset = knowledge_base
     print(f"  {len(batch_inputs)} inputs, {len(knowledge_base)} KB entries")
 
 
@@ -232,8 +224,6 @@ def run_experiment():
         try:
             metrics = run_single(
                 user_input=user_input,
-                knowledge_base=knowledge_base,
-                dataset=dataset,
                 project_summaries=project_summaries,
                 seed=SEED + i,
             )

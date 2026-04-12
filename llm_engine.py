@@ -20,7 +20,7 @@ from models import (
 from utils import (
     extract_json_payload, extract_tokenomics_parameters,
     parse_design_thinking, infer_constraints, infer_legal_risk_tolerance,
-    infer_economic_signals, enforce_tokenomics_constraints,
+    enforce_tokenomics_constraints,
 )
 
 load_dotenv(override=True)
@@ -165,8 +165,7 @@ Every insider category MUST appear in the vesting dict.
 """
 
 
-def ask_openai_enhanced(prompt: str, input_type: str = "structured",
-                        model_override: Optional[str] = None) -> str:
+def ask_openai_enhanced(prompt: str, model_override: Optional[str] = None) -> str:
     """
     Algorithm 1, line 13: LLM_Response_Text <- LLM_API(prompt).
     Calls OpenAI with primary model and fallback.
@@ -242,16 +241,14 @@ def generate_tokenomics_proposal(
     if design_thinking.principles and not goals:
         goals = design_thinking.principles
 
-    constraints = infer_constraints(goals, priorities)
+    constraints = infer_constraints()
     legal_risk = infer_legal_risk_tolerance(user_input)
-    economic_signals = infer_economic_signals(user_input, result_text)
 
     context = ProjectContext(
         description=description, goals=goals, priorities=priorities,
         constraints=constraints, legal_risk_tolerance=legal_risk,
-        economic_signals=economic_signals,
     )
 
-    gen_tokenomics = enforce_tokenomics_constraints(gen_tokenomics, context)
+    gen_tokenomics = enforce_tokenomics_constraints(gen_tokenomics)
     return gen_tokenomics, context
 

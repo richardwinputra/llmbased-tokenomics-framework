@@ -229,8 +229,7 @@ def main():
     prompt = create_structured_prompt(user_input, project_summaries)
 
     print("\nGenerating tokenomics design...")
-    result = ask_openai_enhanced(prompt, user_input.get('input_type', 'structured'),
-                                 model_override=args.model_override)
+    result = ask_openai_enhanced(prompt, model_override=args.model_override)
     print("\n--- LLM Response ---")
     print(result)
 
@@ -255,10 +254,7 @@ def main():
 
 
     print("\nRunning simulation and evaluation module...")
-    sim_report = run_simulation_module(
-        filter_result.adjusted_proposal, context, knowledge_base,
-        dataset=knowledge_base,
-    )
+    sim_report = run_simulation_module(filter_result.adjusted_proposal, context)
     print_simulation_results(sim_report)
 
 

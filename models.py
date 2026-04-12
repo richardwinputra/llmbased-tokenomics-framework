@@ -9,7 +9,7 @@ Implements the data model described in the paper:
   - Simulation and evaluation results (supply release, fairness, stress testing)
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Union, Literal
 
 
@@ -87,7 +87,6 @@ class ProjectContext:
     priorities: List[str]
     constraints: Dict[str, float]
     legal_risk_tolerance: str
-    economic_signals: Dict[str, float] = field(default_factory=dict)
 
 
 @dataclass
