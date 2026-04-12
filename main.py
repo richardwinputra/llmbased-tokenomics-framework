@@ -65,7 +65,7 @@ def parse_cli_args() -> argparse.Namespace:
     parser.add_argument("--input-file", type=str, default=None,
                         help="Path to JSON input file (bypasses interactive mode).")
     parser.add_argument("--model-override", type=str, default=None,
-                        help="Override the OpenAI model (e.g. gpt-3.5-turbo).")
+                        help="Override the OpenAI model (e.g. gpt-5.4).")
     parser.add_argument("--output-dir", type=str, default="pipeline_exports",
                         help="Output directory for pipeline results.")
     return parser.parse_args()

@@ -273,24 +273,37 @@ def plot_fairness_drift(simulation_results: Union[str, List[Dict]], output_dir: 
         results_list = simulation_results
 
 
-    insider_shares = []
-    gini_values = []
-    checkpoint_months = set()
+    # Collect snapshots per proposal, bucketing the last snapshot as "full_unlock"
+    # Standard checkpoints are 0, 12, 24; the 4th snapshot (if present) varies
+    # in actual month (45, 46, 58, 59) but represents the same concept: full unlock.
+    # We bucket all post-24 snapshots into a canonical "full_unlock" label at x=36
+    # for clean plotting, since only 9/100 proposals have this 4th point.
+    CANONICAL_CHECKPOINTS = [0, 12, 24, 36]  # 36 = display position for "full unlock"
+    CHECKPOINT_LABELS = ["0", "12", "24", "Full\nUnlock"]
+
+    insider_by_checkpoint = {c: [] for c in CANONICAL_CHECKPOINTS}
+    gini_by_checkpoint = {c: [] for c in CANONICAL_CHECKPOINTS}
 
     for result in results_list:
         if not isinstance(result, dict):
             continue
 
-
         if "fairness_evaluation" in result:
             fair_eval = result["fairness_evaluation"]
             if "snapshots" in fair_eval:
-                for snap in fair_eval["snapshots"]:
-                    checkpoint_months.add(snap["month"])
-                    if isinstance(snap, dict):
-                        insider_shares.append((snap["month"], snap.get("insider_share", 0)))
-                        gini_values.append((snap["month"], snap.get("gini", 0)))
+                snaps = fair_eval["snapshots"]
+                for snap in snaps:
+                    month = snap["month"]
+                    insider = snap.get("insider_share", 0)
+                    gini = snap.get("gini", 0)
 
+                    if month in [0, 12, 24]:
+                        insider_by_checkpoint[month].append(insider)
+                        gini_by_checkpoint[month].append(gini)
+                    elif month > 24:
+                        # Bucket as "full unlock" at canonical position 36
+                        insider_by_checkpoint[36].append(insider)
+                        gini_by_checkpoint[36].append(gini)
 
         elif result.get("status") == "Success" and "t0_gini" in result:
             for month, gini_key, insider_key in [
@@ -300,65 +313,72 @@ def plot_fairness_drift(simulation_results: Union[str, List[Dict]], output_dir: 
             ]:
                 gini_val = result.get(gini_key)
                 if gini_val is not None:
-                    checkpoint_months.add(month)
-                    gini_values.append((month, gini_val))
+                    gini_by_checkpoint[month].append(gini_val)
                     insider_val = result.get(insider_key, 0) if insider_key else 0
-                    insider_shares.append((month, insider_val))
+                    insider_by_checkpoint[month].append(insider_val)
 
-    if not insider_shares or not gini_values:
+    if not any(insider_by_checkpoint.values()):
         print(f"  Warning: No valid fairness data found in {simulation_results}")
         return
 
+    # For proposals without a full_unlock snapshot (91/100 have last snap at month 24),
+    # use their month-24 values as the full_unlock value (no change after 24 = flat line)
+    if len(insider_by_checkpoint[36]) < len(insider_by_checkpoint[0]):
+        proposals_with_full = len(insider_by_checkpoint[36])
+        proposals_without = len(insider_by_checkpoint[24]) - proposals_with_full
+        # These proposals have no vesting past 24 months, so their month-24 value persists
+        # We include them so full_unlock has all 100 proposals for a fair comparison
+        # Sort month-24 values; the first `proposals_with_full` already contributed to full_unlock
+        # Append the remaining month-24 values
+        all_24_insider = insider_by_checkpoint[24].copy()
+        all_24_gini = gini_by_checkpoint[24].copy()
+        # Add month-24 values for proposals that don't have a separate full_unlock snapshot
+        insider_by_checkpoint[36].extend(all_24_insider[proposals_with_full:])
+        gini_by_checkpoint[36].extend(all_24_gini[proposals_with_full:])
 
-    checkpoint_months = sorted(list(checkpoint_months))
+    # Compute statistics for each checkpoint
+    checkpoints = CANONICAL_CHECKPOINTS
+    median_insider = [np.median(insider_by_checkpoint[c]) if insider_by_checkpoint[c] else 0 for c in checkpoints]
+    q25_insider = [np.percentile(insider_by_checkpoint[c], 25) if insider_by_checkpoint[c] else 0 for c in checkpoints]
+    q75_insider = [np.percentile(insider_by_checkpoint[c], 75) if insider_by_checkpoint[c] else 0 for c in checkpoints]
 
+    median_gini = [np.median(gini_by_checkpoint[c]) if gini_by_checkpoint[c] else 0 for c in checkpoints]
+    q25_gini = [np.percentile(gini_by_checkpoint[c], 25) if gini_by_checkpoint[c] else 0 for c in checkpoints]
+    q75_gini = [np.percentile(gini_by_checkpoint[c], 75) if gini_by_checkpoint[c] else 0 for c in checkpoints]
 
-    insider_by_month = {}
-    gini_by_month = {}
-
-    for month, insider in insider_shares:
-        if month not in insider_by_month:
-            insider_by_month[month] = []
-        insider_by_month[month].append(insider)
-
-    for month, gini in gini_values:
-        if month not in gini_by_month:
-            gini_by_month[month] = []
-        gini_by_month[month].append(gini)
-
-
-    months_sorted = sorted(insider_by_month.keys())
-    median_insider = [np.median(insider_by_month[m]) for m in months_sorted]
-    q25_insider = [np.percentile(insider_by_month[m], 25) for m in months_sorted]
-    q75_insider = [np.percentile(insider_by_month[m], 75) for m in months_sorted]
-
-    median_gini = [np.median(gini_by_month[m]) for m in months_sorted]
-    q25_gini = [np.percentile(gini_by_month[m], 25) for m in months_sorted]
-    q75_gini = [np.percentile(gini_by_month[m], 75) for m in months_sorted]
+    # Print data point counts for verification
+    for c, label in zip(checkpoints, CHECKPOINT_LABELS):
+        n_insider = len(insider_by_checkpoint[c])
+        n_gini = len(gini_by_checkpoint[c])
+        print(f"    Checkpoint {label.replace(chr(10), ' ')}: {n_insider} insider points, {n_gini} gini points")
 
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=FIGURE_SIZE_DOUBLE)
 
 
-    ax1.fill_between(months_sorted, q25_insider, q75_insider, alpha=0.3,
+    ax1.fill_between(checkpoints, q25_insider, q75_insider, alpha=0.3,
                      color=OKABE_ITO_PALETTE[0], label="IQR")
-    ax1.plot(months_sorted, median_insider, "o-", color=OKABE_ITO_PALETTE[0],
+    ax1.plot(checkpoints, median_insider, "o-", color=OKABE_ITO_PALETTE[0],
              linewidth=2, markersize=6, label="Median")
-    ax1.set_xlabel("Time (months)", fontsize=FONT_SIZE_LABEL)
-    ax1.set_ylabel("Insider Share (%)", fontsize=FONT_SIZE_LABEL)
+    ax1.set_xlabel("Checkpoint", fontsize=FONT_SIZE_LABEL)
+    ax1.set_ylabel("Insider Share", fontsize=FONT_SIZE_LABEL)
     ax1.set_title("(a) Insider Concentration", fontsize=FONT_SIZE_LABEL, weight="bold")
+    ax1.set_xticks(checkpoints)
+    ax1.set_xticklabels(CHECKPOINT_LABELS, fontsize=FONT_SIZE_TICK)
     ax1.grid(True, alpha=0.3)
     ax1.legend(fontsize=FONT_SIZE_TICK)
-    ax1.set_ylim(0, 100)
+    ax1.set_ylim(0, 1)
 
 
-    ax2.fill_between(months_sorted, q25_gini, q75_gini, alpha=0.3,
+    ax2.fill_between(checkpoints, q25_gini, q75_gini, alpha=0.3,
                      color=OKABE_ITO_PALETTE[1], label="IQR")
-    ax2.plot(months_sorted, median_gini, "s-", color=OKABE_ITO_PALETTE[1],
+    ax2.plot(checkpoints, median_gini, "s-", color=OKABE_ITO_PALETTE[1],
              linewidth=2, markersize=6, label="Median")
-    ax2.set_xlabel("Time (months)", fontsize=FONT_SIZE_LABEL)
+    ax2.set_xlabel("Checkpoint", fontsize=FONT_SIZE_LABEL)
     ax2.set_ylabel("Gini Coefficient", fontsize=FONT_SIZE_LABEL)
     ax2.set_title("(b) Distribution Inequality", fontsize=FONT_SIZE_LABEL, weight="bold")
+    ax2.set_xticks(checkpoints)
+    ax2.set_xticklabels(CHECKPOINT_LABELS, fontsize=FONT_SIZE_TICK)
     ax2.grid(True, alpha=0.3)
     ax2.legend(fontsize=FONT_SIZE_TICK)
     ax2.set_ylim(0, 1)
@@ -456,9 +476,11 @@ def plot_stress_test_outcomes(simulation_results: Union[str, List[Dict]], output
     scenario_labels = scenarios
     ax.set_xticks(x_pos)
     ax.set_xticklabels(scenario_labels, fontsize=FONT_SIZE_TICK, rotation=15, ha="right")
-    ax.set_ylabel("Pass Rate (%)", fontsize=FONT_SIZE_LABEL)
+    ax.set_ylabel("Pass Rate", fontsize=FONT_SIZE_LABEL)
     ax.set_xlabel("Stress Scenario", fontsize=FONT_SIZE_LABEL)
-    ax.set_ylim(0, 1.1)
+    ax.set_ylim(0, 1.15)
+    ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    ax.set_yticklabels(["0%", "20%", "40%", "60%", "80%", "100%"])
     ax.grid(True, axis="y", alpha=0.3)
 
 

@@ -146,24 +146,25 @@ def ask_openai_enhanced(prompt: str, input_type: str = "structured",
     system_msg += "\n\nNOTE: Use the structured input as primary source of truth."
 
     client = _get_client()
-    primary = model_override or os.getenv("OPENAI_MODEL", "gpt-4o")
-    fallback = model_override or os.getenv("OPENAI_MODEL_FALLBACK", "gpt-4o")
+    primary = model_override or os.getenv("OPENAI_MODEL", "gpt-5.4")
+    fallback = model_override or os.getenv("OPENAI_MODEL_FALLBACK", "gpt-5.4")
 
-    def call_model(model_name: str, max_tokens: int = 2400) -> str:
-        resp = client.chat.completions.create(
+    def call_model(model_name: str, effort_level: str = "medium") -> str:
+        resp = client.responses.create(
             model=model_name,
-            messages=[
+            input=[
                 {"role": "system", "content": system_msg},
                 {"role": "user", "content": prompt},
             ],
-            max_completion_tokens=max_tokens,
+            reasoning={"effort": effort_level},
+            text={"verbosity": "medium"}
         )
-        return resp.choices[0].message.content if resp.choices else ""
+        return resp.output_text if hasattr(resp, "output_text") and resp.output_text else ""
 
     try:
-        content = call_model(primary, max_tokens=2400)
+        content = call_model(primary, effort_level="high")
         if not (content and content.strip()):
-            content = call_model(fallback, max_tokens=1800)
+            content = call_model(fallback, effort_level="medium")
         if not (content and content.strip()):
             return "Error: LLM response was empty. Please try again."
         return content
