@@ -271,9 +271,16 @@ def run_filter_layer(
 
 
     insider_keys = [k for k in adjusted_alloc.keys() if is_insider_category(k)]
+    # Normalize vesting keys for comparison — LLM may use raw names like "Core Team"
+    # while vesting dict uses the same raw names but allocation lookup normalizes them.
+    # Build a lookup: normalized_vesting_key -> True so we can match by canonical form.
+    normalized_vesting_keys = {normalize_allocation_key(vk) for vk in vesting.keys()}
+
     all_insider_vesting_ok = True
     for k in insider_keys:
-        if k not in vesting:
+        normalized_k = normalize_allocation_key(k)
+        # Accept vesting if found under the raw key OR the normalized key
+        if k not in vesting and normalized_k not in normalized_vesting_keys:
             all_insider_vesting_ok = False
 
     if all_insider_vesting_ok and insider_keys:
@@ -291,7 +298,10 @@ def run_filter_layer(
             message="No insider allocations present (groups set to 0).",
         ))
     else:
-        missing = [k for k in insider_keys if k not in vesting]
+        missing = [
+            k for k in insider_keys
+            if k not in vesting and normalize_allocation_key(k) not in normalized_vesting_keys
+        ]
         checks.append(FilterCheck(
             category="Release specification",
             rule="Insider vesting defined",

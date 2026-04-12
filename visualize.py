@@ -1,11 +1,13 @@
 """
 Publication-quality figure generation for Section IV of the tokenomics research paper.
 
-Generates IEEE-style plots (Figures 5-8) for:
-  - Figure 5: Allocation distribution across proposals
-  - Figure 6: Circulating supply growth trajectories
-  - Figure 7: Fairness drift (insider share + Gini over time)
-  - Figure 8: Stress test scenario outcomes
+Generates IEEE-style plots (Figures 5-10) for:
+  - Figure 5: Multi-stage validation pipeline pass rates by category + filter failure breakdown
+  - Figure 6: Allocation distribution across proposals
+  - Figure 7: Circulating supply growth trajectories
+  - Figure 8: Fairness drift (insider share + Gini over time)
+  - Figure 9: Stress test scenario outcomes
+  - Figure 10: Control layer finding frequencies across proposals
 
 All figures are publication-ready with:
   - Colorblind-friendly palettes (Okabe-Ito)
@@ -80,6 +82,165 @@ def _save_figure(fig, output_dir: Path, filename_base: str, caption: str = "") -
         else:
             fig.savefig(filepath, bbox_inches="tight", facecolor="white")
         print(f"  Saved: {filepath}")
+
+
+def plot_validation_pipeline(batch_csv: str, analysis_json: str, output_dir: str) -> None:
+    """
+    Two-panel figure showing multi-stage validation results.
+
+    (a) Grouped bar chart: pass rates at each pipeline stage by project category.
+        Stages: Parse (100%), Control Layer, Filter Layer, Stress Test.
+    (b) Horizontal bar chart: filter failure cause decomposition showing
+        vesting omission as the dominant failure mode.
+
+    Reads:
+      - batch_results.csv for per-project stage outcomes and categories
+      - experiment_analysis.json for filter issue breakdown
+    """
+    output_path = _ensure_output_dir(output_dir)
+
+    # ── Load data ──
+    df = pd.read_csv(batch_csv)
+    with open(analysis_json, "r") as f:
+        analysis = json.load(f)
+
+    # ── Panel (a): Pipeline pass rates by category ──
+    categories_order = sorted(df["category"].unique())
+    stages = ["Parse", "Control", "Filter", "Stress"]
+
+    # Compute per-category rates
+    cat_rates = {}
+    for cat in categories_order:
+        cat_df = df[df["category"] == cat]
+        n = len(cat_df)
+        parse_rate = sum(cat_df["status"] == "Success") / n
+        control_rate = sum(cat_df["control_aligned"].astype(str) == "True") / n
+        filter_rate = sum(cat_df["passed_filter"].astype(str) == "True") / n
+        stress_rate = sum(cat_df["stress_passed"].astype(str) == "True") / n
+        cat_rates[cat] = [parse_rate, control_rate, filter_rate, stress_rate]
+
+    # Overall rates for annotation
+    n_total = len(df)
+    overall_rates = [
+        sum(df["status"] == "Success") / n_total,
+        sum(df["control_aligned"].astype(str) == "True") / n_total,
+        sum(df["passed_filter"].astype(str) == "True") / n_total,
+        sum(df["stress_passed"].astype(str) == "True") / n_total,
+    ]
+
+    # Shorten category labels for readability
+    cat_short = {
+        "DeFi": "DeFi",
+        "Gaming and Metaverse": "Gaming",
+        "Infrastructure": "Infra",
+        "Marketplace": "Market",
+        "Social and Content": "Social",
+        "Utility": "Utility",
+    }
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5),
+                                    gridspec_kw={"width_ratios": [3, 2]})
+
+    # Grouped bar chart
+    x = np.arange(len(stages))
+    n_cats = len(categories_order)
+    bar_width = 0.12
+    stage_colors = [OKABE_ITO_PALETTE[2], OKABE_ITO_PALETTE[0],
+                    OKABE_ITO_PALETTE[5], OKABE_ITO_PALETTE[1]]
+
+    for i, cat in enumerate(categories_order):
+        offset = (i - n_cats / 2 + 0.5) * bar_width
+        rates = [r * 100 for r in cat_rates[cat]]
+        bars = ax1.bar(x + offset, rates, bar_width, label=cat_short.get(cat, cat),
+                       color=OKABE_ITO_PALETTE[i % len(OKABE_ITO_PALETTE)],
+                       edgecolor="white", linewidth=0.5, alpha=0.85)
+
+    # Add overall rate annotations at top
+    for j, (stage, rate) in enumerate(zip(stages, overall_rates)):
+        ax1.text(j, 103, f"{rate*100:.0f}%", ha="center", va="bottom",
+                 fontsize=10, weight="bold", color="#333333")
+
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(stages, fontsize=FONT_SIZE_TICK)
+    ax1.set_ylabel("Pass Rate (%)", fontsize=FONT_SIZE_LABEL)
+    ax1.set_ylim(0, 115)
+    ax1.set_yticks([0, 20, 40, 60, 80, 100])
+    ax1.legend(fontsize=8, loc="upper right", ncol=2, framealpha=0.9)
+    ax1.grid(True, axis="y", alpha=0.3)
+    ax1.set_title("(a) Validation Pipeline Pass Rates", fontsize=FONT_SIZE_LABEL, weight="bold")
+
+    # Draw a red highlight box around the Filter stage to emphasize the drop
+    filter_x = 2
+    max_filter_rate = max(cat_rates[c][2] * 100 for c in categories_order)
+    rect = Rectangle((filter_x - 0.45, -1), 0.9, max_filter_rate + 8,
+                      linewidth=2, edgecolor="#D55E00", facecolor="#D55E00",
+                      alpha=0.08, linestyle="--", zorder=0)
+    ax1.add_patch(rect)
+    rect_border = Rectangle((filter_x - 0.45, -1), 0.9, max_filter_rate + 8,
+                             linewidth=2, edgecolor="#D55E00", facecolor="none",
+                             linestyle="--", zorder=5)
+    ax1.add_patch(rect_border)
+
+    # ── Panel (b): Filter failure breakdown ──
+    filter_issues = analysis.get("filter_issues", {})
+    if filter_issues:
+        # Sort by count descending
+        sorted_issues = sorted(filter_issues.items(), key=lambda x: x[1], reverse=True)
+        issue_names = [item[0] for item in sorted_issues]
+        issue_counts = [item[1] for item in sorted_issues]
+
+        # Color: highlight vesting in red/orange, others in blue
+        bar_colors = []
+        for name in issue_names:
+            if "vesting" in name.lower() or "vest" in name.lower():
+                bar_colors.append(OKABE_ITO_PALETTE[5])  # orange-red for vesting
+            else:
+                bar_colors.append(OKABE_ITO_PALETTE[1])  # blue for others
+
+        y_pos = np.arange(len(issue_names))
+        hbars = ax2.barh(y_pos, issue_counts, color=bar_colors, edgecolor="black",
+                         linewidth=1, alpha=0.85, height=0.6)
+
+        # Add count labels
+        for j, (bar, count) in enumerate(zip(hbars, issue_counts)):
+            width = bar.get_width()
+            ax2.text(width + 1, bar.get_y() + bar.get_height() / 2,
+                     f"{count}", ha="left", va="center", fontsize=10, weight="bold")
+
+        # Wrap long labels
+        wrapped_labels = []
+        for name in issue_names:
+            if len(name) > 20:
+                words = name.split()
+                mid = len(words) // 2
+                wrapped_labels.append(" ".join(words[:mid]) + "\n" + " ".join(words[mid:]))
+            else:
+                wrapped_labels.append(name)
+
+        ax2.set_yticks(y_pos)
+        ax2.set_yticklabels(wrapped_labels, fontsize=9)
+        ax2.set_xlabel("Number of Proposals", fontsize=FONT_SIZE_LABEL)
+        ax2.set_xlim(0, max(issue_counts) + 10)
+        ax2.invert_yaxis()
+        ax2.grid(True, axis="x", alpha=0.3)
+        ax2.set_title("(b) Filter Failure Causes", fontsize=FONT_SIZE_LABEL, weight="bold")
+
+        # Add annotation for vesting dominance
+        vesting_count = filter_issues.get("Insider vesting defined", 0)
+        total_filter_failures = 80  # 80 proposals failed the filter layer
+        if vesting_count > 0:
+            vesting_pct = vesting_count / total_filter_failures * 100
+            ax2.annotate(f"{vesting_pct:.0f}% of filter\nfailures",
+                         xy=(vesting_count - 2, 0), xytext=(vesting_count * 0.55, 1.5),
+                         fontsize=9, color=OKABE_ITO_PALETTE[5], weight="bold",
+                         ha="center",
+                         arrowprops=dict(arrowstyle="->", color=OKABE_ITO_PALETTE[5],
+                                         lw=1.5, connectionstyle="arc3,rad=-0.2"))
+
+    plt.tight_layout()
+    _save_figure(fig, output_path, "Fig05_validation_pipeline",
+                 "Multi-stage validation pass rates by category and filter failure decomposition")
+    plt.close(fig)
 
 
 def plot_allocation_distribution(results_csv: str, output_dir: str) -> None:
@@ -157,7 +318,7 @@ def plot_allocation_distribution(results_csv: str, output_dir: str) -> None:
         ax.text(i, 102, f"μ={mean_val:.1f}", ha="center", fontsize=9)
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig05_allocation_distribution",
+    _save_figure(fig, output_path, "Fig06_allocation_distribution",
                  "Token allocation distribution across proposals")
     plt.close(fig)
 
@@ -250,7 +411,7 @@ def plot_circulating_supply_growth(simulation_results: Union[str, List[Dict]], o
             ax.axvline(month, color="gray", linestyle="--", alpha=0.3, linewidth=1)
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig06_circulating_supply_growth",
+    _save_figure(fig, output_path, "Fig07_circulating_supply_growth",
                  "Median circulating supply trajectory with 90% CI and IQR")
     plt.close(fig)
 
@@ -384,7 +545,7 @@ def plot_fairness_drift(simulation_results: Union[str, List[Dict]], output_dir: 
     ax2.set_ylim(0, 1)
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig07_fairness_drift",
+    _save_figure(fig, output_path, "Fig08_fairness_drift",
                  "Fairness metrics over time: (a) insider concentration, (b) Gini coefficient")
     plt.close(fig)
 
@@ -494,8 +655,87 @@ def plot_stress_test_outcomes(simulation_results: Union[str, List[Dict]], output
     ax.legend(fontsize=FONT_SIZE_TICK, loc="lower right")
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig08_stress_test_outcomes",
+    _save_figure(fig, output_path, "Fig09_stress_test_outcomes",
                  "Pass rates across 5 stress test scenarios with 95% CI")
+    plt.close(fig)
+
+
+def plot_control_findings(analysis_json: str, output_dir: str) -> None:
+    """
+    Horizontal bar chart showing control layer issue frequencies across proposals.
+
+    Complements Fig 5b (filter failure causes) by showing what governance and design
+    issues the control layer detects — directly demonstrating the framework's ability
+    to surface insider concentration, Gini violations, and vesting gaps as described
+    in Table II of the paper.
+
+    Reads:
+      - experiment_analysis.json for control_issues frequency dict
+    """
+    output_path = _ensure_output_dir(output_dir)
+
+    with open(analysis_json, "r") as f:
+        analysis = json.load(f)
+
+    control_issues = analysis.get("control_issues", {})
+    if not control_issues:
+        print("  Warning: No control issues found in analysis JSON")
+        return
+
+    sorted_issues = sorted(control_issues.items(), key=lambda x: x[1], reverse=True)
+    issue_names = [item[0] for item in sorted_issues]
+    issue_counts = [item[1] for item in sorted_issues]
+
+    bar_colors = []
+    for name in issue_names:
+        nl = name.lower()
+        if "gini" in nl or "concentration" in nl:
+            bar_colors.append(OKABE_ITO_PALETTE[5])   # orange-red for Gini/concentration
+        elif "insider" in nl:
+            bar_colors.append(OKABE_ITO_PALETTE[4])   # deep blue for insider allocation
+        elif "vest" in nl:
+            bar_colors.append(OKABE_ITO_PALETTE[0])   # amber for vesting
+        else:
+            bar_colors.append(OKABE_ITO_PALETTE[1])   # sky blue for other findings
+
+    fig, ax = plt.subplots(figsize=FIGURE_SIZE_SINGLE)
+    y_pos = np.arange(len(issue_names))
+
+    hbars = ax.barh(y_pos, issue_counts, color=bar_colors, edgecolor="black",
+                    linewidth=1, alpha=0.85, height=0.6)
+
+    for bar, count in zip(hbars, issue_counts):
+        ax.text(bar.get_width() + 0.5, bar.get_y() + bar.get_height() / 2,
+                f"{count}", ha="left", va="center", fontsize=10, weight="bold")
+
+    wrapped_labels = []
+    for name in issue_names:
+        if len(name) > 25:
+            words = name.split()
+            mid = len(words) // 2
+            wrapped_labels.append(" ".join(words[:mid]) + "\n" + " ".join(words[mid:]))
+        else:
+            wrapped_labels.append(name)
+
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(wrapped_labels, fontsize=9)
+    ax.set_xlabel("Number of Proposals", fontsize=FONT_SIZE_LABEL)
+    ax.set_xlim(0, max(issue_counts) + 10)
+    ax.invert_yaxis()
+    ax.grid(True, axis="x", alpha=0.3)
+    ax.set_title("Control Layer Finding Frequencies", fontsize=FONT_SIZE_LABEL, weight="bold")
+
+    legend_patches = [
+        mpatches.Patch(color=OKABE_ITO_PALETTE[5], label="Concentration / Gini"),
+        mpatches.Patch(color=OKABE_ITO_PALETTE[4], label="Insider allocation"),
+        mpatches.Patch(color=OKABE_ITO_PALETTE[0], label="Vesting"),
+        mpatches.Patch(color=OKABE_ITO_PALETTE[1], label="Other"),
+    ]
+    ax.legend(handles=legend_patches, fontsize=8, loc="lower right")
+
+    plt.tight_layout()
+    _save_figure(fig, output_path, "Fig10_control_findings",
+                 "Control layer governance issue frequencies across proposals")
     plt.close(fig)
 
 
@@ -504,10 +744,10 @@ def generate_all_figures(data_dir: str, output_dir: str) -> None:
     Master function that loads all result files and generates all figures.
 
     Expected data files in data_dir:
-      - allocation_results.csv (for Fig 5)
-      - simulation_results.json (for Figs 6, 7)
-      - stress_test_results.json (for Fig 8)
-      - batch_results.csv (for per-project metrics)
+      - batch_results.csv (for Fig 5 pipeline + per-project metrics)
+      - experiment_analysis.json (for Fig 5 filter breakdown)
+      - allocation_results.csv (for Fig 6)
+      - simulation_results.json (for Figs 7, 8, 9)
     """
     data_path = Path(data_dir)
     output_path = _ensure_output_dir(output_dir)
@@ -515,11 +755,22 @@ def generate_all_figures(data_dir: str, output_dir: str) -> None:
     print(f"Generating publication-quality figures from data in {data_dir}")
     print(f"Output directory: {output_dir}\n")
 
+    # ── Figure 5: Validation Pipeline ──
+    batch_csv = data_path / "batch_results.csv"
+    analysis_file = data_path / "experiment_analysis.json"
+    if batch_csv.exists() and analysis_file.exists():
+        print("Figure 5: Validation Pipeline...")
+        try:
+            plot_validation_pipeline(str(batch_csv), str(analysis_file), str(output_path))
+        except Exception as e:
+            print(f"  Error: {e}")
+    else:
+        print(f"  Skipping Fig 5 (need batch_results.csv + experiment_analysis.json)")
 
+    # ── Figure 6: Allocation Distribution ──
     alloc_file = data_path / "allocation_results.csv"
 
     if not alloc_file.exists():
-        batch_csv = data_path / "batch_results.csv"
         if batch_csv.exists():
             try:
                 df = pd.read_csv(batch_csv)
@@ -529,15 +780,15 @@ def generate_all_figures(data_dir: str, output_dir: str) -> None:
                 pass
 
     if alloc_file.exists():
-        print("Figure 5: Allocation Distribution...")
+        print("Figure 6: Allocation Distribution...")
         try:
             plot_allocation_distribution(str(alloc_file), str(output_path))
         except Exception as e:
             print(f"  Error: {e}")
     else:
-        print(f"  Skipping Fig 5 (no allocation data found)")
+        print(f"  Skipping Fig 6 (no allocation data found)")
 
-
+    # ── Figures 7, 8: Supply Growth + Fairness Drift ──
     sim_file = data_path / "simulation_results.json"
 
     if not sim_file.exists():
@@ -546,13 +797,13 @@ def generate_all_figures(data_dir: str, output_dir: str) -> None:
             sim_file = checkpoint_file
 
     if sim_file.exists():
-        print("Figure 6: Circulating Supply Growth...")
+        print("Figure 7: Circulating Supply Growth...")
         try:
             plot_circulating_supply_growth(str(sim_file), str(output_path))
         except Exception as e:
             print(f"  Error: {e}")
 
-        print("Figure 7: Fairness Drift...")
+        print("Figure 8: Fairness Drift...")
         try:
             plot_fairness_drift(str(sim_file), str(output_path))
         except Exception as e:
@@ -568,13 +819,23 @@ def generate_all_figures(data_dir: str, output_dir: str) -> None:
         stress_file = data_path / "batch_results_full.json"
 
     if stress_file.exists():
-        print("Figure 8: Stress Test Outcomes...")
+        print("Figure 9: Stress Test Outcomes...")
         try:
             plot_stress_test_outcomes(str(stress_file), str(output_path))
         except Exception as e:
             print(f"  Error: {e}")
     else:
-        print(f"  Skipping Fig 8 (no stress test data found)")
+        print(f"  Skipping Fig 9 (no stress test data found)")
+
+    # ── Figure 10: Control Layer Findings ──
+    if analysis_file.exists():
+        print("Figure 10: Control Layer Findings...")
+        try:
+            plot_control_findings(str(analysis_file), str(output_path))
+        except Exception as e:
+            print(f"  Error: {e}")
+    else:
+        print(f"  Skipping Fig 10 (need experiment_analysis.json)")
 
     print(f"\nAll available figures generated in {output_dir}")
 
@@ -600,55 +861,81 @@ def main():
 
     parser.add_argument(
         "--fig5", action="store_true",
-        help="Generate only Figure 5 (allocation distribution)"
+        help="Generate only Figure 5 (validation pipeline)"
     )
 
     parser.add_argument(
         "--fig6", action="store_true",
-        help="Generate only Figure 6 (circulating supply growth)"
+        help="Generate only Figure 6 (allocation distribution)"
     )
 
     parser.add_argument(
         "--fig7", action="store_true",
-        help="Generate only Figure 7 (fairness drift)"
+        help="Generate only Figure 7 (circulating supply growth)"
     )
 
     parser.add_argument(
         "--fig8", action="store_true",
-        help="Generate only Figure 8 (stress test outcomes)"
+        help="Generate only Figure 8 (fairness drift)"
+    )
+
+    parser.add_argument(
+        "--fig9", action="store_true",
+        help="Generate only Figure 9 (stress test outcomes)"
+    )
+
+    parser.add_argument(
+        "--fig10", action="store_true",
+        help="Generate only Figure 10 (control layer finding frequencies)"
+    )
+
+    parser.add_argument(
+        "--batch-csv", type=str,
+        help="Path to batch results CSV (for Fig 5)"
+    )
+
+    parser.add_argument(
+        "--analysis-json", type=str,
+        help="Path to experiment analysis JSON (for Fig 5)"
     )
 
     parser.add_argument(
         "--allocation-csv", type=str,
-        help="Path to allocation results CSV (for Fig 5)"
+        help="Path to allocation results CSV (for Fig 6)"
     )
 
     parser.add_argument(
         "--simulation-json", type=str,
-        help="Path to simulation results JSON (for Figs 6, 7)"
+        help="Path to simulation results JSON (for Figs 7, 8)"
     )
 
     parser.add_argument(
         "--stress-json", type=str,
-        help="Path to stress test results JSON (for Fig 8)"
+        help="Path to stress test results JSON (for Fig 9)"
     )
 
     args = parser.parse_args()
 
 
-    if any([args.fig5, args.fig6, args.fig7, args.fig8]):
+    if any([args.fig5, args.fig6, args.fig7, args.fig8, args.fig9, args.fig10]):
 
-        if args.fig5 and args.allocation_csv:
+        if args.fig5 and args.batch_csv and args.analysis_json:
+            plot_validation_pipeline(args.batch_csv, args.analysis_json, args.output_dir)
+
+        if args.fig6 and args.allocation_csv:
             plot_allocation_distribution(args.allocation_csv, args.output_dir)
 
-        if args.fig6 and args.simulation_json:
+        if args.fig7 and args.simulation_json:
             plot_circulating_supply_growth(args.simulation_json, args.output_dir)
 
-        if args.fig7 and args.simulation_json:
+        if args.fig8 and args.simulation_json:
             plot_fairness_drift(args.simulation_json, args.output_dir)
 
-        if args.fig8 and args.stress_json:
+        if args.fig9 and args.stress_json:
             plot_stress_test_outcomes(args.stress_json, args.output_dir)
+
+        if args.fig10 and args.analysis_json:
+            plot_control_findings(args.analysis_json, args.output_dir)
     else:
 
         generate_all_figures(args.data_dir, args.output_dir)

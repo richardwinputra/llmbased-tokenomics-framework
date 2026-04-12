@@ -401,6 +401,102 @@ def parse_vesting(data: Dict) -> Dict[str, VestingDetail]:
     return result
 
 
+def extract_from_markdown_table(text: str) -> Tuple[Dict[str, float], Dict[str, VestingDetail]]:
+    """
+    Parse allocation and vesting data from a markdown table produced by GPT-5.4.
+
+    Expects a table with at minimum a 'Category' column and a '%' column.
+    Optionally reads cliff_months and vesting_months columns.
+
+    Example row:
+      | Core Team & Founders | 16% | 32,000,000 | 12 | 48 | notes |
+    """
+    allocation: Dict[str, float] = {}
+    vesting: Dict[str, VestingDetail] = {}
+
+    # Find all markdown table rows (lines starting with |)
+    rows = [line.strip() for line in text.splitlines() if line.strip().startswith('|')]
+    if not rows:
+        return allocation, vesting
+
+    # Identify header row — look for a row containing 'allocation' or '%' or 'category'
+    header_idx = None
+    headers = []
+    for i, row in enumerate(rows):
+        cells = [c.strip().lower() for c in row.strip('|').split('|')]
+        if any(kw in ' '.join(cells) for kw in ('allocation', 'category', '%', 'cliff', 'vesting')):
+            # Skip separator rows like |---|---|---|
+            if all(re.match(r'^[-:]+$', c) for c in cells if c):
+                continue
+            header_idx = i
+            headers = [c.strip().lower() for c in row.strip('|').split('|')]
+            break
+
+    if header_idx is None:
+        return allocation, vesting
+
+    # Map header names to column indices
+    def find_col(*candidates):
+        for c in candidates:
+            for i, h in enumerate(headers):
+                if c in h:
+                    return i
+        return None
+
+    cat_col   = find_col('category', 'name', 'bucket')
+    pct_col   = find_col('allocation', '%', 'share', 'percent')
+    cliff_col = find_col('cliff')
+    vest_col  = find_col('vesting_months', 'vesting months', 'vest')
+
+    if cat_col is None or pct_col is None:
+        return allocation, vesting
+
+    # Parse data rows
+    for row in rows[header_idx + 1:]:
+        cells = [c.strip() for c in row.strip('|').split('|')]
+        if not cells or all(re.match(r'^[-:]+$', c) for c in cells if c):
+            continue  # skip separators
+        if len(cells) <= max(filter(None, [cat_col, pct_col])):
+            continue
+
+        category = _strip_markdown(cells[cat_col]).strip()
+        if not category or len(category) > 80:
+            continue
+
+        # Extract percentage — accept "50%" or "50"
+        raw_pct = cells[pct_col].replace('%', '').replace(',', '').strip()
+        try:
+            pct = float(raw_pct)
+            if not (0 < pct <= 100):
+                continue
+        except ValueError:
+            continue
+
+        allocation[category] = pct
+
+        # Extract vesting if columns exist
+        cliff, vest = None, None
+        if cliff_col is not None and cliff_col < len(cells):
+            try:
+                cliff = int(cells[cliff_col].replace(',', '').strip())
+            except ValueError:
+                pass
+        if vest_col is not None and vest_col < len(cells):
+            try:
+                vest = int(cells[vest_col].replace(',', '').strip())
+            except ValueError:
+                pass
+
+        if cliff is not None or vest is not None:
+            vesting[category] = VestingDetail(
+                cliff_months=cliff or 0,
+                vesting_months=vest or 0,
+                unlock_type="linear",
+            )
+
+    return allocation, vesting
+
+
 def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsParameters:
     """Parse LLM output into TokenomicsParameters (Algorithm 1, line 14)."""
     params_block = payload.get("tokenomics_parameters", {})
@@ -418,17 +514,27 @@ def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsPar
                  payload.get("allocations") or
                  payload.get("allocation"))
     allocation = {}
+    vesting_from_table: Dict[str, VestingDetail] = {}
+
     if isinstance(raw_alloc, dict):
+        # JSON block parsed successfully — use it directly
         for k, v in raw_alloc.items():
             try:
                 clean_k = _strip_markdown(k).strip()
+                if len(clean_k) > 80:  # guard against garbage keys
+                    continue
                 allocation[clean_k] = float(v)
             except (ValueError, TypeError):
                 pass
     else:
-        labels, values = extract_allocation_enhanced(raw_text)
-        for l, v in zip(labels, values):
-            allocation[l] = v
+        # Try markdown table first (GPT-5.4 prose output)
+        allocation, vesting_from_table = extract_from_markdown_table(raw_text)
+        if not allocation:
+            # Last resort: regex scan — but filter out garbage long keys
+            labels, values = extract_allocation_enhanced(raw_text)
+            for l, v in zip(labels, values):
+                if len(l) <= 80:  # skip garbled multi-sentence keys
+                    allocation[l] = v
 
 
     if not allocation:
@@ -440,6 +546,10 @@ def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsPar
 
     raw_vesting = params_block.get("vesting") or payload.get("vesting")
     vesting = parse_vesting(raw_vesting) if isinstance(raw_vesting, dict) else {}
+    # Use table-extracted vesting if JSON had none
+    if not vesting and vesting_from_table:
+        vesting = vesting_from_table
+    # Last resort: infer from prose text
     if not vesting and allocation:
         for key in allocation.keys():
             cliff, vest = infer_bucket_timing(key, raw_text)

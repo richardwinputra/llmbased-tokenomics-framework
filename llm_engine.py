@@ -84,8 +84,36 @@ Formatting Requirements:
 - Use exact numbers for total supply
 - Format allocations as "Category: XX%"
 - Ensure all percentages sum to 100%
-- Include vesting schedules with cliff and duration in months
+- Include vesting schedules with cliff and duration in months for each category
+- IMPORTANT: Every insider category (team, founders, advisors, investors, strategic backers)
+  MUST have an explicit vesting schedule with cliff_months and vesting_months. Do not omit any.
 - Justify decisions using reasoning and references from similar projects
+
+OUTPUT STRUCTURE (MANDATORY):
+After your narrative explanation, you MUST end your response with a JSON block in this exact format:
+
+```json
+{
+  "tokenomics_parameters": {
+    "total_supply": <integer>,
+    "allocation": {
+      "<Category Name>": <percentage as float>
+    },
+    "vesting": {
+      "<Category Name>": {
+        "cliff_months": <integer>,
+        "vesting_months": <integer>,
+        "unlock_type": "linear"
+      }
+    }
+  }
+}
+```
+
+Ensure:
+- allocation values sum to exactly 100.0
+- Every insider category in allocation has a matching entry in vesting
+- Use the same category name strings in both allocation and vesting
 """
 
 
@@ -133,6 +161,10 @@ Reference Projects:
 
 Provide: token role, total supply, allocation (Category: XX%), vesting schedule
 (cliff and duration in months for each category), governance design, economic model.
+
+IMPORTANT: End your response with a ```json code block containing the structured
+tokenomics_parameters object (total_supply, allocation dict, vesting dict).
+Every insider category MUST appear in the vesting dict.
 """
 
 

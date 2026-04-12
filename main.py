@@ -78,6 +78,7 @@ def save_pipeline_outputs(
     control_result,
     filter_result,
     sim_report: SimulationReport,
+    raw_llm_response: str = "",
 ) -> None:
     os.makedirs(output_dir, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -85,6 +86,11 @@ def save_pipeline_outputs(
 
     with open(os.path.join(output_dir, f"proposal_{timestamp}.json"), "w", encoding="utf-8") as f:
         json.dump(asdict(tokenomics), f, ensure_ascii=False, indent=2)
+
+
+    if raw_llm_response:
+        with open(os.path.join(output_dir, f"llm_response_{timestamp}.txt"), "w", encoding="utf-8") as f:
+            f.write(raw_llm_response)
 
 
     with open(os.path.join(output_dir, f"context_{timestamp}.json"), "w", encoding="utf-8") as f:
@@ -261,6 +267,7 @@ def main():
         tokenomics=proposal, context=context,
         control_result=control_result, filter_result=filter_result,
         sim_report=sim_report,
+        raw_llm_response=result,
     )
 
     project_name = user_input.get('project_name', 'your project')
