@@ -39,7 +39,6 @@ def safe_std(vals):
     return round(float(np.std(vals)), 4) if len(vals) > 1 else None
 
 
-
 def analyze():
     results = load_results()
     success = [r for r in results if r.get("status") == "Success"]
@@ -49,7 +48,7 @@ def analyze():
     print("EXPERIMENT ANALYSIS — SECTION IV DATA")
     print("=" * 80)
 
-    # ── TABLE V: Batch Generation Performance ──────────────────
+
     print("\n" + "=" * 80)
     print("TABLE V. Batch Generation Performance")
     print("=" * 80)
@@ -71,7 +70,7 @@ def analyze():
         for r in failed:
             print(f"    - {r.get('project_name', '?')}: {r.get('error', r.get('status', '?'))[:80]}")
 
-    # ── TABLE VI: Control & Filter Issues ──────────────────────
+
     print("\n" + "=" * 80)
     print("TABLE VI. Common Control and Filter Issues")
     print("=" * 80)
@@ -96,7 +95,7 @@ def analyze():
     for check, count in filter_freq.most_common():
         print(f"  {check:<40} {count:>6} {count/n_success:>7.0%}")
 
-    # ── TABLE VII: Fairness Evaluation ─────────────────────────
+
     print("\n" + "=" * 80)
     print("TABLE VII. Fairness Evaluation Summary")
     print("=" * 80)
@@ -122,7 +121,7 @@ def analyze():
             print(f"  {label:<30} {np.mean(vals):>8.4f} {np.std(vals):>8.4f} "
                   f"{np.median(vals):>8.4f} {min(vals):>8.4f} {max(vals):>8.4f}")
 
-    # ── TABLE VIII: Supply Release ─────────────────────────────
+
     print("\n" + "=" * 80)
     print("TABLE VIII. Supply Release Metrics")
     print("=" * 80)
@@ -132,7 +131,7 @@ def analyze():
               f"std={np.std(y1_inf):.1f}%, median={np.median(y1_inf):.1f}%, "
               f"min={min(y1_inf):.1f}%, max={max(y1_inf):.1f}%")
 
-    # ── TABLE IX: Stress Test Results ──────────────────────────
+
     print("\n" + "=" * 80)
     print("TABLE IX. Sustainability Stress Test Results")
     print("=" * 80)
@@ -156,7 +155,7 @@ def analyze():
     print(f"\n  Overall stress pass (>=70% scenarios): {overall_pass}/{n_success} "
           f"({overall_pass/n_success:.0%})" if n_success else "")
 
-    # ── BY CATEGORY ────────────────────────────────────────────
+
     print("\n" + "=" * 80)
     print("RESULTS BY CATEGORY")
     print("=" * 80)
@@ -175,7 +174,7 @@ def analyze():
         print(f"  {cat:<22} {n:>3} {fp*100:>7.1f}% {g24 or 0:>8.4f} "
               f"{dr or 0:>8.4f} {sp*100:>7.1f}% {y1 or 0:>8.1f}")
 
-    # ── BY INPUT TYPE ──────────────────────────────────────────
+
     print("\n" + "=" * 80)
     print("RESULTS BY INPUT TYPE")
     print("=" * 80)
@@ -194,7 +193,7 @@ def analyze():
         print(f"  {itype:<25} {n:>3} {fp*100:>7.1f}% {g24 or 0:>8.4f} "
               f"{dr or 0:>8.4f} {sp*100:>7.1f}% {y1 or 0:>8.1f}")
 
-    # ── PER-SCENARIO BY CATEGORY ──────────────────────────────
+
     print("\n" + "=" * 80)
     print("STRESS SCENARIO PASS RATES BY CATEGORY")
     print("=" * 80)
@@ -217,7 +216,7 @@ def analyze():
     print("ANALYSIS COMPLETE")
     print("=" * 80)
 
-    # Save structured summary
+
     summary = {
         "total_inputs": total,
         "successful": n_success,
@@ -256,3 +255,4 @@ def analyze():
 
 if __name__ == "__main__":
     analyze()
+

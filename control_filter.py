@@ -35,8 +35,6 @@ from utils import (
 )
 
 
-# ── Control Layer (Table II) ─────────────────────────────────
-
 def run_control_layer(
     tokenomics: GeneratedTokenomics,
     context: ProjectContext,
@@ -49,13 +47,13 @@ def run_control_layer(
     alloc = tokenomics.tokenomics_parameters.allocation
     vesting = tokenomics.tokenomics_parameters.vesting
 
-    # Compute category shares
+
     distributed_pct = compute_distributed_pct(alloc)
     insider_pct = compute_insider_pct(alloc)
     team_pct = compute_team_pct(alloc)
     investor_pct = compute_investor_pct(alloc)
 
-    # 1. Minimum distribution floor: distributed >= 20%
+
     if distributed_pct < 20.0:
         findings.append(ControlFinding(
             category="Distributed allocation",
@@ -65,7 +63,7 @@ def run_control_layer(
                     "Severely weak non-insider dispersion.",
         ))
 
-    # 2. Team concentration: team <= 35%
+
     if team_pct > 35.0:
         findings.append(ControlFinding(
             category="Insider allocation",
@@ -75,7 +73,7 @@ def run_control_layer(
                     "Unusually high internal concentration.",
         ))
 
-    # 3. Investor concentration: <= 25% preferred; > 25% flagged; > 40% high risk
+
     if investor_pct > 40.0:
         findings.append(ControlFinding(
             category="Insider allocation",
@@ -93,7 +91,7 @@ def run_control_layer(
                     "Flagged for concentrated external capital influence.",
         ))
 
-    # 4. Combined insider concentration: <= 40% preferred; > 40% flagged; > 60% high risk
+
     if insider_pct > 60.0:
         findings.append(ControlFinding(
             category="Insider allocation",
@@ -111,7 +109,7 @@ def run_control_layer(
                     "Flagged for governance concentration.",
         ))
 
-    # 5. Vesting consistency: cliff <= vesting duration
+
     for k in alloc.keys():
         detail = vesting.get(k)
         if detail and detail.cliff_months and detail.vesting_months:
@@ -124,7 +122,7 @@ def run_control_layer(
                             f"({detail.vesting_months}m). Logically incoherent schedule.",
                 ))
 
-    # 6. Insider lockup horizon: insider vesting >= 12 months
+
     for k in alloc.keys():
         if is_insider_category(k):
             detail = vesting.get(k)
@@ -137,7 +135,7 @@ def run_control_layer(
                             "Early synchronized insider unlock pressure.",
                 ))
 
-    # 7. Aggregate concentration: Gini <= 0.60
+
     gini_t0 = calculate_gini(list(alloc.values()))
     if gini_t0 > 0.60:
         findings.append(ControlFinding(
@@ -163,8 +161,6 @@ def run_control_layer(
     )
 
 
-# ── Filter Layer (Table III) ────────────────────────────────
-
 def run_filter_layer(
     tokenomics: GeneratedTokenomics,
     context: ProjectContext,
@@ -180,7 +176,7 @@ def run_filter_layer(
     vesting = tokenomics.tokenomics_parameters.vesting
     adjusted_alloc = alloc.copy()
 
-    # 1. Allocation completeness: 99.5% <= total <= 100.5%
+
     total_allocation = sum(alloc.values())
     if total_allocation <= 0:
         checks.append(FilterCheck(
@@ -206,11 +202,11 @@ def run_filter_layer(
             message=f"Allocation total {total_allocation:.1f}% within tolerance.",
         ))
 
-    # 2. No negative allocation share
+
     has_negative = any(v < 0 for v in adjusted_alloc.values())
     if has_negative:
         adjusted_alloc = {k: max(v, 0) for k, v in adjusted_alloc.items()}
-        # Re-normalize after removing negatives
+
         total = sum(adjusted_alloc.values())
         if total > 0:
             factor = 100 / total
@@ -229,7 +225,7 @@ def run_filter_layer(
             message="All allocations non-negative.",
         ))
 
-    # 3. Positive total supply
+
     supply = tokenomics.tokenomics_parameters.total_supply
     initial_supply = 0
     if isinstance(supply, int):
@@ -252,7 +248,7 @@ def run_filter_layer(
             message="Total supply missing or non-positive. Using default 1B.",
         ))
 
-    # 4. Required analytical groups identifiable
+
     insider_identified = any(is_insider_category(k) for k in adjusted_alloc.keys())
     distributed_identified = any(is_distributed_category(k) for k in adjusted_alloc.keys())
     groups_ok = insider_identified and distributed_identified
@@ -273,7 +269,7 @@ def run_filter_layer(
                     f"Distributed identified: {distributed_identified}.",
         ))
 
-    # 5. Insider vesting defined
+
     insider_keys = [k for k in adjusted_alloc.keys() if is_insider_category(k)]
     all_insider_vesting_ok = True
     for k in insider_keys:
@@ -303,8 +299,7 @@ def run_filter_layer(
             message=f"Missing vesting for insider categories: {', '.join(missing)}.",
         ))
 
-    # 6. Initial circulating supply feasible
-    # Circulating at T0 = sum of categories with no cliff or cliff=0
+
     initial_circulating_pct = 0.0
     for k, v in adjusted_alloc.items():
         detail = vesting.get(k)
@@ -326,7 +321,7 @@ def run_filter_layer(
             message=f"Initial circulating supply {initial_circulating_pct:.1f}% > total supply.",
         ))
 
-    # Build adjusted proposal
+
     all_passed = all(c.passed for c in checks)
     new_params = replace(tokenomics.tokenomics_parameters, allocation=adjusted_alloc)
     adjusted_proposal = replace(tokenomics, tokenomics_parameters=new_params)
@@ -336,3 +331,4 @@ def run_filter_layer(
         adjusted_proposal=adjusted_proposal,
         checks=checks,
     )
+

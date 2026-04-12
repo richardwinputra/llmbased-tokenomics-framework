@@ -13,8 +13,6 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Union, Literal
 
 
-# ── Supply types ──────────────────────────────────────────────
-
 @dataclass
 class FixedSupply:
     amount: int
@@ -36,13 +34,11 @@ class DynamicSupply:
 TokenSupply = Union[int, FixedSupply, CappedSupply, DynamicSupply]
 
 
-# ── Core domain objects (Table I) ────────────────────────────
-
 @dataclass
 class VestingDetail:
     """Cliff-and-linear vesting rule for a single allocation category."""
-    cliff_months: int          # c_i in the paper
-    vesting_months: int        # d_i in the paper
+    cliff_months: int
+    vesting_months: int
     unlock_type: str = "linear"
 
 @dataclass
@@ -55,23 +51,23 @@ class ProjectMetadata:
 @dataclass
 class TokenDesignThinking:
     """Token Design Thinking fields (Table I, rows 2-5)."""
-    purpose: str               # Purpose and Principles
+    purpose: str
     principles: List[str]
     positioning: str
-    functions: List[str]       # Functional Design
+    functions: List[str]
     stakeholders: List[str]
-    economic_design: str       # System Design
+    economic_design: str
     legal_design: str
     tech_design: str
-    power_structures: str      # Governance and Power
+    power_structures: str
     team: Dict[str, str]
 
 @dataclass
 class TokenomicsParameters:
     """Tokenomics Parameters (Table I, rows 6-7)."""
-    total_supply: TokenSupply               # S in the paper
-    allocation: Dict[str, float]            # p_i percentages
-    vesting: Dict[str, VestingDetail]       # c_i, d_i per category
+    total_supply: TokenSupply
+    allocation: Dict[str, float]
+    vesting: Dict[str, VestingDetail]
     emissions: Optional[str] = None
     burn: Optional[str] = None
 
@@ -94,14 +90,12 @@ class ProjectContext:
     economic_signals: Dict[str, float] = field(default_factory=dict)
 
 
-# ── Control Layer (Table II) ─────────────────────────────────
-
 @dataclass
 class ControlFinding:
     """A single diagnostic finding from the control layer."""
-    category: str       # Analytical category from Table II
-    check: str          # Control check name
-    severity: str       # "info", "warning", "high_risk"
+    category: str
+    check: str
+    severity: str
     message: str
 
 @dataclass
@@ -117,13 +111,11 @@ class ControlLayerResult:
     gini_t0: float
 
 
-# ── Filter Layer (Table III) ─────────────────────────────────
-
 @dataclass
 class FilterCheck:
     """A single filter check result (Table III)."""
-    category: str       # Validation category
-    rule: str           # Filter rule name
+    category: str
+    rule: str
     passed: bool
     message: str
 
@@ -135,60 +127,52 @@ class FilterLayerResult:
     checks: List[FilterCheck]
 
 
-# ── Simulation: Supply Release ───────────────────────────────
-
 @dataclass
 class SupplyReleaseResult:
     """Monthly supply release simulation over 60 months."""
-    months: List[int]                          # [0, 1, 2, ..., 60]
-    circulating_supply: List[float]            # C(m) total
-    locked_supply: List[float]                 # L(m) = S - C(m)
-    category_circulating: Dict[str, List[float]]  # C_i(m) per category
-    initial_circulating_pct: float             # C(0) / S * 100
-    year1_circulating_pct: float               # C(12) / S * 100
-    year2_circulating_pct: float               # C(24) / S * 100
-    full_unlock_month: Optional[int]           # month where C(m) >= 0.99 * S
-    year1_inflation_proxy: Optional[float]     # (C(12) - C(0)) / C(0) * 100
+    months: List[int]
+    circulating_supply: List[float]
+    locked_supply: List[float]
+    category_circulating: Dict[str, List[float]]
+    initial_circulating_pct: float
+    year1_circulating_pct: float
+    year2_circulating_pct: float
+    full_unlock_month: Optional[int]
+    year1_inflation_proxy: Optional[float]
 
-
-# ── Simulation: Fairness Evaluation ──────────────────────────
 
 @dataclass
 class FairnessSnapshot:
     """Fairness metrics at a single checkpoint."""
     month: int
-    insider_share: float        # I(m) = C_insider(m) / C(m)
-    distributed_share: float    # D(m) = C_distributed(m) / C(m)
-    gini: float                 # Gini(C_1(m), ..., C_k(m))
+    insider_share: float
+    distributed_share: float
+    gini: float
 
 @dataclass
 class FairnessEvaluationResult:
     """Fairness trajectory across checkpoints (0, 12, 24, full unlock)."""
     snapshots: List[FairnessSnapshot]
-    fairness_drift: float       # max insider share - initial insider share
+    fairness_drift: float
 
-
-# ── Simulation: Sustainability Stress Testing ────────────────
 
 @dataclass
 class StressScenarioResult:
     """Result of a single stress scenario."""
-    name: str                   # bull, neutral, bear, unlock_shock, liquidity_pressure
+    name: str
     description: str
-    viable: bool                # Remains above minimum viability threshold
-    sufficient_reserves: bool   # Circulating + reserve conditions met
-    recovery_months: Optional[int]  # Months to return to 80% pre-shock level
+    viable: bool
+    sufficient_reserves: bool
+    recovery_months: Optional[int]
     notes: List[str]
 
 @dataclass
 class StressTestResult:
     """Aggregated stress testing output."""
     scenarios: List[StressScenarioResult]
-    pass_rate: float            # Fraction of scenarios passed
-    passed: bool                # pass_rate >= 0.70
+    pass_rate: float
+    passed: bool
 
-
-# ── Full Simulation Report ───────────────────────────────────
 
 @dataclass
 class SimulationReport:
@@ -197,3 +181,4 @@ class SimulationReport:
     fairness_evaluation: FairnessEvaluationResult
     stress_test: StressTestResult
     recommendations: List[str]
+

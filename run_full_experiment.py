@@ -16,6 +16,7 @@ import random
 import traceback
 from datetime import datetime
 from typing import Dict, List, Optional
+from dataclasses import asdict
 
 import numpy as np
 from dotenv import load_dotenv
@@ -31,13 +32,12 @@ from simulation import run_simulation_module
 from models import FilterLayerResult, FilterCheck
 from utils import summarize_all_projects, calculate_gini
 
-# ── Configuration ──────────────────────────────────────────
 
 BATCH_FILE = "batch_inputs.json"
 KB_FILE = "TokenomicsKnowledge.json"
 OUTPUT_DIR = "experiment_results"
 SEED = 42
-MODEL = None  # Use default from .env
+MODEL = None
 
 
 def load_data():
@@ -55,10 +55,10 @@ def run_single(user_input, knowledge_base, dataset, project_summaries, seed):
 
     summaries = project_summaries
 
-    # Build prompt (all inputs are structured at this point)
+
     prompt = create_structured_prompt(user_input, summaries)
 
-    # LLM generation
+
     result_text = ask_openai_enhanced(
         prompt, "structured", model_override=MODEL,
     )
@@ -66,21 +66,21 @@ def run_single(user_input, knowledge_base, dataset, project_summaries, seed):
     if not result_text or result_text.startswith("Error"):
         return {"status": "LLM_Failed", "error": result_text[:200]}
 
-    # Proposal construction
+
     proposal, context = generate_tokenomics_proposal(user_input, result_text)
 
-    # Control layer
+
     control_result = run_control_layer(proposal, context)
 
-    # Filter layer
+
     filter_result = run_filter_layer(proposal, context)
 
-    # Simulation
+
     sim_report = run_simulation_module(
         filter_result.adjusted_proposal, context, knowledge_base, dataset,
     )
 
-    # Extract metrics
+
     alloc = filter_result.adjusted_proposal.tokenomics_parameters.allocation
     overall_gini = calculate_gini(list(alloc.values()))
 
@@ -91,7 +91,7 @@ def run_single(user_input, knowledge_base, dataset, project_summaries, seed):
     m24 = next((s for s in snapshots if s.month == 24), None)
     full = next((s for s in snapshots if s.month > 24), None)
 
-    # Stress test details
+
     stress = sim_report.stress_test
     scenario_details = {}
     for s in stress.scenarios:
@@ -102,7 +102,7 @@ def run_single(user_input, knowledge_base, dataset, project_summaries, seed):
             "notes": s.notes,
         }
 
-    # Detailed simulation data for visualization (Figs 6-8)
+
     supply_release_data = {
         "circulating_supply": sim_report.supply_release.circulating_supply,
         "initial_circulating_pct": sim_report.supply_release.initial_circulating_pct,
@@ -155,15 +155,18 @@ def run_single(user_input, knowledge_base, dataset, project_summaries, seed):
         "n_allocations": len(alloc),
         "allocation": dict(alloc),
         "recommendations": sim_report.recommendations,
-        # Detailed simulation data for visualization
+
         "supply_release": supply_release_data,
         "fairness_evaluation": fairness_data,
         "stress_test": stress_data,
-        # Control layer percentages for Fig 5
+
         "insider_pct": control_result.insider_pct,
         "distributed_pct": control_result.distributed_pct,
         "team_pct": control_result.team_pct,
         "investor_pct": control_result.investor_pct,
+
+        "raw_llm_response": result_text,
+        "generated_tokenomics_payload": asdict(proposal),
     }
 
 
@@ -176,21 +179,21 @@ def run_experiment():
     print("=" * 70)
     start_time = time.time()
 
-    # Load data
+
     print("\n[1/3] Loading data...")
     batch_inputs, knowledge_base = load_data()
     dataset = knowledge_base
     print(f"  {len(batch_inputs)} inputs, {len(knowledge_base)} KB entries")
 
-    # All inputs are structured — use directly
+
     resolved_inputs = batch_inputs
 
-    # Pre-compute RAG summaries
+
     print("\n[2/3] Computing RAG summaries...")
     project_summaries = summarize_all_projects(knowledge_base)
     print(f"  Summary length: {len(project_summaries)} chars")
 
-    # Load existing results if resuming
+
     all_results = []
     completed_keys = set()
     if os.path.exists(checkpoint_results):
@@ -199,7 +202,7 @@ def run_experiment():
         completed_keys = {r["project_name"] for r in all_results}
         print(f"  Resuming: {len(all_results)} results already done")
 
-    # Run experiment
+
     print(f"\n[3/3] Running Full Pipeline experiment...")
     total_runs = len(resolved_inputs)
     run_count = len(all_results)
@@ -234,7 +237,7 @@ def run_experiment():
         all_results.append(metrics)
         completed_keys.add(project_name)
 
-        # Print quick summary
+
         if metrics.get("status") == "Success":
             g24 = metrics.get("gini_24m")
             spr = metrics.get("stress_pass_rate")
@@ -245,11 +248,11 @@ def run_experiment():
                 print(f"    {metrics['status']} (missing metrics)")
         else:
             print(f"    {metrics['status']}: {metrics.get('error', '')[:80]}")
-        # Save checkpoint every result
+
         with open(checkpoint_results, "w") as f:
             json.dump(all_results, f, indent=2, default=str)
 
-        # Rate limit
+
         time.sleep(0.5)
 
     elapsed = time.time() - start_time
@@ -257,7 +260,7 @@ def run_experiment():
     print(f"EXPERIMENT COMPLETE: {len(all_results)} results in {elapsed/60:.1f} minutes")
     print(f"{'=' * 70}")
 
-    # Export final results
+
     export_results(all_results)
     return all_results
 
@@ -266,7 +269,7 @@ def export_results(all_results):
     """Export results to CSV, detailed JSON, and visualization-ready JSON."""
     import csv
 
-    # CSV (flat metrics)
+
     csv_path = os.path.join(OUTPUT_DIR, "batch_results.csv")
     flat_fields = [
         "project_name", "input_type", "category",
@@ -285,14 +288,13 @@ def export_results(all_results):
         writer.writerows(all_results)
     print(f"  CSV exported: {csv_path}")
 
-    # Full JSON (checkpoint data)
+
     json_path = os.path.join(OUTPUT_DIR, "batch_results_full.json")
     with open(json_path, "w") as f:
         json.dump(all_results, f, indent=2, default=str)
     print(f"  JSON exported: {json_path}")
 
-    # Visualization-ready simulation_results.json
-    # Contains supply_release, fairness_evaluation, stress_test per project
+
     sim_results = []
     for r in all_results:
         if r.get("status") != "Success":
@@ -308,7 +310,7 @@ def export_results(all_results):
         json.dump(sim_results, f, indent=2, default=str)
     print(f"  Simulation results exported: {sim_path}")
 
-    # Allocation results CSV for Fig 5
+
     alloc_rows = []
     for r in all_results:
         if r.get("status") != "Success":
@@ -328,14 +330,14 @@ def export_results(all_results):
             writer.writerows(alloc_rows)
         print(f"  Allocation results exported: {alloc_path}")
 
-    # Summary statistics
+
     summary = compute_summary(all_results)
     summary_path = os.path.join(OUTPUT_DIR, "experiment_summary.json")
     with open(summary_path, "w") as f:
         json.dump(summary, f, indent=2)
     print(f"  Summary exported: {summary_path}")
 
-    # Print summary table
+
     print_summary_table(summary)
 
 
@@ -364,7 +366,7 @@ def compute_summary(all_results):
         stress_pass = sum(1 for r in results if r.get("stress_passed")) / n
         control_aligned = sum(1 for r in results if r.get("control_aligned")) / n
 
-        # Per-scenario pass rates
+
         scenario_pass = {}
         for sname in ["Bull", "Neutral", "Bear", "Unlock Shock", "Liquidity Pressure"]:
             viable_count = sum(
@@ -395,18 +397,18 @@ def compute_summary(all_results):
             "scenario_pass_rates": scenario_pass,
         }
 
-    # Per category
+
     cats = set(r.get("category", "Unknown") for r in success)
     for cat in sorted(cats):
         group = [r for r in success if r.get("category") == cat]
         summary["categories"][cat] = stats_for_group(group)
 
-    # Per input type
+
     for itype in ["structured"]:
         group = [r for r in success if r.get("input_type") == itype]
         summary["input_types"][itype] = stats_for_group(group)
 
-    # Control/filter issue frequency
+
     control_freq = {}
     filter_freq = {}
     for r in success:
@@ -465,3 +467,4 @@ def print_summary_table(summary):
 
 if __name__ == "__main__":
     run_experiment()
+

@@ -17,9 +17,6 @@ from models import (
 )
 
 
-# ── Gini coefficient ─────────────────────────────────────────
-# Paper: Gini(m) = Gini(C_1(m), C_2(m), ..., C_k(m))
-
 def calculate_gini(values: List[float]) -> float:
     """
     Compute the Gini coefficient for a list of non-negative values.
@@ -37,14 +34,6 @@ def calculate_gini(values: List[float]) -> float:
     ) / (n * cumulative_sum) - (n + 1) / n
     return max(0.0, gini)
 
-
-# ── Allocation key normalization ─────────────────────────────
-# Paper Section III.C: "Raw allocation labels are harmonized into two
-# categories: insider allocation and distributed allocation."
-
-# Insider categories: team, founders, core contributors, advisors, investors
-# Distributed categories: public sale, community rewards, ecosystem incentives,
-#   airdrops, liquidity incentives, staking rewards
 
 _INSIDER_KEYS = {
     'team', 'founders', 'core_team', 'founder', 'core_contributors',
@@ -67,38 +56,38 @@ _DISTRIBUTED_KEYS = {
 }
 
 _KEY_MAPPINGS = {
-    # Team (insider)
+
     'team': 'Team', 'founders': 'Team', 'core_team': 'Team', 'founder': 'Team',
     'core_contributors': 'Team',
-    # Advisors (insider)
+
     'advisors': 'Advisors', 'advisory': 'Advisors',
-    # Investors (insider)
+
     'investors': 'Investors', 'private_sale': 'Investors', 'seed': 'Investors',
     'series_a': 'Investors', 'strategic': 'Investors',
-    # Community (distributed)
+
     'community': 'Community', 'public': 'Community', 'public_sale': 'Community',
     'public_and_community': 'Community', 'community_rewards': 'Community',
     'users': 'Community', 'community_liquidity_providers': 'Community',
     'airdrop': 'Community', 'airdrops': 'Community',
-    # Ecosystem (distributed)
+
     'ecosystem': 'Ecosystem', 'ecosystem_fund': 'Ecosystem',
     'ecosystem_incentives': 'Ecosystem', 'development': 'Ecosystem',
     'treasury': 'Ecosystem', 'dao_treasury': 'Ecosystem',
-    # Liquidity (distributed)
+
     'liquidity': 'Liquidity', 'liquidity_mining': 'Liquidity',
     'liquidity_pool': 'Liquidity', 'liquidity_incentives': 'Liquidity',
     'liquidity_providers': 'Liquidity', 'liquidity_provision': 'Liquidity',
-    # Staking (distributed)
+
     'staking': 'Staking', 'staking_rewards': 'Staking',
     'validator_rewards': 'Staking',
-    # Reserve (distributed)
+
     'reserve': 'Reserve', 'reserves': 'Reserve', 'contingency': 'Reserve',
-    # Marketing (distributed)
+
     'marketing': 'Marketing', 'partnerships': 'Marketing',
-    # Operations (distributed)
+
     'operations': 'Operations', 'operational': 'Operations',
     'node_operators': 'Operations',
-    # Governance (distributed)
+
     'governance': 'Community', 'governance_fund': 'Community',
     'dao': 'Community', 'dao_governance': 'Community',
 }
@@ -106,9 +95,9 @@ _KEY_MAPPINGS = {
 
 def _strip_markdown(text: str) -> str:
     """Strip markdown formatting (bold, italic markers) from text."""
-    # Remove **, *, __, _ wrappers and leading/trailing whitespace
+
     text = re.sub(r'\*{1,2}', '', text)
-    text = re.sub(r'_{1,2}', ' ', text)  # underscores to spaces (often word separators)
+    text = re.sub(r'_{1,2}', ' ', text)
     text = re.sub(r'\s+', ' ', text).strip()
     return text
 
@@ -120,18 +109,18 @@ def normalize_allocation_key(key: str) -> str:
     standard categories via _KEY_MAPPINGS lookup.
     """
     clean = _strip_markdown(key).lower().strip()
-    # Try direct lookup
+
     if clean in _KEY_MAPPINGS:
         return _KEY_MAPPINGS[clean]
-    # Try with underscores replacing spaces
+
     underscore_key = clean.replace(' ', '_')
     if underscore_key in _KEY_MAPPINGS:
         return _KEY_MAPPINGS[underscore_key]
-    # Try partial matching for compound names like "liquidity providers"
+
     for known_key, mapped_value in _KEY_MAPPINGS.items():
         if known_key in clean or clean in known_key:
             return mapped_value
-    # Fallback: title-case the cleaned key
+
     return clean.title()
 
 
@@ -182,8 +171,6 @@ def normalize_allocation_dict(allocation: Dict[str, float]) -> Dict[str, float]:
     return normalized
 
 
-# ── Numeric / text inference helpers ─────────────────────────
-
 def _infer_numeric_from_text(patterns: List[str], text: str) -> Optional[int]:
     for pattern in patterns:
         match = re.search(pattern, text, re.IGNORECASE)
@@ -217,7 +204,7 @@ def infer_bucket_timing(label: str, text: str) -> Tuple[Optional[int], Optional[
 def infer_constraints(goals: List[str], priorities: List[str]) -> Dict[str, float]:
     """Infer control/filter thresholds from user goals per paper Table II."""
     constraints: Dict[str, float] = {}
-    # Paper Table II thresholds
+
     constraints["min_distributed_share"] = 20.0
     constraints["max_team_share"] = 35.0
     constraints["max_investor_preferred"] = 25.0
@@ -247,7 +234,7 @@ def infer_economic_signals(user_input: Dict, result_text: str) -> Dict[str, floa
         "volatility_bias": 1.0,
     }
 
-    # Infer launch price from supply preference
+
     supply_pref = user_input.get("total_supply_preference", "").lower()
     estimated_supply = 1_000_000_000
     if "10b" in supply_pref or "10 b" in supply_pref:
@@ -281,8 +268,6 @@ def infer_economic_signals(user_input: Dict, result_text: str) -> Dict[str, floa
 
     return signals
 
-
-# ── JSON / text extraction ───────────────────────────────────
 
 def extract_json_payload(text: str) -> Optional[Dict]:
     """Extract a JSON object from LLM response text."""
@@ -325,7 +310,7 @@ def extract_allocation_enhanced(text: str) -> Tuple[List[str], List[float]]:
             if len(values) > 1:
                 break
 
-    # Paper Algorithm 1, lines 19-21: warn if sum != 100
+
     total = sum(values)
     if total > 110:
         print(f"Warning: Allocation total ({total}%) exceeds 100%")
@@ -363,8 +348,6 @@ def extract_total_supply(text: str) -> Optional[float]:
             continue
     return None
 
-
-# ── Token supply / parameter parsing ─────────────────────────
 
 def parse_token_supply(data: Any) -> TokenSupply:
     if isinstance(data, (int, float)):
@@ -424,13 +407,13 @@ def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsPar
     if not isinstance(params_block, dict):
         params_block = {}
 
-    # Total supply
+
     raw_supply = params_block.get("total_supply") or payload.get("total_supply")
     if not raw_supply:
         raw_supply = extract_total_supply(raw_text)
     total_supply = parse_token_supply(raw_supply)
 
-    # Allocation
+
     raw_alloc = (params_block.get("allocation") or
                  payload.get("allocations") or
                  payload.get("allocation"))
@@ -447,14 +430,14 @@ def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsPar
         for l, v in zip(labels, values):
             allocation[l] = v
 
-    # Fallback baseline if parsing fails
+
     if not allocation:
         allocation = {
             "Community": 40.0, "Team": 15.0, "Investors": 12.0,
             "Ecosystem": 18.0, "Advisors": 5.0, "Liquidity": 10.0,
         }
 
-    # Vesting
+
     raw_vesting = params_block.get("vesting") or payload.get("vesting")
     vesting = parse_vesting(raw_vesting) if isinstance(raw_vesting, dict) else {}
     if not vesting and allocation:
@@ -501,11 +484,6 @@ def get_initial_supply(tokenomics: GeneratedTokenomics) -> float:
     return result
 
 
-# ── Knowledge base helpers ───────────────────────────────────
-
-
-
-
 def summarize_all_projects(kb: List[Dict]) -> str:
     """Create text summaries of all KB projects for RAG prompt injection."""
     summaries = []
@@ -532,3 +510,4 @@ def summarize_all_projects(kb: List[Dict]) -> str:
         except Exception as e:
             print(f"Error processing project {i}: {e}")
     return "\n".join(summaries)
+

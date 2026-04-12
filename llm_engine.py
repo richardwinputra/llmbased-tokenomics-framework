@@ -41,11 +41,6 @@ def _get_client() -> OpenAI:
     return _client
 
 
-# ── Interactive input collection ─────────────────────────────
-
-
-
-
 def get_structured_input() -> Dict:
     """Collect structured input following the Token Design Thinking framework."""
     data = {
@@ -69,8 +64,6 @@ def get_structured_input() -> Dict:
     data["similar_projects"] = [x.strip().lower() for x in data["similar_projects"] if x.strip()]
     return data
 
-
-# ── Prompt engineering (Algorithm 1, lines 2-12) ────────────
 
 _SYSTEM_MESSAGE = """You are a tokenomics design expert grounded in the Token Design Thinking framework.
 
@@ -178,8 +171,6 @@ def ask_openai_enhanced(prompt: str, input_type: str = "structured",
         return f"Error generating recommendation: {e}"
 
 
-# ── Proposal construction (Algorithm 1, lines 14-24) ────────
-
 def generate_tokenomics_proposal(
     user_input: Dict, result_text: str
 ) -> Tuple[GeneratedTokenomics, ProjectContext]:
@@ -190,13 +181,13 @@ def generate_tokenomics_proposal(
     payload = extract_json_payload(result_text) or {}
     params = extract_tokenomics_parameters(payload, result_text)
 
-    # Design thinking
+
     design_thinking_raw = payload.get("token_design_thinking", {}) or {}
     if "purpose" not in design_thinking_raw:
         design_thinking_raw["purpose"] = user_input.get("project_description", "")[:150]
     design_thinking = parse_design_thinking(design_thinking_raw)
 
-    # Metadata
+
     meta_raw = payload.get("project_metadata", {})
     metadata = ProjectMetadata(
         project=meta_raw.get("project") or user_input.get("project_name", "Unknown"),
@@ -213,7 +204,7 @@ def generate_tokenomics_proposal(
         references=refs,
     )
 
-    # Build context
+
     description = "Structured intake provided via questionnaire."
 
     goals = [g.strip() for g in user_input.get("core_principles", []) if g.strip()]
@@ -233,3 +224,4 @@ def generate_tokenomics_proposal(
 
     gen_tokenomics = enforce_tokenomics_constraints(gen_tokenomics, context)
     return gen_tokenomics, context
+

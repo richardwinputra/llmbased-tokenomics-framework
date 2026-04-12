@@ -39,8 +39,6 @@ from control_filter import run_control_layer, run_filter_layer
 from simulation import run_simulation_module
 
 
-# ── Configuration ────────────────────────────────────────────
-
 DEFAULT_KB_PATH = "TokenomicsKnowledge.json"
 
 
@@ -58,8 +56,6 @@ def seed_random_generators(seed: int) -> None:
     random.seed(seed)
 
 
-# ── CLI ──────────────────────────────────────────────────────
-
 def parse_cli_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="LLM-Based Tokenomics Screening Framework"
@@ -75,8 +71,6 @@ def parse_cli_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-# ── Pipeline output ──────────────────────────────────────────
-
 def save_pipeline_outputs(
     output_dir: str,
     tokenomics: GeneratedTokenomics,
@@ -88,15 +82,15 @@ def save_pipeline_outputs(
     os.makedirs(output_dir, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    # Proposal
+
     with open(os.path.join(output_dir, f"proposal_{timestamp}.json"), "w", encoding="utf-8") as f:
         json.dump(asdict(tokenomics), f, ensure_ascii=False, indent=2)
 
-    # Context
+
     with open(os.path.join(output_dir, f"context_{timestamp}.json"), "w", encoding="utf-8") as f:
         json.dump(asdict(context), f, ensure_ascii=False, indent=2)
 
-    # Control layer
+
     control_payload = {
         "aligned": control_result.aligned,
         "requires_iteration": control_result.requires_iteration,
@@ -110,7 +104,7 @@ def save_pipeline_outputs(
     with open(os.path.join(output_dir, f"control_{timestamp}.json"), "w", encoding="utf-8") as f:
         json.dump(control_payload, f, ensure_ascii=False, indent=2)
 
-    # Filter layer
+
     filter_payload = {
         "passed": filter_result.passed,
         "checks": [asdict(c) for c in filter_result.checks],
@@ -119,7 +113,7 @@ def save_pipeline_outputs(
     with open(os.path.join(output_dir, f"filter_{timestamp}.json"), "w", encoding="utf-8") as f:
         json.dump(filter_payload, f, ensure_ascii=False, indent=2)
 
-    # Simulation report
+
     sim_payload = {
         "supply_release": {
             "initial_circulating_pct": sim_report.supply_release.initial_circulating_pct,
@@ -143,8 +137,6 @@ def save_pipeline_outputs(
     with open(os.path.join(output_dir, f"simulation_{timestamp}.json"), "w", encoding="utf-8") as f:
         json.dump(sim_payload, f, ensure_ascii=False, indent=2)
 
-
-# ── Print helpers ────────────────────────────────────────────
 
 def print_control_results(control_result) -> None:
     print("\n--- Control Layer (Table II) ---")
@@ -205,14 +197,12 @@ def print_simulation_results(sim_report: SimulationReport) -> None:
         print(f"  - {rec}")
 
 
-# ── Main pipeline ────────────────────────────────────────────
-
 def main():
     args = parse_cli_args()
     knowledge_base = load_knowledge_base()
     seed_random_generators(args.seed)
 
-    # --- Input ---
+
     if args.input_file:
         print(f"Loading input from {args.input_file}...")
         try:
@@ -226,10 +216,10 @@ def main():
     else:
         user_input = get_structured_input()
 
-    # --- RAG (always enabled) ---
+
     project_summaries = summarize_all_projects(knowledge_base)
 
-    # --- LLM Generation (Algorithm 1) ---
+
     prompt = create_structured_prompt(user_input, project_summaries)
 
     print("\nGenerating tokenomics design...")
@@ -243,21 +233,21 @@ def main():
         print("Could not extract proper token allocation from the LLM response.")
         return
 
-    # --- Proposal construction ---
+
     proposal, context = generate_tokenomics_proposal(user_input, result)
 
-    # --- Control Layer (Table II) ---
+
     control_result = run_control_layer(proposal, context)
     print_control_results(control_result)
 
-    # --- Filter Layer (Table III, always enabled) ---
+
     filter_result = run_filter_layer(proposal, context)
     print_filter_results(filter_result)
 
     if control_result.requires_iteration or (hasattr(filter_result, 'passed') and not filter_result.passed):
         print("\n[INFO] Issues detected; continuing to simulation for diagnostic insight.")
 
-    # --- Simulation & Evaluation Module ---
+
     print("\nRunning simulation and evaluation module...")
     sim_report = run_simulation_module(
         filter_result.adjusted_proposal, context, knowledge_base,
@@ -265,7 +255,7 @@ def main():
     )
     print_simulation_results(sim_report)
 
-    # --- Save outputs ---
+
     save_pipeline_outputs(
         output_dir=args.output_dir,
         tokenomics=proposal, context=context,
@@ -280,3 +270,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

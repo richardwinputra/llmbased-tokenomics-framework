@@ -27,8 +27,6 @@ from utils import (
 )
 
 
-# ── 1) Supply Release Simulation (Section III.D.1) ──────────
-
 def simulate_supply_release(
     tokenomics: GeneratedTokenomics,
     horizon_months: int = 60,
@@ -53,24 +51,24 @@ def simulate_supply_release(
     vesting = tokenomics.tokenomics_parameters.vesting
     S = get_initial_supply(tokenomics)
 
-    months = list(range(horizon_months + 1))  # [0, 1, 2, ..., 60]
+    months = list(range(horizon_months + 1))
     category_circulating: Dict[str, List[float]] = {}
     circulating_supply: List[float] = []
     locked_supply: List[float] = []
 
-    # Compute T_i for each category
+
     token_amounts = {}
     for cat, pct in alloc.items():
         token_amounts[cat] = (pct / 100.0) * S
 
-    # Compute C_i(m) for each category and month
+
     for cat, T_i in token_amounts.items():
         detail = vesting.get(cat)
         cat_circ = []
 
         for m in months:
             if not detail or (detail.cliff_months == 0 and detail.vesting_months == 0):
-                # No vesting: immediately circulating
+
                 cat_circ.append(T_i)
             else:
                 c_i = detail.cliff_months
@@ -78,7 +76,7 @@ def simulate_supply_release(
                 if m < c_i:
                     cat_circ.append(0.0)
                 elif d_i <= 0:
-                    # Zero duration means immediate unlock after cliff
+
                     cat_circ.append(T_i)
                 else:
                     progress = min((m - c_i) / d_i, 1.0)
@@ -86,7 +84,7 @@ def simulate_supply_release(
 
         category_circulating[cat] = cat_circ
 
-    # Aggregate C(m) and L(m)
+
     for idx in range(len(months)):
         total_circ = sum(
             category_circulating[cat][idx] for cat in category_circulating
@@ -94,26 +92,26 @@ def simulate_supply_release(
         circulating_supply.append(total_circ)
         locked_supply.append(S - total_circ)
 
-    # Derived metrics
+
     initial_circ_pct = (circulating_supply[0] / S * 100) if S > 0 else 0.0
     year1_circ_pct = (circulating_supply[min(12, horizon_months)] / S * 100) if S > 0 else 0.0
     year2_circ_pct = (circulating_supply[min(24, horizon_months)] / S * 100) if S > 0 else 0.0
 
-    # Full unlock month (>= 99% circulating)
+
     full_unlock_month = None
     for m in months:
         if circulating_supply[m] >= 0.99 * S:
             full_unlock_month = m
             break
 
-    # Year 1 inflation proxy: (C(12) - C(0)) / C(0) * 100
+
     year1_inflation = None
     c0 = circulating_supply[0]
     c12 = circulating_supply[min(12, horizon_months)]
     if c0 > 0:
         year1_inflation = ((c12 - c0) / c0) * 100
     elif c12 > 0:
-        # From zero to non-zero — cap at 999% to avoid Infinity in aggregation
+
         year1_inflation = 999.0
 
     return SupplyReleaseResult(
@@ -128,8 +126,6 @@ def simulate_supply_release(
         year1_inflation_proxy=year1_inflation,
     )
 
-
-# ── 2) Fairness Evaluation (Section III.D.2) ────────────────
 
 def evaluate_fairness(
     supply_release: SupplyReleaseResult,
@@ -146,12 +142,12 @@ def evaluate_fairness(
     cat_circ = supply_release.category_circulating
     total_circ = supply_release.circulating_supply
 
-    # Determine checkpoint months
+
     checkpoints = [0, 12, 24]
     full_unlock = supply_release.full_unlock_month
     if full_unlock is not None and full_unlock not in checkpoints:
         checkpoints.append(full_unlock)
-    # Ensure we don't exceed the simulation horizon
+
     max_month = len(supply_release.months) - 1
     checkpoints = [m for m in checkpoints if m <= max_month]
 
@@ -165,7 +161,7 @@ def evaluate_fairness(
             ))
             continue
 
-        # Compute insider and distributed circulating
+
         insider_circ = sum(
             cat_circ[k][m] for k in cat_circ if is_insider_category(k)
         )
@@ -176,7 +172,7 @@ def evaluate_fairness(
         I_m = insider_circ / C_m
         D_m = distributed_circ / C_m
 
-        # Gini over all category circulating balances
+
         category_balances = [cat_circ[k][m] for k in cat_circ]
         gini_m = calculate_gini(category_balances)
 
@@ -184,7 +180,7 @@ def evaluate_fairness(
             month=m, insider_share=I_m, distributed_share=D_m, gini=gini_m,
         ))
 
-    # Fairness drift = max insider share - initial insider share
+
     if len(snapshots) >= 2:
         insider_shares = [s.insider_share for s in snapshots]
         drift = max(insider_shares) - insider_shares[0]
@@ -193,8 +189,6 @@ def evaluate_fairness(
 
     return FairnessEvaluationResult(snapshots=snapshots, fairness_drift=drift)
 
-
-# ── 3) Sustainability Stress Testing (Section III.D.3) ───────
 
 def _compute_supply_demand_ratio(
     circulating_supply: List[float],
@@ -216,16 +210,16 @@ def _compute_supply_demand_ratio(
         return [], 0.0
 
     initial_supply = circulating_supply[0]
-    demand = [initial_supply]  # Initial demand = initial circulating supply
-    sdr_list = [1.0]  # At month 0, SDR = 1.0
+    demand = [initial_supply]
+    sdr_list = [1.0]
 
     months_to_compute = min(horizon_months, len(circulating_supply) - 1)
     for m in range(1, months_to_compute + 1):
-        # Demand grows (or shrinks if growth_rate is negative)
+
         demand_m = demand[m - 1] * (1.0 + growth_rate)
         demand.append(demand_m)
 
-        # SDR = circulating supply / demand
+
         sdr_m = circulating_supply[m] / demand_m if demand_m > 0 else float('inf')
         sdr_list.append(sdr_m)
 
@@ -287,7 +281,7 @@ def run_stress_testing(
 
     circulating_supply = supply_release.circulating_supply
 
-    # Extract design features for resilience assessment
+
     reserve_pct = sum(
         v for k, v in alloc.items()
         if normalize_allocation_key(k) in {"Ecosystem", "Reserve"}
@@ -303,10 +297,10 @@ def run_stress_testing(
     if insider_vest_count > 0:
         avg_insider_vesting /= insider_vest_count
 
-    # ENHANCEMENT A: Calculate data-driven unlock shock metrics
+
     max_monthly_spike, shock_month = _calculate_max_monthly_spike(circulating_supply)
 
-    # Year 1 circulating growth and inflation proxy
+
     c0 = circulating_supply[0]
     c12 = circulating_supply[min(12, len(circulating_supply) - 1)]
     year1_inflation = supply_release.year1_inflation_proxy
@@ -315,20 +309,20 @@ def run_stress_testing(
 
     scenarios: List[StressScenarioResult] = []
 
-    # ── Bull scenario (ENHANCEMENT C: Now uses SDR framework) ────────
+
     _, max_sdr_bull = _compute_supply_demand_ratio(
         circulating_supply, growth_rate=0.05, horizon_months=12
     )
 
-    bull_sdr_threshold = 1.5  # Bull can tolerate up to 1.5x SDR
-    # Apply modifiers
+    bull_sdr_threshold = 1.5
+
     if reserve_pct > 10.0:
         bull_sdr_threshold += 0.1
     if avg_insider_vesting > 24:
         bull_sdr_threshold += 0.1
 
     bull_sdr_viable = max_sdr_bull <= bull_sdr_threshold
-    bull_dilution_viable = year1_inflation <= 200.0  # ENHANCEMENT C check
+    bull_dilution_viable = year1_inflation <= 200.0
     bull_viable = bull_sdr_viable and bull_dilution_viable
 
     bull_sufficient = reserve_pct >= 5.0 or has_burn
@@ -354,26 +348,26 @@ def run_stress_testing(
         recovery_months=bull_recovery, notes=bull_notes,
     ))
 
-    # ── Neutral scenario (ENHANCEMENT C: Now uses SDR framework) ─────
+
     _, max_sdr_neutral = _compute_supply_demand_ratio(
         circulating_supply, growth_rate=0.01, horizon_months=12
     )
 
-    # Cumulative check: does cumulative supply outpace cumulative demand > 50%?
+
     cumulative_supply = sum(circulating_supply[:13]) if len(circulating_supply) > 12 else sum(circulating_supply)
     cumulative_demand = (
         c0 * sum((1.01 ** m) for m in range(13)) if c0 > 0 else 0
     )
     cumulative_outpace = (cumulative_supply - cumulative_demand) / max(cumulative_demand, 1)
 
-    neutral_sdr_threshold = 1.5  # Neutral uses same threshold as Bull
+    neutral_sdr_threshold = 1.5
     if reserve_pct > 10.0:
         neutral_sdr_threshold += 0.1
     if avg_insider_vesting > 24:
         neutral_sdr_threshold += 0.1
 
     neutral_sdr_viable = max_sdr_neutral <= neutral_sdr_threshold
-    neutral_cumulative_viable = cumulative_outpace <= 0.50  # ENHANCEMENT C check
+    neutral_cumulative_viable = cumulative_outpace <= 0.50
     neutral_viable = neutral_sdr_viable and neutral_cumulative_viable
 
     neutral_sufficient = reserve_pct >= 10.0
@@ -399,16 +393,16 @@ def run_stress_testing(
         recovery_months=None, notes=neutral_notes,
     ))
 
-    # ── Bear scenario ────────────────────────────────────────
+
     _, max_sdr_bear = _compute_supply_demand_ratio(
         circulating_supply, growth_rate=-0.02, horizon_months=12
     )
 
-    bear_sdr_threshold = 2.0  # Bear: higher tolerance (declining demand)
+    bear_sdr_threshold = 2.0
     if reserve_pct > 10.0:
-        bear_sdr_threshold -= 0.1  # Reserves improve resilience
+        bear_sdr_threshold -= 0.1
     if avg_insider_vesting > 24:
-        bear_sdr_threshold -= 0.1  # Longer vesting improves resilience
+        bear_sdr_threshold -= 0.1
 
     bear_viable = max_sdr_bear <= bear_sdr_threshold
     bear_sufficient = reserve_pct >= 15.0
@@ -435,17 +429,16 @@ def run_stress_testing(
         recovery_months=bear_recovery, notes=bear_notes,
     ))
 
-    # ── Unlock shock scenario (ENHANCEMENT A: Data-driven) ──────────
-    # Model shock: -5% demand drop at shock month, then flat
+
     sdr_shock = [1.0]
     demand_shock = [c0] if c0 > 0 else [1.0]
 
     for m in range(1, min(len(circulating_supply), 13)):
         if m == shock_month:
-            # Demand drops 5% at shock month
+
             demand_m = demand_shock[m - 1] * 0.95
         else:
-            # Flat demand after shock
+
             demand_m = demand_shock[m - 1]
         demand_shock.append(demand_m)
 
@@ -457,8 +450,8 @@ def run_stress_testing(
     if reserve_pct > 10.0:
         shock_sdr_threshold -= 0.1
 
-    # ENHANCEMENT A: Major spike triggers failure
-    shock_spike_viable = max_monthly_spike < 0.15  # Fails if spike > 15%
+
+    shock_spike_viable = max_monthly_spike < 0.15
     shock_sdr_viable = max_sdr_shock <= shock_sdr_threshold
     shock_viable = shock_spike_viable and shock_sdr_viable
 
@@ -493,25 +486,25 @@ def run_stress_testing(
         recovery_months=shock_recovery, notes=shock_notes,
     ))
 
-    # ── Liquidity pressure scenario ──────────────────────────
+
     liquidity_pct = sum(
         v for k, v in alloc.items()
         if normalize_allocation_key(k) in {"Liquidity", "Staking"}
     )
 
-    # ENHANCEMENT B: Sell pressure proxy with 3x multiplier and reduced growth
+
     _, max_sdr_liq = _compute_supply_demand_ratio(
         circulating_supply, growth_rate=0.005, horizon_months=12
     )
 
-    # Apply 3x sell pressure multiplier: effective SDR *= 3
+
     max_sdr_liq_adjusted = max_sdr_liq * 3.0
 
     liq_sdr_threshold = 4.5
     if reserve_pct > 10.0:
         liq_sdr_threshold += 0.3
     if has_burn:
-        liq_sdr_threshold += 0.45  # Burn mechanism improves tolerance
+        liq_sdr_threshold += 0.45
 
     liq_sdr_viable = max_sdr_liq_adjusted <= liq_sdr_threshold
     liq_reserve_viable = liquidity_pct >= 5.0 and (has_burn or reserve_pct >= 10.0)
@@ -548,7 +541,7 @@ def run_stress_testing(
         recovery_months=liq_recovery, notes=liq_notes,
     ))
 
-    # Pass criterion: viable in >= 70% of scenarios
+
     n_viable = sum(1 for s in scenarios if s.viable)
     pass_rate = n_viable / len(scenarios)
 
@@ -558,8 +551,6 @@ def run_stress_testing(
         passed=pass_rate >= 0.70,
     )
 
-
-# ── Generate recommendations ─────────────────────────────────
 
 def generate_recommendations(
     fairness_eval: FairnessEvaluationResult,
@@ -573,14 +564,14 @@ def generate_recommendations(
     """
     recommendations = []
 
-    # Fairness drift
+
     if fairness_eval.fairness_drift > 0.15:
         recommendations.append(
             f"Fairness drift of {fairness_eval.fairness_drift:.2f} detected. "
             "Consider staggering insider unlocks or adding community distribution events."
         )
 
-    # Gini at checkpoints
+
     for snap in fairness_eval.snapshots:
         if snap.gini > 0.60:
             recommendations.append(
@@ -589,7 +580,7 @@ def generate_recommendations(
             )
             break
 
-    # Stress test failures with data-driven details
+
     failed = [s for s in stress_test.scenarios if not s.viable]
     if failed:
         names = ", ".join(s.name for s in failed)
@@ -598,9 +589,9 @@ def generate_recommendations(
             "Strengthen reserves, add burn mechanisms, or extend vesting."
         )
 
-        # Add specific insights from failed scenarios
+
         for scenario in failed:
-            # Extract specific metrics from scenario notes
+
             if "Unlock Shock" in scenario.name:
                 for note in scenario.notes:
                     if "spike" in note.lower() and "month" in note.lower():
@@ -621,14 +612,14 @@ def generate_recommendations(
                     "or implement dynamic burn tied to volume thresholds."
                 )
 
-    # Supply release metrics
+
     if supply_release.year1_inflation_proxy and supply_release.year1_inflation_proxy > 200:
         recommendations.append(
             f"Year 1 inflation proxy {supply_release.year1_inflation_proxy:.0f}% is very high. "
             "Consider longer vesting schedules to reduce early dilution, or stagger cliff releases."
         )
 
-    # Check for unlock shock in notes (data-driven finding)
+
     for scenario in stress_test.scenarios:
         if scenario.name == "Unlock Shock":
             for note in scenario.notes:
@@ -649,8 +640,6 @@ def generate_recommendations(
     return recommendations
 
 
-# ── Main simulation orchestrator ─────────────────────────────
-
 def run_simulation_module(
     tokenomics: GeneratedTokenomics,
     context: ProjectContext,
@@ -661,16 +650,16 @@ def run_simulation_module(
     Run the complete simulation and evaluation module.
     Integrates supply release, fairness evaluation, and stress testing.
     """
-    # 1) Supply release simulation (60-month horizon)
+
     supply_release = simulate_supply_release(tokenomics, horizon_months=60)
 
-    # 2) Fairness evaluation
+
     fairness_eval = evaluate_fairness(supply_release, tokenomics)
 
-    # 3) Sustainability stress testing
+
     stress_test = run_stress_testing(tokenomics, supply_release, context)
 
-    # 4) Generate recommendations
+
     recommendations = generate_recommendations(
         fairness_eval, stress_test, supply_release,
     )
