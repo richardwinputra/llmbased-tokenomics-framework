@@ -13,6 +13,7 @@ Input Base → Tokenomics Generation Module → Output Control & Filter Module �
 **Output Control & Filter Module**: A two-layer validation gate. The Control Layer (Table II) runs diagnostic checks on allocation concentration, vesting adequacy, and fairness. The Filter Layer (Table III) enforces hard constraints — completeness, non-negativity, supply consistency — and recalculates on failure.
 
 **Simulation & Evaluation Module**: Evaluates the screened proposal through supply release simulation (cliff-and-linear vesting over 60 months), fairness evaluation (insider share, distributed share, Gini tracking), and sustainability stress testing (5 scenarios, 70% pass criterion).
+
 ## Quick Start
 
 ### Prerequisites
