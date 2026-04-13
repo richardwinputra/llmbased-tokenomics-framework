@@ -37,6 +37,37 @@ def safe_std(vals):
     vals = [v for v in vals if v is not None]
     return round(float(np.std(vals)), 4) if len(vals) > 1 else None
 
+def safe_median(vals):
+    vals = [v for v in vals if v is not None]
+    return round(float(np.median(vals)), 4) if vals else None
+
+def safe_min(vals):
+    vals = [v for v in vals if v is not None]
+    return round(float(min(vals)), 4) if vals else None
+
+def safe_max(vals):
+    vals = [v for v in vals if v is not None]
+    return round(float(max(vals)), 4) if vals else None
+
+def safe_ci95(vals):
+    vals = [v for v in vals if v is not None]
+    if len(vals) < 2:
+        return None
+    se = float(np.std(vals, ddof=1)) / (len(vals) ** 0.5)
+    margin = 1.96 * se
+    mean = float(np.mean(vals))
+    return {"lower": round(mean - margin, 4), "upper": round(mean + margin, 4)}
+
+def stats_dict(vals):
+    return {
+        "mean": safe_mean(vals),
+        "std": safe_std(vals),
+        "median": safe_median(vals),
+        "min": safe_min(vals),
+        "max": safe_max(vals),
+        "ci95": safe_ci95(vals),
+    }
+
 
 def analyze():
     results = load_results()
@@ -216,7 +247,45 @@ def analyze():
     print("=" * 80)
 
 
+    # ── Allocation statistics ──
+    team_vals = [r.get("team_pct") for r in success if r.get("team_pct") is not None]
+    investor_vals = [r.get("investor_pct") for r in success if r.get("investor_pct") is not None]
+    insider_vals = [r.get("insider_pct") for r in success if r.get("insider_pct") is not None]
+    distributed_vals = [r.get("distributed_pct") for r in success if r.get("distributed_pct") is not None]
+
+    # ── Supply checkpoint statistics (circulating % at key months) ──
+    supply_at_month: dict = {0: [], 12: [], 24: [], 60: []}
+    for r in success:
+        sr = r.get("supply_release", {})
+        cs = sr.get("circulating_supply", [])
+        if cs:
+            total_s = max(cs) if max(cs) > 0 else 1
+            for m in [0, 12, 24, 60]:
+                if m < len(cs):
+                    supply_at_month[m].append(round(100.0 * cs[m] / total_s, 4))
+
+    # ── Category × scenario breakdown ──
+    category_stress: dict = {}
+    for cat in cats:
+        group = [r for r in success if r.get("category") == cat]
+        n_cat = len(group)
+        category_stress[cat] = {"n": n_cat}
+        for sname in scenarios:
+            viable = sum(1 for r in group
+                         if r.get("scenario_details", {}).get(sname, {}).get("viable", False))
+            category_stress[cat][sname] = {
+                "pass_count": viable,
+                "pass_rate": round(viable / n_cat, 4) if n_cat else 0,
+            }
+
     summary = {
+        "metadata": {
+            "stress_pass_threshold": 0.7,
+            "gini_control_threshold": 0.60,
+            "insider_control_threshold": 0.40,
+            "team_control_threshold": 0.35,
+            "investor_control_threshold": 0.25,
+        },
         "total_inputs": total,
         "successful": n_success,
         "failed": n_failed,
@@ -224,18 +293,28 @@ def analyze():
         "first_pass_filter_rate": first_pass_rate,
         "control_issues": dict(control_freq.most_common()),
         "filter_issues": dict(filter_freq.most_common()),
+        "allocation_stats": {
+            "team_pct": stats_dict(team_vals),
+            "investor_pct": stats_dict(investor_vals),
+            "insider_pct": stats_dict(insider_vals),
+            "distributed_pct": stats_dict(distributed_vals),
+        },
         "fairness": {
-            "gini_t0": {"mean": safe_mean(gini_t0), "std": safe_std(gini_t0)},
-            "gini_12m": {"mean": safe_mean(gini_12), "std": safe_std(gini_12)},
-            "gini_24m": {"mean": safe_mean(gini_24), "std": safe_std(gini_24)},
-            "gini_full": {"mean": safe_mean(gini_full), "std": safe_std(gini_full)},
-            "insider_share_t0": {"mean": safe_mean(insider_t0), "std": safe_std(insider_t0)},
-            "fairness_drift": {"mean": safe_mean(drift), "std": safe_std(drift)},
+            "gini_t0": stats_dict(gini_t0),
+            "gini_12m": stats_dict(gini_12),
+            "gini_24m": stats_dict(gini_24),
+            "gini_full": stats_dict(gini_full),
+            "insider_share_t0": stats_dict(insider_t0),
+            "fairness_drift": stats_dict(drift),
         },
         "supply_release": {
-            "year1_inflation": {"mean": safe_mean(y1_inf), "std": safe_std(y1_inf)},
+            "year1_inflation": stats_dict(y1_inf),
+            "circulating_pct_at_month": {
+                str(m): stats_dict(supply_at_month[m]) for m in [0, 12, 24, 60]
+            },
         },
         "stress_test": {},
+        "category_stress_breakdown": category_stress,
     }
     for sname in scenarios:
         viable = sum(1 for r in success

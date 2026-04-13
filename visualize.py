@@ -1,13 +1,14 @@
 """
 Publication-quality figure generation for Section IV of the tokenomics research paper.
 
-Generates IEEE-style plots (Figures 5-10) for:
+Generates IEEE-style plots (Figures 5-11) for:
   - Figure 5: Multi-stage validation pipeline pass rates by category + filter failure breakdown
   - Figure 6: Allocation distribution across proposals
   - Figure 7: Circulating supply growth trajectories
   - Figure 8: Fairness drift (insider share + Gini over time)
   - Figure 9: Stress test scenario outcomes
   - Figure 10: Control layer finding frequencies across proposals
+  - Figure 11: Category × scenario stress test pass rate heatmap
 
 All figures are publication-ready with:
   - Colorblind-friendly palettes (Okabe-Ito)
@@ -17,9 +18,7 @@ All figures are publication-ready with:
 """
 
 import argparse
-import csv
 import json
-import os
 from pathlib import Path
 from typing import Dict, List, Union
 
@@ -27,7 +26,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from matplotlib.patches import Rectangle
 import seaborn as sns
 
 
@@ -46,7 +44,7 @@ STRESS_COLORS = {
     "Bull": "#009E73",
     "Neutral": "#56B4E9",
     "Bear": "#D55E00",
-    "Unlock Shock": "#F0E442",
+    "Unlock Shock": "#B07D00",
     "Liquidity Pressure": "#CC79A7",
 }
 
@@ -66,17 +64,12 @@ def _ensure_output_dir(output_dir: str) -> Path:
     return output_path
 
 
-def _save_figure(fig, output_dir: Path, filename_base: str, caption: str = "") -> None:
+def _save_figure(fig, output_dir: Path, filename_base: str) -> None:
     """Save figure as PNG and PDF with IEEE-style naming."""
     filename_base = filename_base.replace(" ", "_")
 
     for ext in ["png", "pdf"]:
-        if caption:
-            full_name = f"{filename_base}.{ext}"
-        else:
-            full_name = f"{filename_base}.{ext}"
-        filepath = output_dir / full_name
-
+        filepath = output_dir / f"{filename_base}.{ext}"
         if ext == "png":
             fig.savefig(filepath, dpi=DPI, bbox_inches="tight", facecolor="white")
         else:
@@ -145,15 +138,13 @@ def plot_validation_pipeline(batch_csv: str, analysis_json: str, output_dir: str
     x = np.arange(len(stages))
     n_cats = len(categories_order)
     bar_width = 0.12
-    stage_colors = [OKABE_ITO_PALETTE[2], OKABE_ITO_PALETTE[0],
-                    OKABE_ITO_PALETTE[5], OKABE_ITO_PALETTE[1]]
 
     for i, cat in enumerate(categories_order):
         offset = (i - n_cats / 2 + 0.5) * bar_width
         rates = [r * 100 for r in cat_rates[cat]]
-        bars = ax1.bar(x + offset, rates, bar_width, label=cat_short.get(cat, cat),
-                       color=OKABE_ITO_PALETTE[i % len(OKABE_ITO_PALETTE)],
-                       edgecolor="white", linewidth=0.5, alpha=0.85)
+        ax1.bar(x + offset, rates, bar_width, label=cat_short.get(cat, cat),
+                color=OKABE_ITO_PALETTE[i % len(OKABE_ITO_PALETTE)],
+                edgecolor="white", linewidth=0.5, alpha=0.85)
 
     # Add overall rate annotations at top
     for j, (stage, rate) in enumerate(zip(stages, overall_rates)):
@@ -169,20 +160,23 @@ def plot_validation_pipeline(batch_csv: str, analysis_json: str, output_dir: str
     ax1.grid(True, axis="y", alpha=0.3)
     ax1.set_title("(a) Validation Pipeline Pass Rates", fontsize=FONT_SIZE_LABEL, weight="bold")
 
-    # Draw a red highlight box around the Filter stage to emphasize the drop
-    filter_x = 2
-    max_filter_rate = max(cat_rates[c][2] * 100 for c in categories_order)
-    rect = Rectangle((filter_x - 0.45, -1), 0.9, max_filter_rate + 8,
+    # Draw a highlight box around the Stress stage to emphasize the main drop
+    stress_x = 3
+    max_stress_rate = max(cat_rates[c][3] * 100 for c in categories_order)
+    rect = mpatches.Rectangle((stress_x - 0.45, -1), 0.9, max_stress_rate + 8,
                       linewidth=2, edgecolor="#D55E00", facecolor="#D55E00",
                       alpha=0.08, linestyle="--", zorder=0)
     ax1.add_patch(rect)
-    rect_border = Rectangle((filter_x - 0.45, -1), 0.9, max_filter_rate + 8,
+    rect_border = mpatches.Rectangle((stress_x - 0.45, -1), 0.9, max_stress_rate + 8,
                              linewidth=2, edgecolor="#D55E00", facecolor="none",
                              linestyle="--", zorder=5)
     ax1.add_patch(rect_border)
 
     # ── Panel (b): Filter failure breakdown ──
     filter_issues = analysis.get("filter_issues", {})
+    n_filter_failures = n_total - sum(
+        1 for _, row in df.iterrows() if str(row.get("passed_filter", "False")) == "True"
+    )
     if filter_issues:
         # Sort by count descending
         sorted_issues = sorted(filter_issues.items(), key=lambda x: x[1], reverse=True)
@@ -227,19 +221,29 @@ def plot_validation_pipeline(batch_csv: str, analysis_json: str, output_dir: str
 
         # Add annotation for vesting dominance
         vesting_count = filter_issues.get("Insider vesting defined", 0)
-        total_filter_failures = 80  # 80 proposals failed the filter layer
-        if vesting_count > 0:
-            vesting_pct = vesting_count / total_filter_failures * 100
+        if vesting_count > 0 and n_filter_failures > 0:
+            vesting_pct = vesting_count / n_filter_failures * 100
             ax2.annotate(f"{vesting_pct:.0f}% of filter\nfailures",
                          xy=(vesting_count - 2, 0), xytext=(vesting_count * 0.55, 1.5),
                          fontsize=9, color=OKABE_ITO_PALETTE[5], weight="bold",
                          ha="center",
                          arrowprops=dict(arrowstyle="->", color=OKABE_ITO_PALETTE[5],
                                          lw=1.5, connectionstyle="arc3,rad=-0.2"))
+    else:
+        # No filter failures — show a clean success annotation
+        ax2.set_xlim(0, 1)
+        ax2.set_ylim(0, 1)
+        ax2.axis("off")
+        ax2.text(0.5, 0.55, "No Filter Failures", ha="center", va="center",
+                 fontsize=14, weight="bold", color=OKABE_ITO_PALETTE[2],
+                 transform=ax2.transAxes)
+        ax2.text(0.5, 0.42, f"All {n_total} proposals passed\nthe filter layer (100%)",
+                 ha="center", va="center", fontsize=11, color="#444444",
+                 transform=ax2.transAxes)
+        ax2.set_title("(b) Filter Failure Causes", fontsize=FONT_SIZE_LABEL, weight="bold")
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig05_validation_pipeline",
-                 "Multi-stage validation pass rates by category and filter failure decomposition")
+    _save_figure(fig, output_path, "Fig05_validation_pipeline")
     plt.close(fig)
 
 
@@ -263,14 +267,6 @@ def plot_allocation_distribution(results_csv: str, output_dir: str) -> None:
         return
 
 
-    data_melted = df.melt(
-        value_vars=categories,
-        var_name="Category",
-        value_name="Percentage"
-    )
-    data_melted["Category"] = data_melted["Category"].str.replace("_pct", "").str.title()
-
-
     fig, ax = plt.subplots(figsize=FIGURE_SIZE_SINGLE)
 
 
@@ -291,7 +287,7 @@ def plot_allocation_distribution(results_csv: str, output_dir: str) -> None:
         pc.set_linewidth(1.5)
 
 
-    bp = ax.boxplot(
+    ax.boxplot(
         [df[cat].dropna().values for cat in categories],
         positions=range(len(categories)),
         widths=0.3,
@@ -317,9 +313,22 @@ def plot_allocation_distribution(results_csv: str, output_dir: str) -> None:
         mean_val = df[cat].mean()
         ax.text(i, 102, f"μ={mean_val:.1f}", ha="center", fontsize=9)
 
+    # Control threshold reference lines
+    thresholds = {
+        "team_pct": (35, "Team ≤35%"),
+        "investor_pct": (25, "Investor ≤25%"),
+        "distributed_pct": (20, "Dist. ≥20%"),
+    }
+    for i, cat in enumerate(categories):
+        if cat in thresholds:
+            val, lbl = thresholds[cat]
+            ax.hlines(val, i - 0.4, i + 0.4, colors="#D55E00", linewidths=1.5,
+                      linestyles="--", zorder=6)
+            ax.text(i + 0.43, val, lbl, va="center", fontsize=7.5,
+                    color="#D55E00", fontstyle="italic")
+
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig06_allocation_distribution",
-                 "Token allocation distribution across proposals")
+    _save_figure(fig, output_path, "Fig06_allocation_distribution")
     plt.close(fig)
 
 
@@ -405,14 +414,18 @@ def plot_circulating_supply_growth(simulation_results: Union[str, List[Dict]], o
     ax.set_xticks([0, 12, 24, 36, 48, 60])
 
 
-    for month in [0, 12, 24, 60]:
+    for month in [12, 24, 60]:
         idx = month
         if idx < len(median_curve):
             ax.axvline(month, color="gray", linestyle="--", alpha=0.3, linewidth=1)
+            val = median_curve[idx]
+            ax.annotate(f"median:\n{val:.1f}%",
+                        xy=(month, val), xytext=(month + 1.5, val - 10),
+                        fontsize=8, color="#555555",
+                        arrowprops=dict(arrowstyle="-", color="#aaaaaa", lw=1))
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig07_circulating_supply_growth",
-                 "Median circulating supply trajectory with 90% CI and IQR")
+    _save_figure(fig, output_path, "Fig07_circulating_supply_growth")
     plt.close(fig)
 
 
@@ -442,30 +455,26 @@ def plot_fairness_drift(simulation_results: Union[str, List[Dict]], output_dir: 
     CANONICAL_CHECKPOINTS = [0, 12, 24, 36]  # 36 = display position for "full unlock"
     CHECKPOINT_LABELS = ["0", "12", "24", "Full\nUnlock"]
 
-    insider_by_checkpoint = {c: [] for c in CANONICAL_CHECKPOINTS}
-    gini_by_checkpoint = {c: [] for c in CANONICAL_CHECKPOINTS}
+    # Collect per-proposal snapshots first, then aggregate — avoids index-position
+    # assumptions when backfilling full_unlock from month-24 values.
+    per_proposal: List[Dict] = []
 
     for result in results_list:
         if not isinstance(result, dict):
             continue
 
+        proposal: Dict = {}
         if "fairness_evaluation" in result:
             fair_eval = result["fairness_evaluation"]
             if "snapshots" in fair_eval:
-                snaps = fair_eval["snapshots"]
-                for snap in snaps:
+                for snap in fair_eval["snapshots"]:
                     month = snap["month"]
                     insider = snap.get("insider_share", 0)
                     gini = snap.get("gini", 0)
-
                     if month in [0, 12, 24]:
-                        insider_by_checkpoint[month].append(insider)
-                        gini_by_checkpoint[month].append(gini)
+                        proposal[month] = (insider, gini)
                     elif month > 24:
-                        # Bucket as "full unlock" at canonical position 36
-                        insider_by_checkpoint[36].append(insider)
-                        gini_by_checkpoint[36].append(gini)
-
+                        proposal[36] = (insider, gini)
         elif result.get("status") == "Success" and "t0_gini" in result:
             for month, gini_key, insider_key in [
                 (0, "t0_gini", "insider_share_t0"),
@@ -474,28 +483,31 @@ def plot_fairness_drift(simulation_results: Union[str, List[Dict]], output_dir: 
             ]:
                 gini_val = result.get(gini_key)
                 if gini_val is not None:
-                    gini_by_checkpoint[month].append(gini_val)
                     insider_val = result.get(insider_key, 0) if insider_key else 0
-                    insider_by_checkpoint[month].append(insider_val)
+                    proposal[month] = (insider_val, gini_val)
 
-    if not any(insider_by_checkpoint.values()):
+        if proposal:
+            per_proposal.append(proposal)
+
+    if not per_proposal:
         print(f"  Warning: No valid fairness data found in {simulation_results}")
         return
 
-    # For proposals without a full_unlock snapshot (91/100 have last snap at month 24),
-    # use their month-24 values as the full_unlock value (no change after 24 = flat line)
-    if len(insider_by_checkpoint[36]) < len(insider_by_checkpoint[0]):
-        proposals_with_full = len(insider_by_checkpoint[36])
-        proposals_without = len(insider_by_checkpoint[24]) - proposals_with_full
-        # These proposals have no vesting past 24 months, so their month-24 value persists
-        # We include them so full_unlock has all 100 proposals for a fair comparison
-        # Sort month-24 values; the first `proposals_with_full` already contributed to full_unlock
-        # Append the remaining month-24 values
-        all_24_insider = insider_by_checkpoint[24].copy()
-        all_24_gini = gini_by_checkpoint[24].copy()
-        # Add month-24 values for proposals that don't have a separate full_unlock snapshot
-        insider_by_checkpoint[36].extend(all_24_insider[proposals_with_full:])
-        gini_by_checkpoint[36].extend(all_24_gini[proposals_with_full:])
+    insider_by_checkpoint = {c: [] for c in CANONICAL_CHECKPOINTS}
+    gini_by_checkpoint = {c: [] for c in CANONICAL_CHECKPOINTS}
+
+    for proposal in per_proposal:
+        for cp in [0, 12, 24]:
+            if cp in proposal:
+                insider_by_checkpoint[cp].append(proposal[cp][0])
+                gini_by_checkpoint[cp].append(proposal[cp][1])
+        # full_unlock: use post-24 snapshot if available, else use month-24 (flat)
+        if 36 in proposal:
+            insider_by_checkpoint[36].append(proposal[36][0])
+            gini_by_checkpoint[36].append(proposal[36][1])
+        elif 24 in proposal:
+            insider_by_checkpoint[36].append(proposal[24][0])
+            gini_by_checkpoint[36].append(proposal[24][1])
 
     # Compute statistics for each checkpoint
     checkpoints = CANONICAL_CHECKPOINTS
@@ -541,12 +553,13 @@ def plot_fairness_drift(simulation_results: Union[str, List[Dict]], output_dir: 
     ax2.set_xticks(checkpoints)
     ax2.set_xticklabels(CHECKPOINT_LABELS, fontsize=FONT_SIZE_TICK)
     ax2.grid(True, alpha=0.3)
+    ax2.axhline(0.60, color="#D55E00", linestyle="--", linewidth=1.5, alpha=0.8,
+                label="Control threshold (0.60)")
     ax2.legend(fontsize=FONT_SIZE_TICK)
     ax2.set_ylim(0, 1)
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig08_fairness_drift",
-                 "Fairness metrics over time: (a) insider concentration, (b) Gini coefficient")
+    _save_figure(fig, output_path, "Fig08_fairness_drift")
     plt.close(fig)
 
 
@@ -655,8 +668,7 @@ def plot_stress_test_outcomes(simulation_results: Union[str, List[Dict]], output
     ax.legend(fontsize=FONT_SIZE_TICK, loc="lower right")
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig09_stress_test_outcomes",
-                 "Pass rates across 5 stress test scenarios with 95% CI")
+    _save_figure(fig, output_path, "Fig09_stress_test_outcomes")
     plt.close(fig)
 
 
@@ -698,11 +710,12 @@ def plot_control_findings(analysis_json: str, output_dir: str) -> None:
         else:
             bar_colors.append(OKABE_ITO_PALETTE[1])   # sky blue for other findings
 
-    fig, ax = plt.subplots(figsize=FIGURE_SIZE_SINGLE)
+    fig_height = max(2.5, 0.6 * len(issue_names) + 1.5)
+    fig, ax = plt.subplots(figsize=(6, fig_height))
     y_pos = np.arange(len(issue_names))
 
     hbars = ax.barh(y_pos, issue_counts, color=bar_colors, edgecolor="black",
-                    linewidth=1, alpha=0.85, height=0.6)
+                    linewidth=1, alpha=0.85, height=0.5)
 
     for bar, count in zip(hbars, issue_counts):
         ax.text(bar.get_width() + 0.5, bar.get_y() + bar.get_height() / 2,
@@ -734,8 +747,81 @@ def plot_control_findings(analysis_json: str, output_dir: str) -> None:
     ax.legend(handles=legend_patches, fontsize=8, loc="lower right")
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig10_control_findings",
-                 "Control layer governance issue frequencies across proposals")
+    _save_figure(fig, output_path, "Fig10_control_findings")
+    plt.close(fig)
+
+
+def plot_category_stress_heatmap(analysis_json: str, output_dir: str) -> None:
+    """
+    Heatmap of stress-test pass rates by project category × scenario (Figure 11).
+
+    Surfaces per-category patterns hidden in the aggregate Fig09 bar chart —
+    e.g. DeFi surviving Liquidity Pressure at ~89% while Gaming/Utility are at 0%.
+
+    Reads:
+      - experiment_analysis.json for category_stress_breakdown
+    """
+    output_path = _ensure_output_dir(output_dir)
+
+    with open(analysis_json, "r") as f:
+        analysis = json.load(f)
+
+    breakdown = analysis.get("category_stress_breakdown", {})
+    if not breakdown:
+        print("  Warning: No category_stress_breakdown in analysis JSON — re-run analyze_results.py")
+        return
+
+    scenarios = ["Bull", "Neutral", "Bear", "Unlock Shock", "Liquidity Pressure"]
+    categories = sorted(breakdown.keys())
+
+    # Build matrix: rows = categories, cols = scenarios
+    matrix = []
+    for cat in categories:
+        row = []
+        for s in scenarios:
+            rate = breakdown[cat].get(s, {}).get("pass_rate", 0)
+            row.append(rate * 100)
+        matrix.append(row)
+
+    matrix_np = np.array(matrix)
+
+    # Shorten category labels
+    cat_short = {
+        "DeFi": "DeFi",
+        "Gaming and Metaverse": "Gaming &\nMetaverse",
+        "Infrastructure": "Infrastructure",
+        "Marketplace": "Marketplace",
+        "Social and Content": "Social &\nContent",
+        "Utility": "Utility",
+    }
+    scenario_short = ["Bull", "Neutral", "Bear", "Unlock\nShock", "Liquidity\nPressure"]
+    cat_labels = [cat_short.get(c, c) for c in categories]
+
+    fig, ax = plt.subplots(figsize=(8, 4))
+    im = ax.imshow(matrix_np, cmap="RdYlGn", vmin=0, vmax=100, aspect="auto")
+
+    cbar = fig.colorbar(im, ax=ax, fraction=0.03, pad=0.02)
+    cbar.set_label("Pass Rate (%)", fontsize=FONT_SIZE_TICK)
+    cbar.set_ticks([0, 25, 50, 75, 100])
+
+    ax.set_xticks(range(len(scenarios)))
+    ax.set_xticklabels(scenario_short, fontsize=FONT_SIZE_TICK)
+    ax.set_yticks(range(len(categories)))
+    ax.set_yticklabels(cat_labels, fontsize=FONT_SIZE_TICK)
+
+    # Annotate cells
+    for i in range(len(categories)):
+        for j in range(len(scenarios)):
+            val = matrix_np[i, j]
+            text_color = "black" if 20 < val < 80 else "white" if val <= 20 else "black"
+            ax.text(j, i, f"{val:.0f}%", ha="center", va="center",
+                    fontsize=9, weight="bold", color=text_color)
+
+    ax.set_title("Stress Test Pass Rate by Category and Scenario",
+                 fontsize=FONT_SIZE_LABEL, weight="bold", pad=10)
+
+    plt.tight_layout()
+    _save_figure(fig, output_path, "Fig11_category_stress_heatmap")
     plt.close(fig)
 
 
@@ -837,6 +923,16 @@ def generate_all_figures(data_dir: str, output_dir: str) -> None:
     else:
         print(f"  Skipping Fig 10 (need experiment_analysis.json)")
 
+    # ── Figure 11: Category × Scenario Heatmap ──
+    if analysis_file.exists():
+        print("Figure 11: Category × Scenario Stress Heatmap...")
+        try:
+            plot_category_stress_heatmap(str(analysis_file), str(output_path))
+        except Exception as e:
+            print(f"  Error: {e}")
+    else:
+        print(f"  Skipping Fig 11 (need experiment_analysis.json)")
+
     print(f"\nAll available figures generated in {output_dir}")
 
 
@@ -890,6 +986,11 @@ def main():
     )
 
     parser.add_argument(
+        "--fig11", action="store_true",
+        help="Generate only Figure 11 (category × scenario stress heatmap)"
+    )
+
+    parser.add_argument(
         "--batch-csv", type=str,
         help="Path to batch results CSV (for Fig 5)"
     )
@@ -917,7 +1018,7 @@ def main():
     args = parser.parse_args()
 
 
-    if any([args.fig5, args.fig6, args.fig7, args.fig8, args.fig9, args.fig10]):
+    if any([args.fig5, args.fig6, args.fig7, args.fig8, args.fig9, args.fig10, args.fig11]):
 
         if args.fig5 and args.batch_csv and args.analysis_json:
             plot_validation_pipeline(args.batch_csv, args.analysis_json, args.output_dir)
@@ -936,6 +1037,9 @@ def main():
 
         if args.fig10 and args.analysis_json:
             plot_control_findings(args.analysis_json, args.output_dir)
+
+        if args.fig11 and args.analysis_json:
+            plot_category_stress_heatmap(args.analysis_json, args.output_dir)
     else:
 
         generate_all_figures(args.data_dir, args.output_dir)
