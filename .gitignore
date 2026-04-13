@@ -1,8 +1,23 @@
+# Environment
 .env
-.DS_Store
-__pycache__/
 .venv/
+
+# OS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
 .idea/
+.vscode/
+
+# Intermediate pipeline test exports
 pipeline_exports/
-experiment_results/
-figures/
+
+# Experiment data — ignore large raw files, keep analysis JSON and figures
+experiment_results/checkpoint_results.json
+experiment_results/raw_llm_responses/
+experiment_results/batch_results.csv

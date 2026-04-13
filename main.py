@@ -22,14 +22,12 @@ import random
 import sys
 from dataclasses import asdict
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 
 from models import GeneratedTokenomics, ProjectContext, SimulationReport
-from utils import (
-    get_initial_supply, summarize_all_projects, extract_allocation_enhanced,
-)
+from utils import summarize_all_projects, extract_allocation_enhanced
 from llm_engine import (
     get_structured_input,
     create_structured_prompt,

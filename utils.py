@@ -155,19 +155,6 @@ def compute_investor_pct(allocation: Dict[str, float]) -> float:
                if normalize_allocation_key(k) == "Investors")
 
 
-def normalize_allocation_dict(allocation: Dict[str, float]) -> Dict[str, float]:
-    """Normalize allocation keys and aggregate duplicate categories."""
-    normalized: Dict[str, float] = {}
-    for key, value in allocation.items():
-        try:
-            float_val = float(value)
-            percentage = float_val * 100 if float_val <= 1.0 else float_val
-            norm_key = normalize_allocation_key(key)
-            normalized[norm_key] = normalized.get(norm_key, 0.0) + percentage
-        except (ValueError, TypeError):
-            continue
-    return normalized
-
 
 def _infer_numeric_from_text(patterns: List[str], text: str) -> Optional[int]:
     for pattern in patterns:

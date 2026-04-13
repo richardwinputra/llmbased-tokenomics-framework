@@ -22,7 +22,6 @@ from models import (
 from utils import (
     normalize_allocation_key, calculate_gini, get_initial_supply,
     is_insider_category, is_distributed_category,
-    normalize_allocation_dict,
 )
 
 
