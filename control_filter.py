@@ -1,23 +1,4 @@
-"""
-Output Control and Filter Module (Section III.C).
-
-Control Layer (Table II): Diagnostic checks with severity levels.
-  - Distributed allocation >= 20%
-  - Team allocation <= 35%
-  - Investor allocation <= 25% preferred; > 25% flagged; > 40% high risk
-  - Combined insider allocation <= 40% preferred; > 40% flagged; > 60% high risk
-  - Cliff <= vesting duration (vesting consistency)
-  - Insider vesting >= 12 months
-  - Gini <= 0.60
-
-Filter Layer (Table III): Hard validity constraints (recalculate if failed).
-  - 99.5% <= total allocation <= 100.5%
-  - Each allocation >= 0
-  - Total supply > 0
-  - Insider and distributed groups identifiable
-  - Each insider allocation has vesting defined
-  - Initial circulating supply <= total supply
-"""
+"""Control layer (diagnostic checks) and filter layer (hard validity constraints)."""
 
 from dataclasses import replace
 from typing import List
@@ -281,9 +262,7 @@ def run_filter_layer(tokenomics: GeneratedTokenomics) -> FilterLayerResult:
 
 
     insider_keys = [k for k in adjusted_alloc.keys() if is_insider_category(k)]
-    # Normalize vesting keys for comparison — LLM may use raw names like "Core Team"
-    # while vesting dict uses the same raw names but allocation lookup normalizes them.
-    # Build a lookup: normalized_vesting_key -> True so we can match by canonical form.
+    # Match vesting by canonical (normalized) category name.
     normalized_vesting_keys = {normalize_allocation_key(vk) for vk in vesting.keys()}
 
     all_insider_vesting_ok = True

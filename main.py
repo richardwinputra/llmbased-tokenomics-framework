@@ -1,19 +1,4 @@
-"""
-LLM-Based Tokenomics Screening Framework - Main Pipeline.
-
-System architecture (Figure 1):
-  Input Base -> Tokenomics Generation Module -> Output Control & Filter Module
-  -> Simulation & Evaluation Module
-
-Modules:
-  models.py              - Data structures
-  utils.py               - Parsing, normalization, Gini, helpers
-  llm_engine.py          - Prompt engineering, OpenAI API, proposal generation
-  control_filter.py      - Control layer (Table II) + Filter layer (Table III)
-  simulation.py          - Supply release, fairness evaluation, stress testing
-
-Pipeline always runs with RAG and Filter layers enabled.
-"""
+"""Single-proposal pipeline: generation, control and filter, and simulation."""
 
 import argparse
 import json

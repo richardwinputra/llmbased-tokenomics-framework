@@ -1,21 +1,8 @@
 """
-Tokenomics Generation Module (Section III.B, Algorithm 1).
+Tokenomics generation: prompt construction, LLM calls, and proposal parsing.
 
-Handles:
-  - Interactive and file-based input collection (structured)
-  - Prompt engineering with RAG from knowledge base
-  - LLM API calls (OpenAI directly, or any model via OpenRouter) with fallback
-  - Proposal construction: LLM text -> structured GeneratedTokenomics
-
-Multi-LLM support (for the model-comparison experiment):
-  Model names containing "/" (e.g. "anthropic/claude-sonnet-4.5",
-  "google/gemini-2.5-flash") are routed through OpenRouter's OpenAI-compatible
-  Chat Completions endpoint (requires OPENROUTER_API_KEY in .env).
-  Plain OpenAI model names keep using the native Responses API.
-
-  Optional env vars:
-    OPENROUTER_PROVIDER  pin a specific provider for reproducibility
-                         (sets provider.order + allow_fallbacks=false)
+Model names containing "/" (e.g. "anthropic/claude-sonnet-4.5") are routed
+through OpenRouter; plain names use the OpenAI API.
 """
 
 import os
@@ -143,9 +130,8 @@ Ensure:
 
 def create_structured_prompt(user_input: Dict, project_summaries: str) -> str:
     """
-    Algorithm 1, lines 3-7: Build prompt from structured input.
-    Appends project overview, design constraints, similar projects,
-    stakeholders, and all knowledge base summaries.
+    Build the generation prompt from structured input and knowledge-base
+    summaries.
     """
     similar_projects_context = ""
     if user_input.get('similar_projects'):
@@ -198,9 +184,8 @@ Every insider category MUST appear in the vesting dict.
 
 def ask_openai_enhanced(prompt: str, model_override: Optional[str] = None) -> str:
     """
-    Algorithm 1, line 13: LLM_Response_Text <- LLM_API(prompt).
-    Calls the primary model with fallback. OpenAI models use the native
-    Responses API; OpenRouter slugs ("vendor/model") use Chat Completions.
+    Call the model with a fallback. OpenAI models use the Responses API;
+    OpenRouter slugs ("vendor/model") use Chat Completions.
     """
     system_msg = str(_SYSTEM_MESSAGE)
     system_msg += "\n\nNOTE: Use the structured input as primary source of truth."
@@ -284,8 +269,7 @@ def generate_tokenomics_proposal(
     user_input: Dict, result_text: str
 ) -> Tuple[GeneratedTokenomics, ProjectContext]:
     """
-    Parse LLM response text into structured GeneratedTokenomics and ProjectContext.
-    Implements Algorithm 1 lines 14-24: parse to JSON, regex scan, extract labels/values.
+    Parse the LLM response into a GeneratedTokenomics and ProjectContext.
     """
     payload = extract_json_payload(result_text) or {}
     params = extract_tokenomics_parameters(payload, result_text)

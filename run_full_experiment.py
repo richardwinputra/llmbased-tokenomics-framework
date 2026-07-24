@@ -1,26 +1,9 @@
 """
-Full Experiment Runner — 100 structured inputs through the complete pipeline.
+Batch experiment runner: 100 inputs through the full pipeline.
 
-Features:
-  - All inputs follow the structured Token Design Thinking format
-  - Saves intermediate results after each project (checkpoint resume)
-  - Captures detailed per-scenario stress test data
-  - Exports comprehensive CSV + JSON for Section IV analysis
-  - Multi-LLM / multi-prompt conditions for the model-comparison experiment
-
-Usage:
-    python run_full_experiment.py                       # default condition
-                                                        # (primary model, KB prompt)
-    python run_full_experiment.py --model anthropic/claude-sonnet-4.5
-    python run_full_experiment.py --model google/gemini-2.5-flash --prompt-variant no-kb
-    python run_full_experiment.py --repeats 3           # generation consistency
-
-Model names containing "/" are routed through OpenRouter (needs
-OPENROUTER_API_KEY in .env); plain names go to OpenAI directly.
-
-The default condition writes to experiment_results/ (unchanged legacy layout).
-Every other condition writes to experiment_results/runs/<model>_<variant>[_rN]/
-with the same file layout, so analyze_results.py works on any run via --dir.
+Per-project checkpoints make runs resumable. The default condition writes to
+experiment_results/; other models or prompt variants write to
+experiment_results/runs/. See --help for options.
 """
 
 import argparse

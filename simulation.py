@@ -1,14 +1,4 @@
-"""
-Simulation and Evaluation Module (Section III.D).
-
-Three components:
-  1) Supply Release Simulation - Monthly release over 60-month horizon
-     using cliff-and-linear vesting (equations from paper)
-  2) Fairness Evaluation - Insider/distributed shares and Gini at checkpoints
-  3) Sustainability Stress Testing - 5 scenarios (bull, neutral, bear,
-     unlock shock, liquidity pressure)
-
-"""
+"""Supply-release simulation, fairness evaluation, and stress testing."""
 
 from typing import Dict, List
 
@@ -192,17 +182,11 @@ def evaluate_fairness(
     return FairnessEvaluationResult(snapshots=snapshots, fairness_drift=drift)
 
 
-# Demand-baseline floor as a fraction of total supply: D(0) = max(C(0), alpha*S).
-# When C(0) = 0 (fully locked launch) the ratio C(m)/D(m) is undefined under
-# D(0) = C(0), so demand is anchored at a small positive level instead.
-# The default 0.15 approximates the typical initial circulating float at TGE.
-# Pass rates are sensitive to this value; sweep it with:
-#   python analyze_results.py --sensitivity
+# Demand baseline D(0) = max(C(0), alpha*S); floors demand for fully locked
+# launches. Sweep via: python analyze_results.py --sensitivity
 DEMAND_BASELINE_ALPHA = 0.15
 
-# Stress-test scenario parameters (monthly demand growth rates, SDR thresholds,
-# unlock-spike threshold, sell-pressure multiplier). Module-level so
-# sensitivity sweeps can vary them:  python analyze_results.py --stress-grid
+# Stress-test scenario parameters. Sweep via: python analyze_results.py --stress-grid
 GROWTH_BULL = 0.05
 GROWTH_NEUTRAL = 0.01
 GROWTH_BEAR = -0.02
@@ -300,25 +284,9 @@ def run_stress_testing(
     supply_release: SupplyReleaseResult,
 ) -> StressTestResult:
     """
-    Evaluate proposal under 5 predefined scenarios using data-driven analysis
-    of simulated supply release curves.
-
-    Enhancement A: Data-Driven Unlock Shock
-      - Detects largest month-over-month supply spike
-      - Fails if any single month dumps >15% new supply
-
-    Enhancement B: Sell Pressure via Supply-Demand Ratio (SDR)
-      - Models demand growth per scenario (Bull: +5%, Neutral: +1%, Bear: -2%)
-      - Unlock Shock: -5% at shock month, then flat
-      - Liquidity Pressure: +0.5% with 3x sell pressure multiplier
-      - Applies modifiers for burn, reserves, vesting duration
-
-    Enhancement C: No Free Passes
-      - Bull/Neutral now use SDR framework instead of automatic pass
-      - Bull fails if Year 1 inflation proxy > 200% (dilutive)
-      - Neutral fails if cumulative supply outpaces demand > 50%
-
-    Pass criterion: viable in >= 70% of scenarios.
+    Evaluate a proposal under five scenarios (bull, neutral, bear, unlock shock,
+    liquidity pressure) using a Supply-Demand Ratio on the supply-release curve.
+    A proposal passes if it stays viable in at least four of the five.
     """
     alloc = tokenomics.tokenomics_parameters.allocation
     vesting = tokenomics.tokenomics_parameters.vesting

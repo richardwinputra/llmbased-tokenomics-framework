@@ -1,9 +1,4 @@
-"""
-Utility functions: parsing, normalization, Gini computation, economic signal inference.
-
-Implements the allocation normalization (insider vs distributed categories),
-Gini coefficient computation, and text extraction helpers described in the paper.
-"""
+"""Parsing, normalization, and Gini helpers for tokenomics proposals."""
 
 import re
 import json
@@ -225,10 +220,7 @@ def extract_json_payload(text: str) -> Optional[Dict]:
 
 
 def extract_allocation_enhanced(text: str) -> Tuple[List[str], List[float]]:
-    """
-    Extract allocation labels and percentages from LLM text output.
-    Paper Algorithm 1, lines 15-24: RegexScan, ExtractLabels, ExtractPercents.
-    """
+    """Extract allocation labels and percentages from LLM text output."""
     patterns = [
         r"- ([^:]+):\s*(\d{1,3}(?:\.\d{1,2})?)%",
         r"([^:]+):\s*(\d{1,3}(?:\.\d{1,2})?)%",
@@ -438,12 +430,8 @@ def extract_from_markdown_table(text: str) -> Tuple[Dict[str, float], Dict[str, 
     return allocation, vesting
 
 
-# ---------------------------------------------------------------------------
-# Parse provenance tracking: records which extraction path produced each field
-# so raw-vs-repaired output statistics can be reported. Updated on every call
-# to extract_tokenomics_parameters / enforce_tokenomics_constraints; read via
-# get_last_parse_trace().
-# ---------------------------------------------------------------------------
+# Records which extraction path produced each field, for raw-vs-repaired stats.
+# Read via get_last_parse_trace().
 PARSE_TRACE: Dict = {}
 
 
@@ -453,7 +441,7 @@ def get_last_parse_trace() -> Dict:
 
 
 def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsParameters:
-    """Parse LLM output into TokenomicsParameters (Algorithm 1, line 14)."""
+    """Parse LLM output into TokenomicsParameters."""
     PARSE_TRACE.clear()
     PARSE_TRACE.update({
         "json_payload_found": bool(payload),

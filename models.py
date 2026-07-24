@@ -1,13 +1,4 @@
-"""
-Domain data structures for the LLM-based tokenomics screening framework.
-
-Implements the data model described in the paper:
-  - Project metadata and token design thinking (Table I)
-  - Tokenomics parameters (supply, allocation, vesting)
-  - Control layer results (Table II)
-  - Filter layer results (Table III)
-  - Simulation and evaluation results (supply release, fairness, stress testing)
-"""
+"""Data structures for the tokenomics screening pipeline."""
 
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Union, Literal
@@ -43,14 +34,14 @@ class VestingDetail:
 
 @dataclass
 class ProjectMetadata:
-    """Project Identifiers (Table I, row 1)."""
+    """Project identifiers."""
     project: str
     token: str
     category: Optional[str] = None
 
 @dataclass
 class TokenDesignThinking:
-    """Token Design Thinking fields (Table I, rows 2-5)."""
+    """Token Design Thinking fields."""
     purpose: str
     principles: List[str]
     positioning: str
@@ -64,7 +55,7 @@ class TokenDesignThinking:
 
 @dataclass
 class TokenomicsParameters:
-    """Tokenomics Parameters (Table I, rows 6-7)."""
+    """Tokenomics parameters (supply, allocation, vesting)."""
     total_supply: TokenSupply
     allocation: Dict[str, float]
     vesting: Dict[str, VestingDetail]
@@ -99,7 +90,7 @@ class ControlFinding:
 
 @dataclass
 class ControlLayerResult:
-    """Output of the control layer (Table II checks)."""
+    """Control layer output."""
     aligned: bool
     requires_iteration: bool
     findings: List[ControlFinding]
@@ -112,7 +103,7 @@ class ControlLayerResult:
 
 @dataclass
 class FilterCheck:
-    """A single filter check result (Table III)."""
+    """A single filter check result."""
     category: str
     rule: str
     passed: bool
@@ -120,7 +111,7 @@ class FilterCheck:
 
 @dataclass
 class FilterLayerResult:
-    """Output of the filter layer (Table III checks)."""
+    """Filter layer output."""
     passed: bool
     adjusted_proposal: GeneratedTokenomics
     checks: List[FilterCheck]

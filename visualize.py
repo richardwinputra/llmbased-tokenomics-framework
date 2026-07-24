@@ -1,19 +1,4 @@
-"""
-Publication-quality figure generation for Section IV of the tokenomics research paper.
-
-Generates IEEE-style plots (Figures 3-7) for:
-  - Figure 3: Control layer finding frequencies across proposals
-  - Figure 4: Allocation distribution across proposals
-  - Figure 5: Circulating supply growth trajectories
-  - Figure 6: Fairness drift (insider share + Gini over time)
-  - Figure 7: Stress test scenario outcomes
-
-All figures are publication-ready with:
-  - Colorblind-friendly palettes (Okabe-Ito)
-  - High resolution (300 DPI)
-  - Consistent styling (seaborn + manual refinements)
-  - IEEE figure caption format in filenames
-"""
+"""Figure generation for the paper (allocation, supply, fairness, alpha)."""
 
 import argparse
 import json
@@ -62,7 +47,7 @@ def _ensure_output_dir(output_dir: str) -> Path:
 
 
 def _save_figure(fig, output_dir: Path, filename_base: str) -> None:
-    """Save figure as PNG and PDF with IEEE-style naming."""
+    """Save a figure as PNG and PDF."""
     filename_base = filename_base.replace(" ", "_")
 
     for ext in ["png", "pdf"]:
@@ -275,16 +260,11 @@ def plot_fairness_drift(simulation_results: Union[str, List[Dict]], output_dir: 
         results_list = simulation_results
 
 
-    # Collect snapshots per proposal, bucketing the last snapshot as "full_unlock"
-    # Standard checkpoints are 0, 12, 24; the 4th snapshot (if present) varies
-    # in actual month (45, 46, 58, 59) but represents the same concept: full unlock.
-    # We bucket all post-24 snapshots into a canonical "full_unlock" label at x=36
-    # for clean plotting, since only 9/100 proposals have this 4th point.
+    # Checkpoints 0, 12, 24; any later snapshot is bucketed as full unlock at x=36.
     CANONICAL_CHECKPOINTS = [0, 12, 24, 36]  # 36 = display position for "full unlock"
     CHECKPOINT_LABELS = ["0", "12", "24", "Full\nUnlock"]
 
-    # Collect per-proposal snapshots first, then aggregate — avoids index-position
-    # assumptions when backfilling full_unlock from month-24 values.
+    # Collect per-proposal snapshots first, then aggregate.
     per_proposal: List[Dict] = []
 
     for result in results_list:

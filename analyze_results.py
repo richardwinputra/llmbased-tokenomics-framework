@@ -1,18 +1,9 @@
 """
-Post-Experiment Analysis Script.
+Post-experiment analysis.
 
-Reads the experiment results from experiment_results/ and generates:
-  1. experiment_summary.json — aggregate statistics
-  2. Formatted console output of all tables for Section IV
-  3. Per-category, per-input-type, and per-scenario breakdowns
-
-Run after run_full_experiment.py completes:
-    python3 analyze_results.py                 # aggregate tables (Section IV)
-    python3 analyze_results.py --replay        # re-run pipeline offline from saved
-                                               # raw LLM responses (no API calls):
-                                               # repair-trigger stats + stress re-eval
-    python3 analyze_results.py --sensitivity   # sweep the demand-baseline alpha
-                                               # (simulation.DEMAND_BASELINE_ALPHA)
+Default prints aggregate tables. Flags: --replay (offline re-run from saved
+responses), --sensitivity / --control-grid / --stress-grid (parameter sweeps),
+--kb-thresholds / --kb-screen (knowledge-base analyses), --dir (analyze one run).
 """
 
 import argparse
@@ -354,12 +345,8 @@ def analyze():
     print(f"\nStructured analysis saved to: {out_path}")
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Offline replay: re-run parse → control → filter → simulation from the raw LLM
-# responses saved by run_full_experiment.py. No API calls. Reports how often
-# each parser correction step is triggered (raw vs repaired output) and
-# re-evaluates stress tests under the current simulation code.
-# ──────────────────────────────────────────────────────────────────────────────
+# Offline replay from saved raw responses (no API calls): reports parser
+# correction-step frequencies and re-evaluates stress tests.
 
 def _replay_pipeline():
     """Yield (saved_record, parse_trace, proposal, filtered_proposal, supply_release)."""
@@ -400,8 +387,7 @@ def replay():
             "parse_trace": trace,
             "old_stress_passed": rec["stress_test"]["passed"],
             "stress_passed": stress.passed,
-            # same shape run_full_experiment.py exports, so visualize.py can
-            # consume this file directly (Fig. 7)
+            # same shape run_full_experiment.py exports
             "stress_test": {
                 "pass_rate": stress.pass_rate,
                 "passed": stress.passed,
@@ -456,8 +442,7 @@ def replay():
     with open(REPLAY_FILE, "w") as f:
         json.dump(per_project, f, indent=1)
     print(f"\nReplay results saved to: {REPLAY_FILE}")
-    print("Regenerate Fig. 7 with:  python visualize.py --fig7 "
-          f"--simulation-json {REPLAY_FILE}")
+    print("Regenerate figures with:  python visualize.py")
 
 
 def sensitivity(alphas=None):
@@ -498,13 +483,10 @@ def sensitivity(alphas=None):
     with open(SENSITIVITY_FILE, "w") as f:
         json.dump({"n_projects": n, "default_alpha": default_alpha, "sweep": rows}, f, indent=1)
     print(f"\nSensitivity sweep saved to: {SENSITIVITY_FILE}")
-    print("Generate Fig. 8 with:  python visualize.py --fig8")
+    print("Generate the sensitivity figure with:  python visualize.py --fig6")
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Knowledge-base analyses: threshold percentile derivation (Table II) and
-# retrospective screening of the real KB projects.
-# ──────────────────────────────────────────────────────────────────────────────
+# Knowledge-base analyses: threshold percentiles and retrospective screening.
 
 KB_FILE = "TokenomicsKnowledge.json"
 
