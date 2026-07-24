@@ -1,0 +1,2220 @@
+{
+ "n_projects": 119,
+ "vesting_parse_coverage": "150/263",
+ "overall_pass_count": 112,
+ "per_project": [
+  {
+   "project": "Aave",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Bitget",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 25.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 75.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Chainlink",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Curve DAO",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 30.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 70.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Ondo",
+   "n_vesting_texts": 4,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Render",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 10.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 90.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "The Graph",
+   "n_vesting_texts": 5,
+   "n_vesting_parsed": 4,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 24.28,
+   "passed_filter": true,
+   "initial_circulating_pct": 39.6,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "The Sandbox",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 29.18,
+   "passed_filter": false,
+   "initial_circulating_pct": 88.1,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Uniswap",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 40.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 78.5,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Virtuals Protocol",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 40.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 60.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Decentraland",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 20.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 80.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Cosmos",
+   "n_vesting_texts": 4,
+   "n_vesting_parsed": 3,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 12.11,
+   "passed_filter": true,
+   "initial_circulating_pct": 67.9,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Hyperliquid",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 23.8,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Hedera",
+   "n_vesting_texts": 4,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 13.8,
+   "passed_filter": true,
+   "initial_circulating_pct": 86.2,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Bittensor",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Ethereum",
+   "n_vesting_texts": 4,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "Bitcoin",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Solana",
+   "n_vesting_texts": 5,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 19.31,
+   "passed_filter": false,
+   "initial_circulating_pct": 92.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Avalanche",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 25.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 80.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Polkadot",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "Cardano",
+   "n_vesting_texts": 5,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Polygon",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 32.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 80.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Arbitrum",
+   "n_vesting_texts": 5,
+   "n_vesting_parsed": 3,
+   "control_findings": [
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 44.47,
+   "passed_filter": true,
+   "initial_circulating_pct": 12.8,
+   "stress_passed": false,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": false,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Optimism",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 37.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 80.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Near Protocol",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 22.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 78.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Fantom",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 40.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 75.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Sui",
+   "n_vesting_texts": 4,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 14.1,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Aptos",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 35.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 65.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Sei",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 37.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 68.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "Celestia",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 9.66,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Injective",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 3,
+   "control_findings": [
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 60.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 40.0,
+   "stress_passed": false,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": false,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "MakerDAO",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 0,
+   "control_findings": [
+    "Minimum distribution floor",
+    "Team concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": true,
+   "insider_pct": 100.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Lido",
+   "n_vesting_texts": 5,
+   "n_vesting_parsed": 3,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 37.18,
+   "passed_filter": true,
+   "initial_circulating_pct": 42.8,
+   "stress_passed": false,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": false,
+    "Bear": false,
+    "Unlock Shock": false,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Compound",
+   "n_vesting_texts": 4,
+   "n_vesting_parsed": 4,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 25.99,
+   "passed_filter": true,
+   "initial_circulating_pct": 0.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "SushiSwap",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 20.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "PancakeSwap",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [
+    "Team concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 60.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 60.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "dYdX",
+   "n_vesting_texts": 4,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Investor concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 43.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 53.4,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "1inch",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 15.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "Balancer",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 1,
+   "control_findings": [
+    "Investor concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 49.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 81.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Yearn Finance",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 0,
+   "control_findings": [
+    "Minimum distribution floor",
+    "Team concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": true,
+   "insider_pct": 100.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Synthetix",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 20.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 80.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Pendle",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 40.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 75.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "GMX",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 30.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 70.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Frax",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Team concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 45.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 55.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Radiant Capital",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 1,
+   "control_findings": [
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 50.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 75.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Convex Finance",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [
+    "Team concentration",
+    "Investor concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": true,
+   "insider_pct": 80.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 60.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Rocket Pool",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 35.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 65.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "EigenLayer",
+   "n_vesting_texts": 5,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Investor concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 29.5,
+   "passed_filter": true,
+   "initial_circulating_pct": 45.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Starknet",
+   "n_vesting_texts": 4,
+   "n_vesting_parsed": 0,
+   "control_findings": [
+    "Investor concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 28.17,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "zkSync",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 35.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 80.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Filecoin",
+   "n_vesting_texts": 4,
+   "n_vesting_parsed": 3,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 70.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Arweave",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 30.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 70.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Helium",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 35.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 65.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Theta Network",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 0,
+   "control_findings": [
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 50.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Livepeer",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 3,
+   "control_findings": [
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 52.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 18.0,
+   "stress_passed": false,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": false,
+    "Bear": false,
+    "Unlock Shock": false,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Ocean Protocol",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 18.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 46.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Fetch.ai",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 45.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 55.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "SingularityNET",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 49.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 51.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Akash Network",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 30.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 70.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Worldcoin",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 3,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 23.8,
+   "passed_filter": true,
+   "initial_circulating_pct": 1.2,
+   "stress_passed": false,
+   "scenarios": {
+    "Bull": false,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Axie Infinity",
+   "n_vesting_texts": 5,
+   "n_vesting_parsed": 4,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 26.19,
+   "passed_filter": false,
+   "initial_circulating_pct": 22.2,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": false,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "Immutable X",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 23.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 77.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "Gala Games",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 20.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 80.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Illuvium",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 27.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 73.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Enjin",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 25.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 75.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Stepn",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 42.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 66.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "ApeCoin",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 6.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 78.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Ronin",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 85.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Treasure",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 80.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Beam",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 5.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 95.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Toncoin",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 10.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 90.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Internet Computer",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 10.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 90.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Algorand",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 70.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "VeChain",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Tezos",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 20.0,
+   "stress_passed": false,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": false,
+    "Bear": false,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Elrond/MultiversX",
+   "n_vesting_texts": 3,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Investor concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 50.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Kaspa",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Mantle",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 25.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 75.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Blur",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 40.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 60.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Jupiter",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 40.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 60.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Jito",
+   "n_vesting_texts": 4,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 40.71,
+   "passed_filter": true,
+   "initial_circulating_pct": 59.3,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Pyth Network",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 70.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Wormhole",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 38.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 62.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "LayerZero",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 37.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 63.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Ethena",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 38.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 62.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Terra",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 45.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 55.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "FTX Exchange Token",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 40.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 80.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "BitConnect",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 20.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "SafeMoon",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 25.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "Iron Finance",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Investor concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 50.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 50.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "Olympus DAO",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 20.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 90.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Wonderland",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 30.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 90.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "Celsius Network",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 40.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 60.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Voyager Digital Token",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 35.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 65.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "TerraClassic USD",
+   "n_vesting_texts": 0,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Squid Game Token",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "Save the Kids Token",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 20.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Basis Cash",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 1,
+   "control_findings": [
+    "Investor concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 60.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 80.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "EOS",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 10.0,
+   "stress_passed": false,
+   "scenarios": {
+    "Bull": false,
+    "Neutral": false,
+    "Bear": false,
+    "Unlock Shock": false,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Ripple",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Stellar",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Dogecoin",
+   "n_vesting_texts": 0,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Shiba Inu",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Pepe",
+   "n_vesting_texts": 0,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Bonk",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Floki",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 20.0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Litecoin",
+   "n_vesting_texts": 0,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Monero",
+   "n_vesting_texts": 0,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Zcash",
+   "n_vesting_texts": 0,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "THORChain",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Osmosis",
+   "n_vesting_texts": 1,
+   "n_vesting_parsed": 0,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 0,
+   "passed_filter": false,
+   "initial_circulating_pct": 100.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": true
+   }
+  },
+  {
+   "project": "Stacks",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Investor concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 40.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 60.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Mina Protocol",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Investor concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": true,
+   "insider_pct": 65.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 35.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Oasis Network",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Investor concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 50.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 50.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Celo",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Investor concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 55.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 45.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Flow",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [
+    "Investor concentration",
+    "Combined insider concentration"
+   ],
+   "control_requires_iteration": false,
+   "insider_pct": 55.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 45.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Harmony",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 40.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 60.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Moonbeam",
+   "n_vesting_texts": 4,
+   "n_vesting_parsed": 1,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 25.83,
+   "passed_filter": false,
+   "initial_circulating_pct": 83.2,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  },
+  {
+   "project": "Astar",
+   "n_vesting_texts": 2,
+   "n_vesting_parsed": 2,
+   "control_findings": [],
+   "control_requires_iteration": false,
+   "insider_pct": 40.0,
+   "passed_filter": true,
+   "initial_circulating_pct": 60.0,
+   "stress_passed": true,
+   "scenarios": {
+    "Bull": true,
+    "Neutral": true,
+    "Bear": true,
+    "Unlock Shock": true,
+    "Liquidity Pressure": false
+   }
+  }
+ ]
+}

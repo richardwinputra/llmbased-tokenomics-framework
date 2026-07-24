@@ -12,8 +12,6 @@ Three components:
 
 from typing import Dict, List
 
-import numpy as np
-
 from models import (
     GeneratedTokenomics,
     SupplyReleaseResult, FairnessSnapshot, FairnessEvaluationResult,
@@ -135,7 +133,6 @@ def simulate_supply_release(
 
 def evaluate_fairness(
     supply_release: SupplyReleaseResult,
-    tokenomics: GeneratedTokenomics,
 ) -> FairnessEvaluationResult:
     """
     Assess fairness drift over checkpoints: month 0, 12, 24, and full unlock.
@@ -144,7 +141,6 @@ def evaluate_fairness(
     D(m) = C_distributed(m) / C(m)
     Gini(m) = Gini(C_1(m), C_2(m), ..., C_k(m))
     """
-    alloc = tokenomics.tokenomics_parameters.allocation
     cat_circ = supply_release.category_circulating
     total_circ = supply_release.circulating_supply
 
@@ -196,10 +192,39 @@ def evaluate_fairness(
     return FairnessEvaluationResult(snapshots=snapshots, fairness_drift=drift)
 
 
+# Demand-baseline floor as a fraction of total supply: D(0) = max(C(0), alpha*S).
+# When C(0) = 0 (fully locked launch) the ratio C(m)/D(m) is undefined under
+# D(0) = C(0), so demand is anchored at a small positive level instead.
+# The default 0.15 approximates the typical initial circulating float at TGE.
+# Pass rates are sensitive to this value; sweep it with:
+#   python analyze_results.py --sensitivity
+DEMAND_BASELINE_ALPHA = 0.15
+
+# Stress-test scenario parameters (monthly demand growth rates, SDR thresholds,
+# unlock-spike threshold, sell-pressure multiplier). Module-level so
+# sensitivity sweeps can vary them:  python analyze_results.py --stress-grid
+GROWTH_BULL = 0.05
+GROWTH_NEUTRAL = 0.01
+GROWTH_BEAR = -0.02
+GROWTH_LIQUIDITY = 0.005
+SDR_THRESHOLD_BASE = 1.5        # bull and neutral
+SDR_THRESHOLD_BEAR = 2.0
+SDR_THRESHOLD_SHOCK = 2.0
+SDR_THRESHOLD_LIQUIDITY = 4.5
+SPIKE_THRESHOLD = 0.15          # max single-month release, fraction of S
+SELL_PRESSURE_MULTIPLIER = 3.0  # liquidity-pressure supply-side multiplier
+
+
+def _demand_baseline(c0: float, total_supply: float) -> float:
+    """D(0) = max(C(0), alpha * S): demand baseline with a floor for C(0)=0."""
+    return max(c0, DEMAND_BASELINE_ALPHA * total_supply)
+
+
 def _compute_supply_demand_ratio(
     circulating_supply: List[float],
     growth_rate: float,
     horizon_months: int = 12,
+    baseline_demand: float = None,
 ) -> tuple[List[float], float]:
     """
     Compute Supply-Demand Ratio (SDR) over a given horizon.
@@ -208,16 +233,22 @@ def _compute_supply_demand_ratio(
         circulating_supply: List of circulating supply at each month
         growth_rate: Monthly demand growth rate (e.g., 0.05 for 5%)
         horizon_months: Number of months to compute ratio over (default 12)
+        baseline_demand: D(0). If None, falls back to C(0); callers should pass
+            _demand_baseline(C(0), S) so proposals with fully locked launches
+            (C(0) = 0) are evaluated rather than skipped.
 
     Returns:
         (sdr_list, max_sdr): List of SDR values and maximum SDR over horizon
     """
-    if not circulating_supply or circulating_supply[0] <= 0:
+    if not circulating_supply:
         return [], 0.0
 
-    initial_supply = circulating_supply[0]
-    demand = [initial_supply]
-    sdr_list = [1.0]
+    d0 = baseline_demand if baseline_demand is not None else circulating_supply[0]
+    if d0 <= 0:
+        return [], 0.0
+
+    demand = [d0]
+    sdr_list = [circulating_supply[0] / d0]
 
     months_to_compute = min(horizon_months, len(circulating_supply) - 1)
     for m in range(1, months_to_compute + 1):
@@ -326,14 +357,19 @@ def run_stress_testing(
     if year1_inflation is None:
         year1_inflation = ((c12 - c0) / max(c0, 1) * 100) if c0 > 0 else 0.0
 
+    # Common demand baseline: floors D(0) at alpha*S so fully locked launches
+    # (C(0) = 0) are evaluated on a well-defined SDR basis.
+    d0 = _demand_baseline(c0, S)
+
     scenarios: List[StressScenarioResult] = []
 
 
     _, max_sdr_bull = _compute_supply_demand_ratio(
-        circulating_supply, growth_rate=0.05, horizon_months=12
+        circulating_supply, growth_rate=GROWTH_BULL, horizon_months=12,
+        baseline_demand=d0,
     )
 
-    bull_sdr_threshold = 1.5
+    bull_sdr_threshold = SDR_THRESHOLD_BASE
 
     if reserve_pct > 10.0:
         bull_sdr_threshold += 0.1
@@ -369,21 +405,16 @@ def run_stress_testing(
 
 
     _, max_sdr_neutral = _compute_supply_demand_ratio(
-        circulating_supply, growth_rate=0.01, horizon_months=12
+        circulating_supply, growth_rate=GROWTH_NEUTRAL, horizon_months=12,
+        baseline_demand=d0,
     )
 
 
     cumulative_supply = sum(circulating_supply[:13]) if len(circulating_supply) > 12 else sum(circulating_supply)
-    if c0 > 0:
-        cumulative_demand = c0 * sum((1.01 ** m) for m in range(13))
-        cumulative_outpace = (cumulative_supply - cumulative_demand) / cumulative_demand
-    else:
-        # c0=0: no prior market exists, demand baseline is undefined.
-        # Gradual unlock from zero doesn't outpace demand — treat as no outpacing.
-        cumulative_demand = cumulative_supply
-        cumulative_outpace = 0.0
+    cumulative_demand = d0 * sum(((1 + GROWTH_NEUTRAL) ** m) for m in range(13))
+    cumulative_outpace = (cumulative_supply - cumulative_demand) / cumulative_demand
 
-    neutral_sdr_threshold = 1.5
+    neutral_sdr_threshold = SDR_THRESHOLD_BASE
     if reserve_pct > 10.0:
         neutral_sdr_threshold += 0.1
     if avg_insider_vesting > 24:
@@ -418,10 +449,11 @@ def run_stress_testing(
 
 
     _, max_sdr_bear = _compute_supply_demand_ratio(
-        circulating_supply, growth_rate=-0.02, horizon_months=12
+        circulating_supply, growth_rate=GROWTH_BEAR, horizon_months=12,
+        baseline_demand=d0,
     )
 
-    bear_sdr_threshold = 2.0
+    bear_sdr_threshold = SDR_THRESHOLD_BEAR
     if reserve_pct > 10.0:
         bear_sdr_threshold -= 0.1
     if avg_insider_vesting > 24:
@@ -453,8 +485,8 @@ def run_stress_testing(
     ))
 
 
-    sdr_shock = [1.0]
-    demand_shock = [c0] if c0 > 0 else [1.0]
+    sdr_shock = [c0 / d0]
+    demand_shock = [d0]
 
     for m in range(1, min(len(circulating_supply), 13)):
         if m == shock_month:
@@ -469,12 +501,12 @@ def run_stress_testing(
         sdr_shock.append(sdr_m)
 
     max_sdr_shock = max(sdr_shock) if sdr_shock else 0.0
-    shock_sdr_threshold = 2.0
+    shock_sdr_threshold = SDR_THRESHOLD_SHOCK
     if reserve_pct > 10.0:
         shock_sdr_threshold -= 0.1
 
 
-    shock_spike_viable = max_monthly_spike < 0.15
+    shock_spike_viable = max_monthly_spike < SPIKE_THRESHOLD
     shock_sdr_viable = max_sdr_shock <= shock_sdr_threshold
     shock_viable = shock_spike_viable and shock_sdr_viable
 
@@ -487,7 +519,7 @@ def run_stress_testing(
 
     if not shock_spike_viable:
         shock_notes.append(
-            f"Month {shock_month} spike of {max_monthly_spike*100:.1f}% exceeds 15% threshold; "
+            f"Month {shock_month} spike of {max_monthly_spike*100:.1f}% exceeds {SPIKE_THRESHOLD*100:.0f}% threshold; "
             "severe supply shock risk."
         )
         shock_recovery = 12
@@ -517,13 +549,14 @@ def run_stress_testing(
 
 
     _, max_sdr_liq = _compute_supply_demand_ratio(
-        circulating_supply, growth_rate=0.005, horizon_months=12
+        circulating_supply, growth_rate=GROWTH_LIQUIDITY, horizon_months=12,
+        baseline_demand=d0,
     )
 
 
-    max_sdr_liq_adjusted = max_sdr_liq * 3.0
+    max_sdr_liq_adjusted = max_sdr_liq * SELL_PRESSURE_MULTIPLIER
 
-    liq_sdr_threshold = 4.5
+    liq_sdr_threshold = SDR_THRESHOLD_LIQUIDITY
     if reserve_pct > 10.0:
         liq_sdr_threshold += 0.3
     if has_burn:
@@ -672,7 +705,7 @@ def run_simulation_module(tokenomics: GeneratedTokenomics) -> SimulationReport:
     supply_release = simulate_supply_release(tokenomics, horizon_months=60)
 
 
-    fairness_eval = evaluate_fairness(supply_release, tokenomics)
+    fairness_eval = evaluate_fairness(supply_release)
 
 
     stress_test = run_stress_testing(tokenomics, supply_release)

@@ -6,8 +6,24 @@ Features:
   - Saves intermediate results after each project (checkpoint resume)
   - Captures detailed per-scenario stress test data
   - Exports comprehensive CSV + JSON for Section IV analysis
+  - Multi-LLM / multi-prompt conditions for the model-comparison experiment
+
+Usage:
+    python run_full_experiment.py                       # default condition
+                                                        # (primary model, KB prompt)
+    python run_full_experiment.py --model anthropic/claude-sonnet-4.5
+    python run_full_experiment.py --model google/gemini-2.5-flash --prompt-variant no-kb
+    python run_full_experiment.py --repeats 3           # generation consistency
+
+Model names containing "/" are routed through OpenRouter (needs
+OPENROUTER_API_KEY in .env); plain names go to OpenAI directly.
+
+The default condition writes to experiment_results/ (unchanged legacy layout).
+Every other condition writes to experiment_results/runs/<model>_<variant>[_rN]/
+with the same file layout, so analyze_results.py works on any run via --dir.
 """
 
+import argparse
 import json
 import os
 import re
@@ -24,19 +40,29 @@ load_dotenv(override=True)
 
 from llm_engine import (
     create_structured_prompt, ask_openai_enhanced,
-    generate_tokenomics_proposal,
+    generate_tokenomics_proposal, LAST_CALL_META,
 )
 from control_filter import run_control_layer, run_filter_layer
 from simulation import run_simulation_module
-from utils import summarize_all_projects, calculate_gini
+from utils import summarize_all_projects, calculate_gini, get_last_parse_trace
 
 
 BATCH_FILE = "batch_inputs.json"
 KB_FILE = "TokenomicsKnowledge.json"
-OUTPUT_DIR = "experiment_results"
-RAW_LLM_DIR = os.path.join(OUTPUT_DIR, "raw_llm_responses")
+BASE_OUTPUT_DIR = "experiment_results"
 SEED = 42
-MODEL = "gpt-5.4-mini-2026-03-17"
+DEFAULT_MODEL = "gpt-5.4-mini-2026-03-17"
+
+
+def condition_output_dir(model: str, prompt_variant: str, repeat: int, repeats: int) -> str:
+    """Default condition keeps the legacy experiment_results/ layout; every
+    other condition gets its own folder under experiment_results/runs/."""
+    if model == DEFAULT_MODEL and prompt_variant == "kb" and repeats == 1:
+        return BASE_OUTPUT_DIR
+    tag = re.sub(r'[^\w\-.]', '_', model) + f"_{prompt_variant}"
+    if repeats > 1:
+        tag += f"_r{repeat}"
+    return os.path.join(BASE_OUTPUT_DIR, "runs", tag)
 
 
 def load_data():
@@ -47,7 +73,7 @@ def load_data():
     return batch_inputs, knowledge_base
 
 
-def run_single(user_input, project_summaries, seed):
+def run_single(user_input, project_summaries, seed, model=DEFAULT_MODEL):
     """Run a single evaluation through the full pipeline and return detailed metrics."""
     np.random.seed(seed)
     random.seed(seed)
@@ -55,13 +81,15 @@ def run_single(user_input, project_summaries, seed):
     prompt = create_structured_prompt(user_input, project_summaries)
 
 
-    result_text = ask_openai_enhanced(prompt, model_override=MODEL)
+    result_text = ask_openai_enhanced(prompt, model_override=model)
 
     if not result_text or result_text.startswith("Error"):
-        return {"status": "LLM_Failed", "error": result_text[:200]}
+        return {"status": "LLM_Failed", "error": result_text[:800]}
 
+    llm_meta = dict(LAST_CALL_META)
 
     proposal, _ = generate_tokenomics_proposal(user_input, result_text)
+    parse_trace = get_last_parse_trace()
 
 
     control_result = run_control_layer(proposal)
@@ -159,28 +187,35 @@ def run_single(user_input, project_summaries, seed):
 
         "raw_llm_response": result_text,
         "generated_tokenomics_payload": asdict(proposal),
+
+        "llm_meta": llm_meta,
+        "parse_trace": parse_trace,
     }
 
 
-def _save_raw_llm_response(project_name: str, raw_text: str) -> None:
+def _save_raw_llm_response(output_dir: str, project_name: str, raw_text: str) -> None:
     """Save raw LLM response to an individual file immediately after API call.
 
     This is a safety net separate from the bulk checkpoint: if checkpoint_results.json
     is ever corrupted, individual raw files let you re-parse without re-calling the API.
     """
-    os.makedirs(RAW_LLM_DIR, exist_ok=True)
+    raw_dir = os.path.join(output_dir, "raw_llm_responses")
+    os.makedirs(raw_dir, exist_ok=True)
     safe_name = re.sub(r'[^\w\-]', '_', project_name)
-    filepath = os.path.join(RAW_LLM_DIR, f"{safe_name}.txt")
+    filepath = os.path.join(raw_dir, f"{safe_name}.txt")
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(raw_text)
 
 
-def run_experiment():
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    checkpoint_results = os.path.join(OUTPUT_DIR, "checkpoint_results.json")
+def run_experiment(model=DEFAULT_MODEL, prompt_variant="kb",
+                   output_dir=BASE_OUTPUT_DIR, sleep_s=0.5):
+    os.makedirs(output_dir, exist_ok=True)
+    checkpoint_results = os.path.join(output_dir, "checkpoint_results.json")
 
     print("=" * 70)
     print("FULL EXPERIMENT: 100 inputs through Full Pipeline")
+    print(f"  model={model} | prompt_variant={prompt_variant}")
+    print(f"  output={output_dir}")
     print("=" * 70)
     start_time = time.time()
 
@@ -193,9 +228,13 @@ def run_experiment():
     resolved_inputs = batch_inputs
 
 
-    print("\n[2/3] Computing RAG summaries...")
-    project_summaries = summarize_all_projects(knowledge_base)
-    print(f"  Summary length: {len(project_summaries)} chars")
+    if prompt_variant == "no-kb":
+        print("\n[2/3] Prompt variant no-kb: knowledge base ablated from prompt")
+        project_summaries = ""
+    else:
+        print("\n[2/3] Computing RAG summaries...")
+        project_summaries = summarize_all_projects(knowledge_base)
+        print(f"  Summary length: {len(project_summaries)} chars")
 
 
     all_results = []
@@ -203,11 +242,16 @@ def run_experiment():
     if os.path.exists(checkpoint_results):
         with open(checkpoint_results) as f:
             all_results = json.load(f)
+        # Keep only successful results so failed projects (rate limits, daily
+        # free-model caps, transient API errors) are retried on the next run.
+        n_failed_prev = sum(1 for r in all_results if r.get("status") != "Success")
+        all_results = [r for r in all_results if r.get("status") == "Success"]
         completed_keys = {r["project_name"] for r in all_results}
-        print(f"  Resuming: {len(all_results)} results already done")
+        print(f"  Resuming: {len(all_results)} done"
+              + (f", retrying {n_failed_prev} previously failed" if n_failed_prev else ""))
 
 
-    print(f"\n[3/3] Running Full Pipeline experiment...")
+    print("\n[3/3] Running Full Pipeline experiment...")
     total_runs = len(resolved_inputs)
     run_count = len(all_results)
 
@@ -226,6 +270,7 @@ def run_experiment():
                 user_input=user_input,
                 project_summaries=project_summaries,
                 seed=SEED + i,
+                model=model,
             )
         except Exception as e:
             traceback.print_exc()
@@ -235,12 +280,14 @@ def run_experiment():
         metrics["input_type"] = input_type
         metrics["category"] = user_input.get("category",
                                    batch_inputs[i].get("category", "Unknown"))
+        metrics["model"] = model
+        metrics["prompt_variant"] = prompt_variant
 
         # Save raw LLM response to an individual file immediately — independent of
         # checkpoint so a corrupted checkpoint never loses raw API outputs.
         raw_text = metrics.get("raw_llm_response", "")
         if raw_text:
-            _save_raw_llm_response(project_name, raw_text)
+            _save_raw_llm_response(output_dir, project_name, raw_text)
 
         all_results.append(metrics)
         completed_keys.add(project_name)
@@ -255,13 +302,13 @@ def run_experiment():
             else:
                 print(f"    {metrics['status']} (missing metrics)")
         else:
-            print(f"    {metrics['status']}: {metrics.get('error', '')[:80]}")
+            print(f"    {metrics['status']}: {metrics.get('error', '')[:400]}")
 
         with open(checkpoint_results, "w") as f:
             json.dump(all_results, f, indent=2, default=str)
 
 
-        time.sleep(0.5)
+        time.sleep(sleep_s)
 
     elapsed = time.time() - start_time
     print(f"\n{'=' * 70}")
@@ -269,16 +316,16 @@ def run_experiment():
     print(f"{'=' * 70}")
 
 
-    export_results(all_results)
+    export_results(all_results, output_dir)
     return all_results
 
 
-def export_results(all_results):
+def export_results(all_results, output_dir=BASE_OUTPUT_DIR):
     """Export results to CSV, detailed JSON, and visualization-ready JSON."""
     import csv
 
 
-    csv_path = os.path.join(OUTPUT_DIR, "batch_results.csv")
+    csv_path = os.path.join(output_dir, "batch_results.csv")
     flat_fields = [
         "project_name", "input_type", "category",
         "status",
@@ -297,7 +344,7 @@ def export_results(all_results):
     print(f"  CSV exported: {csv_path}")
 
 
-    json_path = os.path.join(OUTPUT_DIR, "batch_results_full.json")
+    json_path = os.path.join(output_dir, "batch_results_full.json")
     with open(json_path, "w") as f:
         json.dump(all_results, f, indent=2, default=str)
     print(f"  JSON exported: {json_path}")
@@ -313,7 +360,7 @@ def export_results(all_results):
             "fairness_evaluation": r.get("fairness_evaluation", {}),
             "stress_test": r.get("stress_test", {}),
         })
-    sim_path = os.path.join(OUTPUT_DIR, "simulation_results.json")
+    sim_path = os.path.join(output_dir, "simulation_results.json")
     with open(sim_path, "w") as f:
         json.dump(sim_results, f, indent=2, default=str)
     print(f"  Simulation results exported: {sim_path}")
@@ -330,7 +377,7 @@ def export_results(all_results):
             "insider_pct": r.get("insider_pct", 0),
             "distributed_pct": r.get("distributed_pct", 0),
         })
-    alloc_path = os.path.join(OUTPUT_DIR, "allocation_results.csv")
+    alloc_path = os.path.join(output_dir, "allocation_results.csv")
     if alloc_rows:
         with open(alloc_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=alloc_rows[0].keys())
@@ -340,7 +387,7 @@ def export_results(all_results):
 
 
     summary = compute_summary(all_results)
-    summary_path = os.path.join(OUTPUT_DIR, "experiment_summary.json")
+    summary_path = os.path.join(output_dir, "experiment_summary.json")
     with open(summary_path, "w") as f:
         json.dump(summary, f, indent=2)
     print(f"  Summary exported: {summary_path}")
@@ -356,6 +403,20 @@ def compute_summary(all_results):
                "total_results": len(all_results)}
 
     success = [r for r in all_results if r.get("status") == "Success"]
+
+    # Condition metadata (model comparison): requested model, prompt variant,
+    # and the exact served model/provider reported by the API per response.
+    if success:
+        summary["conditions"] = {
+            "model": success[0].get("model"),
+            "prompt_variant": success[0].get("prompt_variant"),
+            "served_models": sorted({
+                (r.get("llm_meta") or {}).get("served_model") or "unknown"
+                for r in success}),
+            "served_providers": sorted({
+                str((r.get("llm_meta") or {}).get("served_provider"))
+                for r in success}),
+        }
 
     def stats_for_group(results):
         if not results:
@@ -474,5 +535,30 @@ def print_summary_table(summary):
 
 
 if __name__ == "__main__":
-    run_experiment()
+    parser = argparse.ArgumentParser(description="Full pipeline experiment runner")
+    parser.add_argument("--model", default=DEFAULT_MODEL,
+                        help="Model name. Use OpenRouter slugs (vendor/model) for "
+                             "non-OpenAI models, e.g. anthropic/claude-sonnet-4.5")
+    parser.add_argument("--prompt-variant", choices=["kb", "no-kb"], default="kb",
+                        help="kb = knowledge-base-augmented prompt (default); "
+                             "no-kb = ablate the KB from the prompt")
+    parser.add_argument("--repeats", type=int, default=1,
+                        help="Repeat the full run N times (generation consistency)")
+    parser.add_argument("--sleep", type=float, default=None,
+                        help="Seconds between API calls (default 0.5; free "
+                             "OpenRouter models are capped at 20 req/min, so "
+                             "use >= 3; auto-set to 4 for :free models)")
+    args = parser.parse_args()
+
+    sleep_s = args.sleep
+    if sleep_s is None:
+        sleep_s = 4.0 if args.model.endswith(":free") else 0.5
+
+    for repeat in range(1, args.repeats + 1):
+        out_dir = condition_output_dir(args.model, args.prompt_variant,
+                                       repeat, args.repeats)
+        if args.repeats > 1:
+            print(f"\n########## REPEAT {repeat}/{args.repeats} ##########")
+        run_experiment(model=args.model, prompt_variant=args.prompt_variant,
+                       output_dir=out_dir, sleep_s=sleep_s)
 

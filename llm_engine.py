@@ -4,14 +4,25 @@ Tokenomics Generation Module (Section III.B, Algorithm 1).
 Handles:
   - Interactive and file-based input collection (structured)
   - Prompt engineering with RAG from knowledge base
-  - OpenAI API calls with fallback
+  - LLM API calls (OpenAI directly, or any model via OpenRouter) with fallback
   - Proposal construction: LLM text -> structured GeneratedTokenomics
+
+Multi-LLM support (for the model-comparison experiment):
+  Model names containing "/" (e.g. "anthropic/claude-sonnet-4.5",
+  "google/gemini-2.5-flash") are routed through OpenRouter's OpenAI-compatible
+  Chat Completions endpoint (requires OPENROUTER_API_KEY in .env).
+  Plain OpenAI model names keep using the native Responses API.
+
+  Optional env vars:
+    OPENROUTER_PROVIDER  pin a specific provider for reproducibility
+                         (sets provider.order + allow_fallbacks=false)
 """
 
 import os
+import time
 from typing import Dict, Tuple, Optional
 
-from openai import OpenAI
+from openai import OpenAI, RateLimitError, APIStatusError
 from dotenv import load_dotenv
 
 from models import (
@@ -25,17 +36,33 @@ from utils import (
 
 load_dotenv(override=True)
 
-_client: Optional[OpenAI] = None
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+
+_clients: Dict[str, OpenAI] = {}
+
+# Metadata of the most recent LLM call (requested/served model, provider),
+# logged per project by run_full_experiment.py for exact-version records.
+LAST_CALL_META: Dict = {}
 
 
-def _get_client() -> OpenAI:
-    global _client
-    if _client is None:
-        api_key = os.getenv("OPENAI_API_KEY")
-        if not api_key:
-            raise RuntimeError("OPENAI_API_KEY not set")
-        _client = OpenAI(api_key=api_key)
-    return _client
+def _provider_for(model_name: str) -> str:
+    """OpenRouter slugs are namespaced ("vendor/model"); OpenAI names are not."""
+    return "openrouter" if "/" in model_name else "openai"
+
+
+def _get_client(provider: str = "openai") -> OpenAI:
+    if provider not in _clients:
+        if provider == "openrouter":
+            api_key = os.getenv("OPENROUTER_API_KEY")
+            if not api_key:
+                raise RuntimeError("OPENROUTER_API_KEY not set")
+            _clients[provider] = OpenAI(api_key=api_key, base_url=OPENROUTER_BASE_URL)
+        else:
+            api_key = os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                raise RuntimeError("OPENAI_API_KEY not set")
+            _clients[provider] = OpenAI(api_key=api_key)
+    return _clients[provider]
 
 
 def get_structured_input() -> Dict:
@@ -133,6 +160,12 @@ def create_structured_prompt(user_input: Dict, project_summaries: str) -> str:
             "Ensure their roles and incentives are mapped."
         )
 
+    # Prompt variant "no-kb" (knowledge-base ablation): callers pass empty
+    # project_summaries, and the Reference Projects section is omitted entirely.
+    reference_context = ""
+    if project_summaries:
+        reference_context = f"Reference Projects:\n{project_summaries}\n"
+
     return f"""Transform the structured data below into a coherent tokenomics model.
 
 Project Overview:
@@ -153,9 +186,7 @@ Design Preferences:
 {stakeholder_context}
 {similar_projects_context}
 
-Reference Projects:
-{project_summaries}
-
+{reference_context}
 Provide: token role, total supply, allocation (Category: XX%), vesting schedule
 (cliff and duration in months for each category), governance design, economic model.
 
@@ -168,16 +199,41 @@ Every insider category MUST appear in the vesting dict.
 def ask_openai_enhanced(prompt: str, model_override: Optional[str] = None) -> str:
     """
     Algorithm 1, line 13: LLM_Response_Text <- LLM_API(prompt).
-    Calls OpenAI with primary model and fallback.
+    Calls the primary model with fallback. OpenAI models use the native
+    Responses API; OpenRouter slugs ("vendor/model") use Chat Completions.
     """
     system_msg = str(_SYSTEM_MESSAGE)
     system_msg += "\n\nNOTE: Use the structured input as primary source of truth."
 
-    client = _get_client()
     primary = model_override or os.getenv("OPENAI_MODEL", "gpt-5.4-mini-2026-03-17")
     fallback = model_override or os.getenv("OPENAI_MODEL_FALLBACK", "gpt-5.4-mini-2026-03-17")
 
     def call_model(model_name: str, effort_level: str = "medium") -> str:
+        provider = _provider_for(model_name)
+        client = _get_client(provider)
+        LAST_CALL_META.clear()
+        LAST_CALL_META.update({"requested_model": model_name, "provider_route": provider})
+
+        if provider == "openrouter":
+            extra_body = {"reasoning": {"effort": effort_level}}
+            pinned = os.getenv("OPENROUTER_PROVIDER")
+            if pinned:
+                extra_body["provider"] = {"order": [pinned], "allow_fallbacks": False}
+            resp = client.chat.completions.create(
+                model=model_name,
+                messages=[
+                    {"role": "system", "content": system_msg},
+                    {"role": "user", "content": prompt},
+                ],
+                extra_body=extra_body,
+            )
+            LAST_CALL_META["served_model"] = getattr(resp, "model", model_name)
+            # OpenRouter returns the serving provider as a non-standard field
+            LAST_CALL_META["served_provider"] = getattr(resp, "provider", None)
+            if resp.choices:
+                return resp.choices[0].message.content or ""
+            return ""
+
         resp = client.responses.create(
             model=model_name,
             input=[
@@ -187,12 +243,36 @@ def ask_openai_enhanced(prompt: str, model_override: Optional[str] = None) -> st
             reasoning={"effort": effort_level},
             text={"verbosity": "medium"}
         )
+        LAST_CALL_META["served_model"] = getattr(resp, "model", model_name)
         return resp.output_text if hasattr(resp, "output_text") and resp.output_text else ""
 
+    def call_with_retry(model_name: str, effort_level: str) -> str:
+        """Retry on per-minute rate limits (free OpenRouter models: 20 req/min).
+        Daily-cap errors are not retried — the runner's checkpoint resume picks
+        the remaining projects up on the next run."""
+        backoffs = [10, 30, 60]
+        for attempt, wait in enumerate([0] + backoffs):
+            if wait:
+                print(f"    Rate limited; retrying in {wait}s "
+                      f"(attempt {attempt}/{len(backoffs)})...")
+                time.sleep(wait)
+            try:
+                return call_model(model_name, effort_level=effort_level)
+            except RateLimitError as e:
+                # Free-model daily cap: retrying within the run is pointless
+                if "per day" in str(e).lower() or "daily" in str(e).lower():
+                    raise
+                last_err = e
+            except APIStatusError as e:
+                if e.status_code not in (429, 500, 502, 503):
+                    raise
+                last_err = e
+        raise last_err
+
     try:
-        content = call_model(primary, effort_level="high")
+        content = call_with_retry(primary, effort_level="high")
         if not (content and content.strip()):
-            content = call_model(fallback, effort_level="medium")
+            content = call_with_retry(fallback, effort_level="medium")
         if not (content and content.strip()):
             return "Error: LLM response was empty. Please try again."
         return content

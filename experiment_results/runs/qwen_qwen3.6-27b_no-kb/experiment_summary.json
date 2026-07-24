@@ -1,0 +1,219 @@
+{
+  "conditions": {
+    "model": "qwen/qwen3.6-27b",
+    "prompt_variant": "no-kb",
+    "served_models": [
+      "qwen/qwen3.6-27b"
+    ],
+    "served_providers": [
+      "Alibaba",
+      "Chutes",
+      "DeepInfra",
+      "Io Net",
+      "Morph",
+      "Phala",
+      "SiliconFlow",
+      "Venice",
+      "WandB"
+    ]
+  },
+  "categories": {
+    "DeFi": {
+      "n": 17,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.6471,
+      "control_aligned_rate": 1.0,
+      "overall_gini_mean": 0.231,
+      "overall_gini_std": 0.0696,
+      "t0_gini_mean": 0.397,
+      "gini_12m_mean": 0.503,
+      "gini_24m_mean": 0.2985,
+      "gini_24m_std": 0.084,
+      "gini_full_mean": 0.2322,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.2946,
+      "fairness_drift_std": 0.0383,
+      "stress_pass_rate_mean": 0.6824,
+      "year1_inflation_mean": 38.283,
+      "year1_inflation_std": 33.9813,
+      "scenario_pass_rates": {
+        "Bull": 0.8824,
+        "Neutral": 0.7059,
+        "Bear": 0.5294,
+        "Unlock Shock": 0.7059,
+        "Liquidity Pressure": 0.5882
+      }
+    },
+    "Gaming and Metaverse": {
+      "n": 16,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.5625,
+      "control_aligned_rate": 0.8125,
+      "overall_gini_mean": 0.2416,
+      "overall_gini_std": 0.0604,
+      "t0_gini_mean": 0.2724,
+      "gini_12m_mean": 0.5469,
+      "gini_24m_mean": 0.3012,
+      "gini_24m_std": 0.0586,
+      "gini_full_mean": 0.2393,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.3517,
+      "fairness_drift_std": 0.0975,
+      "stress_pass_rate_mean": 0.6,
+      "year1_inflation_mean": 36.4409,
+      "year1_inflation_std": 35.0053,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 0.6875,
+        "Bear": 0.5625,
+        "Unlock Shock": 0.75,
+        "Liquidity Pressure": 0.0
+      }
+    },
+    "Infrastructure": {
+      "n": 16,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.8125,
+      "control_aligned_rate": 1.0,
+      "overall_gini_mean": 0.2383,
+      "overall_gini_std": 0.0516,
+      "t0_gini_mean": 0.2934,
+      "gini_12m_mean": 0.4737,
+      "gini_24m_mean": 0.3099,
+      "gini_24m_std": 0.0842,
+      "gini_full_mean": 0.2217,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.2952,
+      "fairness_drift_std": 0.0601,
+      "stress_pass_rate_mean": 0.825,
+      "year1_inflation_mean": 24.7328,
+      "year1_inflation_std": 28.0697,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 0.875,
+        "Bear": 0.8125,
+        "Unlock Shock": 0.875,
+        "Liquidity Pressure": 0.5625
+      }
+    },
+    "Marketplace": {
+      "n": 16,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.3125,
+      "control_aligned_rate": 0.9375,
+      "overall_gini_mean": 0.2301,
+      "overall_gini_std": 0.0359,
+      "t0_gini_mean": 0.2389,
+      "gini_12m_mean": 0.4933,
+      "gini_24m_mean": 0.3208,
+      "gini_24m_std": 0.0659,
+      "gini_full_mean": 0.2297,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.2958,
+      "fairness_drift_std": 0.0591,
+      "stress_pass_rate_mean": 0.5125,
+      "year1_inflation_mean": 41.9538,
+      "year1_inflation_std": 36.0619,
+      "scenario_pass_rates": {
+        "Bull": 0.9375,
+        "Neutral": 0.6875,
+        "Bear": 0.3125,
+        "Unlock Shock": 0.625,
+        "Liquidity Pressure": 0.0
+      }
+    },
+    "Social and Content": {
+      "n": 16,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.3125,
+      "control_aligned_rate": 0.9375,
+      "overall_gini_mean": 0.2315,
+      "overall_gini_std": 0.0384,
+      "t0_gini_mean": 0.2746,
+      "gini_12m_mean": 0.4459,
+      "gini_24m_mean": 0.2532,
+      "gini_24m_std": 0.0562,
+      "gini_full_mean": 0.2332,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.3051,
+      "fairness_drift_std": 0.0574,
+      "stress_pass_rate_mean": 0.5375,
+      "year1_inflation_mean": 42.2332,
+      "year1_inflation_std": 29.3295,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 0.6875,
+        "Bear": 0.3125,
+        "Unlock Shock": 0.6875,
+        "Liquidity Pressure": 0.0
+      }
+    },
+    "Utility": {
+      "n": 18,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.5,
+      "control_aligned_rate": 1.0,
+      "overall_gini_mean": 0.206,
+      "overall_gini_std": 0.0439,
+      "t0_gini_mean": 0.1687,
+      "gini_12m_mean": 0.4985,
+      "gini_24m_mean": 0.2681,
+      "gini_24m_std": 0.0832,
+      "gini_full_mean": 0.1995,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.306,
+      "fairness_drift_std": 0.053,
+      "stress_pass_rate_mean": 0.5778,
+      "year1_inflation_mean": 33.6583,
+      "year1_inflation_std": 26.1984,
+      "scenario_pass_rates": {
+        "Bull": 0.9444,
+        "Neutral": 0.7222,
+        "Bear": 0.5,
+        "Unlock Shock": 0.7222,
+        "Liquidity Pressure": 0.0
+      }
+    }
+  },
+  "input_types": {
+    "structured": {
+      "n": 99,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.5253,
+      "control_aligned_rate": 0.9495,
+      "overall_gini_mean": 0.2293,
+      "overall_gini_std": 0.0528,
+      "t0_gini_mean": 0.2733,
+      "gini_12m_mean": 0.4938,
+      "gini_24m_mean": 0.2915,
+      "gini_24m_std": 0.077,
+      "gini_full_mean": 0.2262,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.3079,
+      "fairness_drift_std": 0.0661,
+      "stress_pass_rate_mean": 0.6222,
+      "year1_inflation_mean": 36.303,
+      "year1_inflation_std": 32.1436,
+      "scenario_pass_rates": {
+        "Bull": 0.9596,
+        "Neutral": 0.7273,
+        "Bear": 0.5051,
+        "Unlock Shock": 0.7273,
+        "Liquidity Pressure": 0.1919
+      }
+    }
+  },
+  "timestamp": "2026-07-19T12:39:59.424570",
+  "total_results": 100,
+  "control_issue_frequency": {
+    "Combined insider concentration": 5
+  },
+  "filter_issue_frequency": {}
+}

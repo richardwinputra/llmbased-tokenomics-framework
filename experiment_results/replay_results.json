@@ -1,0 +1,7543 @@
+[
+ {
+  "project_name": "FluidLend Protocol",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": false,
+     "recovery_months": 8,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.0% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 45.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.25)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "SynthSwap DEX",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.0% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 45.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.92)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "YieldFarm Collective",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 7,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 17."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.58).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "StableAsset USD",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 19."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 10.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.66)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "InsureChain Protocol",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.3% at month 17."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 10.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.69)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "CurveRoute Exchange",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 10,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.92 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.3% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.25).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "PlayAxis Gaming",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.0% at month 21."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.72).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "MetaEstate Virtual Realty",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.0% at month 29."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 1.74).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "NFTBattle Arena",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.71).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "EsportsLeague Token",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": false,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": false,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand).",
+      "Reserve allocation 0.0% may be thin for sustained operations."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": false,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 1.9% at month 25."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.54).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "Layer2Surge Scaling",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 8,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 1.9% at month 25."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 40.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.51)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "OracleSync Network",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 15."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.34).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "StorageCloud Protocol",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.1% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 25.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.22)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "ComputeChain Grid",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.2% at month 33."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.13).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "InterChain Bridge",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 7,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 1.8% at month 13."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 40.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.26)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "IdentityChain Trust",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.0% at month 13."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.07).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "CreatorHub Platform",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 8,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.87 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.3% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.14).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "SocialChain Network",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.91 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.7% at month 26."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.23).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "MusicRights Token",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.2% at month 13."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.73).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "StreamFlow Rewards",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.83 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.7% at month 19."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.05).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "NFTMarketX Exchange",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 7,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 3.0% at month 21."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.77).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "DataMarket Exchange",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.34 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 3.1% at month 19."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 5.20).",
+      "Adjusted SDR 5.20 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "FreelanceDAO Network",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.7% at month 24."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.14).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "RealEstate Token",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 7,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.3% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.11).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "SupplyChain Verify",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.84 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.08).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "IoTLink Protocol",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.0% at month 37."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.20).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "HealthChain Records",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.81 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.8% at month 30."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.02).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "LearnToken Education",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 6,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.44).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "EnergySwap Grid",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.91 exceeds threshold 1.90; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 17."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.24).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "CarbonOffset Credits",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.88 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.8% at month 29."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.18).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "GovStack Protocol",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.98 exceeds threshold 1.90; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 3.2% at month 26."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.40).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "ArtPlatform Collective",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.93 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.8% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.29).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "MovieFinance Token",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 8,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.1% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.01).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "PredictionMarket Hub",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.4,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.41 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 9,
+     "notes": [
+      "Largest month-over-month supply spike: 2.8% at month 11.",
+      "Shock SDR 1.99 exceeds threshold 1.90."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 45.0%. Sell pressure 3x multiplier active (adjusted SDR: 5.34).",
+      "Adjusted SDR 5.34 exceeds threshold 4.80; insufficient market-making capacity."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "LiquidityPool Protocol",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.92 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.0% at month 29."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 10.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.26)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": false,
+   "Unlock Shock": true,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "TokenBridge Enterprise",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 1.7% at month 36."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 40.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.57)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "DeFiCompose Suite",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.0% at month 29."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.79).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "RiskPool Insurance",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.95 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.7% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.33).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "SwapRouter Advanced",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 4,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.2,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand).",
+      "Max SDR 1.92 exceeds threshold 1.70."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.76 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 9,
+     "notes": [
+      "Largest month-over-month supply spike: 2.9% at month 7.",
+      "Shock SDR 2.28 exceeds threshold 1.90."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 6.12).",
+      "Adjusted SDR 6.12 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "StakingDerive Finance",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.91 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.5% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 15.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.24)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "YieldPerp Futures",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.07 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.1% at month 7."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 10.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.60)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "VoteDAO Governance",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.6% at month 29."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.63).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "AgriChain Supply",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.39 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 3.1% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 5.30).",
+      "Adjusted SDR 5.30 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "PrivacyVault Network",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.5% at month 27."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.49).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "TutorChain Education",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.30 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 3.0% at month 15."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 5.10).",
+      "Adjusted SDR 5.10 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "SolarGrid Energy",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 7,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.7% at month 21."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.97).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "MedVault Health",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.02 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.8% at month 17."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.47).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "FanToken Sports",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.3% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.45).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "DerivaPro Finance",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.16 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.8% at month 29."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.79).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "MeshNet Wireless",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": false,
+     "recovery_months": 8,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.0% at month 24."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 30.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.95)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "LendMate Protocol",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 6,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": false,
+     "recovery_months": 8,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.5% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 20.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.77)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "SwapFlow DEX",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 20.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.81)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "Vault AI Finance",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.3% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 15.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.77)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "CryptoCredit Hub",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": false,
+     "recovery_months": 7,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.5% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 20.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.75)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "FlashSwap Exchange",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.3% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 20.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.65)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "StakingMax Protocol",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 26."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 15.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.77)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "BridgeChain Tech",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.81 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.5% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 10.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.02)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "RiskShield Insurance",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.95 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.6% at month 30."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 20.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.32)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "TradingLeverage Pro",
+  "category": "DeFi",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.3% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 20.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.79)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "CryptoQuest Adventure",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 17."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.67).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "MetaVerse City",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.63).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "SoulBound Battles",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 29."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.60).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "VRChat Token Platform",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 17."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.88).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "ChampionArena League",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.5% at month 13."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.70).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "HybridWorld Metaverse",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.80 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.99).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "PixelCraft Studios",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 29."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.60).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "PvP Tournament System",
+  "category": "Gaming and Metaverse",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.3% at month 13."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.97).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "DualChain Interop",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.85 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 18."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 35.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.11)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "DataRegistry Protocol",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.2% at month 26."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 30.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.30)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "ValidatorCloud Compute",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 1.8% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 25.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.76)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "RollupSync Scale",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.1% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 25.0%. Sell pressure 3x multiplier active (adjusted SDR: 2.84)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "OracleVault Network",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.1% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 35.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.09)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "VerifyChain Proofs",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.4% at month 13."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 25.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.96)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "SovereignNode Mesh",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.1% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 25.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.34)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "DeFiShield Analytics",
+  "category": "Infrastructure",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": true,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 1.0,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.0% at month 18."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Dedicated liquidity allocation: 25.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.26)."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": true
+  }
+ },
+ {
+  "project_name": "StoryChain Creator",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 8,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.03 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.6% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.50).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "MusicDAO Collective",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.94 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.7% at month 28."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.30).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "PodcastShare Network",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.06 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.8% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.57).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "PhotographyRights Token",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.05 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.7% at month 29."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.55).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "ResearchFund DAO",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.95 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.7% at month 30."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.33).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "CommentaryDAO Consensus",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": true,
+  "stress_test": {
+   "pass_rate": 0.8,
+   "passed": true,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 6,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.5% at month 26."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 3.67).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "InfluenceShare Platform",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.10 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.8% at month 29."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.65).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "CommunityVote Protocol",
+  "category": "Social and Content",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.24 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.9% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.96).",
+      "Adjusted SDR 4.96 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "ArtSale Marketplace",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 8,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.96 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 3.1% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.36).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "PhysicalGoods Exchange",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.2,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand).",
+      "Max SDR 1.73 exceeds threshold 1.70."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.48 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 9,
+     "notes": [
+      "Largest month-over-month supply spike: 3.2% at month 13.",
+      "Shock SDR 1.95 exceeds threshold 1.90."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 5.51).",
+      "Adjusted SDR 5.51 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "ComputeGig Exchange",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.25 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.9% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.98).",
+      "Adjusted SDR 4.98 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "LandTitle Registry",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.23 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 3.2% at month 16."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.95).",
+      "Adjusted SDR 4.95 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "WholesaleHub B2B",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.23 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 3.1% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.95).",
+      "Adjusted SDR 4.95 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "SkillBarter Exchange",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.30 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.9% at month 23."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 5.11).",
+      "Adjusted SDR 5.11 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "EventTicket DAO",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.2,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand).",
+      "Max SDR 1.73 exceeds threshold 1.70."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.48 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 9,
+     "notes": [
+      "Largest month-over-month supply spike: 3.2% at month 13.",
+      "Shock SDR 1.95 exceeds threshold 1.90."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 5.51).",
+      "Adjusted SDR 5.51 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "EnergyTrading P2P",
+  "category": "Marketplace",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.24 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.9% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.97).",
+      "Adjusted SDR 4.97 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "MedicalData Exchange",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.93 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.8% at month 13."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.28).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "IdentityVerify Network",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 8,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.27 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 3.0% at month 15."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 5.02).",
+      "Adjusted SDR 5.02 exceeds threshold 4.80; insufficient market-making capacity.",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "EmissionTracker Protocol",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.12 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.8% at month 13."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.71).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "VotingChain Governance",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.02 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.7% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.49).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "QualityAssurance Token",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.83 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.7% at month 20."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.05).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "PropertyInsurance Crypto",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.86 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.6% at month 29."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.13).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "CustomerLoyalty Web3",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 8,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.92 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.9% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.25).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "WaterRights Trading",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 2.05 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.9% at month 14."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.55).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ },
+ {
+  "project_name": "EducationCredit Token",
+  "category": "Utility",
+  "input_type": "structured",
+  "parse_trace": {
+   "json_payload_found": true,
+   "supply_source": "json",
+   "allocation_source": "json",
+   "vesting_source": "json",
+   "n_vesting_entries": 5,
+   "normalization_triggered": false,
+   "allocation_total_before_norm": 100.0
+  },
+  "old_stress_passed": false,
+  "stress_passed": false,
+  "stress_test": {
+   "pass_rate": 0.6,
+   "passed": false,
+   "scenarios": [
+    {
+     "name": "Bull",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Sustained demand growth (+5%/month), high market confidence."
+     ]
+    },
+    {
+     "name": "Neutral",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": null,
+     "notes": [
+      "Stable market conditions (+1%/month demand)."
+     ]
+    },
+    {
+     "name": "Bear",
+     "viable": false,
+     "sufficient_reserves": true,
+     "recovery_months": 18,
+     "notes": [
+      "Declining demand (-2%/month), negative market sentiment.",
+      "Max SDR 1.89 exceeds threshold 1.80; cannot sustain bear market downturn."
+     ]
+    },
+    {
+     "name": "Unlock Shock",
+     "viable": true,
+     "sufficient_reserves": true,
+     "recovery_months": 3,
+     "notes": [
+      "Largest month-over-month supply spike: 2.5% at month 30."
+     ]
+    },
+    {
+     "name": "Liquidity Pressure",
+     "viable": false,
+     "sufficient_reserves": false,
+     "recovery_months": 12,
+     "notes": [
+      "Dedicated liquidity allocation: 0.0%. Sell pressure 3x multiplier active (adjusted SDR: 4.19).",
+      "Insufficient liquidity (0.0%) and no burn/reserve buffer."
+     ]
+    }
+   ]
+  },
+  "old_scenarios": {
+   "Bull": true,
+   "Neutral": true,
+   "Bear": true,
+   "Unlock Shock": false,
+   "Liquidity Pressure": false
+  }
+ }
+]

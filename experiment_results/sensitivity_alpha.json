@@ -1,0 +1,450 @@
+{
+ "n_projects": 100,
+ "default_alpha": 0.15,
+ "sweep": [
+  {
+   "alpha": 0.005,
+   "scenario_pass_counts": {
+    "Bull": 1,
+    "Neutral": 1,
+    "Bear": 0,
+    "Unlock Shock": 1,
+    "Liquidity Pressure": 1
+   },
+   "overall_pass_count": 1,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 1
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 0
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 0
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 0
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 0
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 0
+    }
+   }
+  },
+  {
+   "alpha": 0.01,
+   "scenario_pass_counts": {
+    "Bull": 1,
+    "Neutral": 1,
+    "Bear": 0,
+    "Unlock Shock": 1,
+    "Liquidity Pressure": 1
+   },
+   "overall_pass_count": 1,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 1
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 0
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 0
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 0
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 0
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 0
+    }
+   }
+  },
+  {
+   "alpha": 0.02,
+   "scenario_pass_counts": {
+    "Bull": 1,
+    "Neutral": 1,
+    "Bear": 0,
+    "Unlock Shock": 1,
+    "Liquidity Pressure": 1
+   },
+   "overall_pass_count": 1,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 1
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 0
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 0
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 0
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 0
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 0
+    }
+   }
+  },
+  {
+   "alpha": 0.05,
+   "scenario_pass_counts": {
+    "Bull": 13,
+    "Neutral": 2,
+    "Bear": 0,
+    "Unlock Shock": 2,
+    "Liquidity Pressure": 1
+   },
+   "overall_pass_count": 1,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 1
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 0
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 0
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 0
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 0
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 0
+    }
+   }
+  },
+  {
+   "alpha": 0.1,
+   "scenario_pass_counts": {
+    "Bull": 99,
+    "Neutral": 33,
+    "Bear": 6,
+    "Unlock Shock": 32,
+    "Liquidity Pressure": 9
+   },
+   "overall_pass_count": 12,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 2
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 2
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 7
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 1
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 0
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 0
+    }
+   }
+  },
+  {
+   "alpha": 0.125,
+   "scenario_pass_counts": {
+    "Bull": 100,
+    "Neutral": 78,
+    "Bear": 24,
+    "Unlock Shock": 77,
+    "Liquidity Pressure": 23
+   },
+   "overall_pass_count": 35,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 11
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 6
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 14
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 1
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 2
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 1
+    }
+   }
+  },
+  {
+   "alpha": 0.15,
+   "scenario_pass_counts": {
+    "Bull": 100,
+    "Neutral": 97,
+    "Bear": 51,
+    "Unlock Shock": 96,
+    "Liquidity Pressure": 29
+   },
+   "overall_pass_count": 57,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 17
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 14
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 16
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 4
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 3
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 3
+    }
+   }
+  },
+  {
+   "alpha": 0.175,
+   "scenario_pass_counts": {
+    "Bull": 100,
+    "Neutral": 100,
+    "Bear": 83,
+    "Unlock Shock": 99,
+    "Liquidity Pressure": 30
+   },
+   "overall_pass_count": 85,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 18
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 16
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 16
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 15
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 6
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 14
+    }
+   }
+  },
+  {
+   "alpha": 0.2,
+   "scenario_pass_counts": {
+    "Bull": 100,
+    "Neutral": 100,
+    "Bear": 95,
+    "Unlock Shock": 100,
+    "Liquidity Pressure": 30
+   },
+   "overall_pass_count": 97,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 18
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 16
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 16
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 16
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 13
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 18
+    }
+   }
+  },
+  {
+   "alpha": 0.25,
+   "scenario_pass_counts": {
+    "Bull": 100,
+    "Neutral": 100,
+    "Bear": 99,
+    "Unlock Shock": 100,
+    "Liquidity Pressure": 30
+   },
+   "overall_pass_count": 100,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 18
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 16
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 16
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 16
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 16
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 18
+    }
+   }
+  },
+  {
+   "alpha": 0.3,
+   "scenario_pass_counts": {
+    "Bull": 100,
+    "Neutral": 100,
+    "Bear": 100,
+    "Unlock Shock": 100,
+    "Liquidity Pressure": 30
+   },
+   "overall_pass_count": 100,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 18
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 16
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 16
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 16
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 16
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 18
+    }
+   }
+  },
+  {
+   "alpha": 0.5,
+   "scenario_pass_counts": {
+    "Bull": 100,
+    "Neutral": 100,
+    "Bear": 100,
+    "Unlock Shock": 100,
+    "Liquidity Pressure": 30
+   },
+   "overall_pass_count": 100,
+   "by_category": {
+    "DeFi": {
+     "n": 18,
+     "passed": 18
+    },
+    "Gaming and Metaverse": {
+     "n": 16,
+     "passed": 16
+    },
+    "Infrastructure": {
+     "n": 16,
+     "passed": 16
+    },
+    "Social and Content": {
+     "n": 16,
+     "passed": 16
+    },
+    "Marketplace": {
+     "n": 16,
+     "passed": 16
+    },
+    "Utility": {
+     "n": 18,
+     "passed": 18
+    }
+   }
+  }
+ ]
+}

@@ -438,16 +438,43 @@ def extract_from_markdown_table(text: str) -> Tuple[Dict[str, float], Dict[str, 
     return allocation, vesting
 
 
+# ---------------------------------------------------------------------------
+# Parse provenance tracking: records which extraction path produced each field
+# so raw-vs-repaired output statistics can be reported. Updated on every call
+# to extract_tokenomics_parameters / enforce_tokenomics_constraints; read via
+# get_last_parse_trace().
+# ---------------------------------------------------------------------------
+PARSE_TRACE: Dict = {}
+
+
+def get_last_parse_trace() -> Dict:
+    """Return a copy of the provenance trace for the most recent parse."""
+    return dict(PARSE_TRACE)
+
+
 def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsParameters:
     """Parse LLM output into TokenomicsParameters (Algorithm 1, line 14)."""
+    PARSE_TRACE.clear()
+    PARSE_TRACE.update({
+        "json_payload_found": bool(payload),
+        "supply_source": None,       # json | text_regex | missing
+        "allocation_source": None,   # json | markdown_table | regex | default_template
+        "vesting_source": None,      # json | markdown_table | prose_inference | none
+        "n_vesting_entries": 0,
+        "normalization_triggered": False,
+        "allocation_total_before_norm": None,
+    })
     params_block = payload.get("tokenomics_parameters", {})
     if not isinstance(params_block, dict):
         params_block = {}
 
 
     raw_supply = params_block.get("total_supply") or payload.get("total_supply")
-    if not raw_supply:
+    if raw_supply:
+        PARSE_TRACE["supply_source"] = "json"
+    else:
         raw_supply = extract_total_supply(raw_text)
+        PARSE_TRACE["supply_source"] = "text_regex" if raw_supply else "missing"
     total_supply = parse_token_supply(raw_supply)
 
 
@@ -467,15 +494,18 @@ def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsPar
                 allocation[clean_k] = float(v)
             except (ValueError, TypeError):
                 pass
+        PARSE_TRACE["allocation_source"] = "json"
     else:
         # Try markdown table first (GPT-5.4 prose output)
         allocation, vesting_from_table = extract_from_markdown_table(raw_text)
+        PARSE_TRACE["allocation_source"] = "markdown_table"
         if not allocation:
             # Last resort: regex scan — but filter out garbage long keys
             labels, values = extract_allocation_enhanced(raw_text)
             for l, v in zip(labels, values):
                 if len(l) <= 80:  # skip garbled multi-sentence keys
                     allocation[l] = v
+            PARSE_TRACE["allocation_source"] = "regex"
 
 
     if not allocation:
@@ -483,13 +513,18 @@ def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsPar
             "Community": 40.0, "Team": 15.0, "Investors": 12.0,
             "Ecosystem": 18.0, "Advisors": 5.0, "Liquidity": 10.0,
         }
+        PARSE_TRACE["allocation_source"] = "default_template"
+    PARSE_TRACE["allocation_total_before_norm"] = sum(allocation.values())
 
 
     raw_vesting = params_block.get("vesting") or payload.get("vesting")
     vesting = parse_vesting(raw_vesting) if isinstance(raw_vesting, dict) else {}
+    if vesting:
+        PARSE_TRACE["vesting_source"] = "json"
     # Use table-extracted vesting if JSON had none
     if not vesting and vesting_from_table:
         vesting = vesting_from_table
+        PARSE_TRACE["vesting_source"] = "markdown_table"
     # Last resort: infer from prose text
     if not vesting and allocation:
         for key in allocation.keys():
@@ -497,6 +532,10 @@ def extract_tokenomics_parameters(payload: Dict, raw_text: str) -> TokenomicsPar
             if cliff is not None or vest is not None:
                 vesting[key] = VestingDetail(
                     cliff_months=cliff or 0, vesting_months=vest or 0)
+        PARSE_TRACE["vesting_source"] = "prose_inference" if vesting else "none"
+    if PARSE_TRACE["vesting_source"] is None:
+        PARSE_TRACE["vesting_source"] = "none"
+    PARSE_TRACE["n_vesting_entries"] = len(vesting)
 
     return TokenomicsParameters(
         total_supply=total_supply, allocation=allocation, vesting=vesting,
@@ -513,6 +552,7 @@ def enforce_tokenomics_constraints(tokenomics: GeneratedTokenomics) -> Generated
         tokenomics.tokenomics_parameters.allocation = {
             k: round(v * factor, 2) for k, v in alloc.items()
         }
+        PARSE_TRACE["normalization_triggered"] = True
     return tokenomics
 
 

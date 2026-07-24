@@ -34,6 +34,17 @@ from utils import (
     compute_team_pct, compute_investor_pct,
 )
 
+# Table II control thresholds (percent, months, Gini). Module-level so
+# sensitivity sweeps can vary them:  python analyze_results.py --control-grid
+DISTRIBUTED_FLOOR = 20.0
+TEAM_MAX = 35.0
+INVESTOR_PREFERRED = 25.0
+INVESTOR_HIGH = 40.0
+INSIDER_PREFERRED = 40.0
+INSIDER_HIGH = 60.0
+INSIDER_MIN_VESTING = 12
+GINI_MAX = 0.60
+
 
 def run_control_layer(tokenomics: GeneratedTokenomics) -> ControlLayerResult:
     """
@@ -51,58 +62,62 @@ def run_control_layer(tokenomics: GeneratedTokenomics) -> ControlLayerResult:
     investor_pct = compute_investor_pct(alloc)
 
 
-    if distributed_pct < 20.0:
+    if distributed_pct < DISTRIBUTED_FLOOR:
         findings.append(ControlFinding(
             category="Distributed allocation",
             check="Minimum distribution floor",
             severity="warning",
-            message=f"Distributed allocation {distributed_pct:.1f}% < 20% minimum floor. "
+            message=f"Distributed allocation {distributed_pct:.1f}% < "
+                    f"{DISTRIBUTED_FLOOR:.0f}% minimum floor. "
                     "Severely weak non-insider dispersion.",
         ))
 
 
-    if team_pct > 35.0:
+    if team_pct > TEAM_MAX:
         findings.append(ControlFinding(
             category="Insider allocation",
             check="Team concentration",
             severity="warning",
-            message=f"Team allocation {team_pct:.1f}% > 35% threshold. "
+            message=f"Team allocation {team_pct:.1f}% > {TEAM_MAX:.0f}% threshold. "
                     "Unusually high internal concentration.",
         ))
 
 
-    if investor_pct > 40.0:
+    if investor_pct > INVESTOR_HIGH:
         findings.append(ControlFinding(
             category="Insider allocation",
             check="Investor concentration",
             severity="high_risk",
-            message=f"Investor allocation {investor_pct:.1f}% > 40%. "
+            message=f"Investor allocation {investor_pct:.1f}% > {INVESTOR_HIGH:.0f}%. "
                     "High risk of concentrated external capital influence.",
         ))
-    elif investor_pct > 25.0:
+    elif investor_pct > INVESTOR_PREFERRED:
         findings.append(ControlFinding(
             category="Insider allocation",
             check="Investor concentration",
             severity="warning",
-            message=f"Investor allocation {investor_pct:.1f}% > 25% preferred threshold. "
+            message=f"Investor allocation {investor_pct:.1f}% > "
+                    f"{INVESTOR_PREFERRED:.0f}% preferred threshold. "
                     "Flagged for concentrated external capital influence.",
         ))
 
 
-    if insider_pct > 60.0:
+    if insider_pct > INSIDER_HIGH:
         findings.append(ControlFinding(
             category="Insider allocation",
             check="Combined insider concentration",
             severity="high_risk",
-            message=f"Combined insider allocation {insider_pct:.1f}% > 60%. "
+            message=f"Combined insider allocation {insider_pct:.1f}% > "
+                    f"{INSIDER_HIGH:.0f}%. "
                     "High risk of governance concentration and coordinated market influence.",
         ))
-    elif insider_pct > 40.0:
+    elif insider_pct > INSIDER_PREFERRED:
         findings.append(ControlFinding(
             category="Insider allocation",
             check="Combined insider concentration",
             severity="warning",
-            message=f"Combined insider allocation {insider_pct:.1f}% > 40% preferred threshold. "
+            message=f"Combined insider allocation {insider_pct:.1f}% > "
+                    f"{INSIDER_PREFERRED:.0f}% preferred threshold. "
                     "Flagged for governance concentration.",
         ))
 
@@ -123,23 +138,24 @@ def run_control_layer(tokenomics: GeneratedTokenomics) -> ControlLayerResult:
     for k in alloc.keys():
         if is_insider_category(k):
             detail = vesting.get(k)
-            if detail and detail.vesting_months and detail.vesting_months < 12:
+            if detail and detail.vesting_months and detail.vesting_months < INSIDER_MIN_VESTING:
                 findings.append(ControlFinding(
                     category="Release feasibility",
                     check="Insider lockup horizon",
                     severity="warning",
-                    message=f"{k} vesting ({detail.vesting_months}m) < 12 months. "
+                    message=f"{k} vesting ({detail.vesting_months}m) < "
+                            f"{INSIDER_MIN_VESTING} months. "
                             "Early synchronized insider unlock pressure.",
                 ))
 
 
     gini_t0 = calculate_gini(list(alloc.values()))
-    if gini_t0 > 0.60:
+    if gini_t0 > GINI_MAX:
         findings.append(ControlFinding(
             category="Distributional inequality",
             check="Aggregate concentration",
             severity="warning",
-            message=f"Initial Gini coefficient {gini_t0:.3f} > 0.60 threshold. "
+            message=f"Initial Gini coefficient {gini_t0:.3f} > {GINI_MAX:.2f} threshold. "
                     "Concentration not fully captured by category thresholds.",
         ))
 

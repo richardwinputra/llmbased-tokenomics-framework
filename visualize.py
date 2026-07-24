@@ -23,7 +23,6 @@ from typing import Dict, List, Union
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 import seaborn as sns
 
 
@@ -157,7 +156,7 @@ def plot_allocation_distribution(results_csv: str, output_dir: str) -> None:
                     color="#D55E00", fontstyle="italic")
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig04_allocation_distribution")
+    _save_figure(fig, output_path, "Fig03_allocation_distribution")
     plt.close(fig)
 
 
@@ -254,7 +253,7 @@ def plot_circulating_supply_growth(simulation_results: Union[str, List[Dict]], o
                         arrowprops=dict(arrowstyle="-", color="#aaaaaa", lw=1))
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig05_circulating_supply_growth")
+    _save_figure(fig, output_path, "Fig04_circulating_supply_growth")
     plt.close(fig)
 
 
@@ -388,370 +387,158 @@ def plot_fairness_drift(simulation_results: Union[str, List[Dict]], output_dir: 
     ax2.set_ylim(0, 1)
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig06_fairness_drift")
+    _save_figure(fig, output_path, "Fig05_fairness_drift")
     plt.close(fig)
 
 
-def plot_stress_test_outcomes(simulation_results: Union[str, List[Dict]], output_dir: str) -> None:
-    """
-    Bar chart showing scenario pass rates across valid proposals.
 
-    Shows: 5 scenarios (bull, neutral, bear, unlock_shock, liquidity_pressure)
-    with pass rates as bar heights and error bands.
+
+def plot_alpha_sensitivity(sensitivity_json: str, output_dir: str) -> None:
+    """
+    Line chart of scenario-level and overall stress-test pass rates as a
+    function of the SDR demand-baseline parameter alpha (Fig. 6).
+
+    Input: experiment_results/sensitivity_alpha.json, produced by
+    `python analyze_results.py --sensitivity`.
     """
     output_path = _ensure_output_dir(output_dir)
 
-
-    if isinstance(simulation_results, str):
-        with open(simulation_results, "r") as f:
-            results_list = json.load(f)
-    else:
-        results_list = simulation_results
-
-
-    scenario_outcomes = {
-        "Bull": [],
-        "Neutral": [],
-        "Bear": [],
-        "Unlock Shock": [],
-        "Liquidity Pressure": []
-    }
-
-    for result in results_list:
-        if not isinstance(result, dict):
-            continue
-
-
-        if "stress_test" in result:
-            stress = result["stress_test"]
-            if "scenarios" in stress:
-                for scenario in stress["scenarios"]:
-                    name = scenario.get("name", "")
-                    viable = scenario.get("viable", False)
-                    if name in scenario_outcomes:
-                        scenario_outcomes[name].append(1 if viable else 0)
-
-
-        elif "scenario_details" in result:
-            for name, details in result["scenario_details"].items():
-                if name in scenario_outcomes:
-                    viable = details.get("viable", False)
-                    scenario_outcomes[name].append(1 if viable else 0)
-
-
-    scenarios = list(scenario_outcomes.keys())
-    pass_rates = []
-    ci_lower = []
-    ci_upper = []
-
-    for scenario in scenarios:
-        outcomes = scenario_outcomes[scenario]
-        if outcomes:
-            rate = np.mean(outcomes)
-            n = len(outcomes)
-            se = np.sqrt(rate * (1 - rate) / n) if n > 0 else 0
-            ci_l = max(0, rate - 1.96 * se)
-            ci_h = min(1, rate + 1.96 * se)
-            pass_rates.append(rate)
-            ci_lower.append(ci_l)
-            ci_upper.append(ci_h)
-        else:
-            pass_rates.append(0)
-            ci_lower.append(0)
-            ci_upper.append(0)
-
+    with open(sensitivity_json, "r") as f:
+        sweep = json.load(f)
+    rows = sweep["sweep"]
+    n = sweep["n_projects"]
+    alphas = [r["alpha"] for r in rows]
+    scenarios = ["Bull", "Neutral", "Bear", "Unlock Shock", "Liquidity Pressure"]
 
     fig, ax = plt.subplots(figsize=FIGURE_SIZE_SINGLE)
 
-    x_pos = np.arange(len(scenarios))
-    colors = [STRESS_COLORS.get(s, OKABE_ITO_PALETTE[0]) for s in scenarios]
+    markers = {"Bull": "o", "Neutral": "s", "Bear": "^",
+               "Unlock Shock": "D", "Liquidity Pressure": "v"}
+    for s in scenarios:
+        rates = [r["scenario_pass_counts"][s] / n for r in rows]
+        ax.plot(alphas, rates, marker=markers[s], linewidth=1.8, markersize=5,
+                color=STRESS_COLORS[s], label=s)
 
+    overall = [r["overall_pass_count"] / n for r in rows]
+    ax.plot(alphas, overall, "k--", marker="*", linewidth=2.2, markersize=9,
+            label="Overall (≥ 4/5 scenarios)")
 
-    errors = [
-        [pr - cl for pr, cl in zip(pass_rates, ci_lower)],
-        [ch - pr for pr, ch in zip(pass_rates, ci_upper)]
-    ]
+    default_alpha = sweep.get("default_alpha", 0.15)
+    ax.axvline(default_alpha, color="gray", linestyle=":", linewidth=1.5, alpha=0.9)
+    ax.annotate(f"α = {default_alpha}", xy=(default_alpha, 0.05),
+                xytext=(default_alpha + 0.012, 0.05), fontsize=9, color="#555555")
 
-    bars = ax.bar(x_pos, pass_rates, color=colors, alpha=0.7, edgecolor="black", linewidth=1.5,
-                  yerr=errors, capsize=8, error_kw={"elinewidth": 2, "ecolor": "black"})
-
-
-    scenario_labels = scenarios
-    ax.set_xticks(x_pos)
-    ax.set_xticklabels(scenario_labels, fontsize=FONT_SIZE_TICK, rotation=15, ha="right")
+    ax.set_xlabel("Demand-baseline parameter α  (D(0) = max(C(0), αS))",
+                  fontsize=FONT_SIZE_LABEL)
     ax.set_ylabel("Pass Rate", fontsize=FONT_SIZE_LABEL)
-    ax.set_xlabel("Stress Scenario", fontsize=FONT_SIZE_LABEL)
-    ax.set_ylim(0, 1.15)
+    ax.set_ylim(-0.03, 1.05)
     ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
     ax.set_yticklabels(["0%", "20%", "40%", "60%", "80%", "100%"])
-    ax.grid(True, axis="y", alpha=0.3)
-
-
-    for i, (bar, rate) in enumerate(zip(bars, pass_rates)):
-        height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2., height + 0.02,
-                f"{rate*100:.0f}%", ha="center", va="bottom", fontsize=10, weight="bold")
-
-
-    # Viability threshold line removed: the 70% rule applies at the proposal level
-    # (pass 4 of 5 scenarios), not to aggregate scenario pass rates shown here.
+    ax.set_xlim(0, max(alphas) * 1.02)
+    ax.tick_params(labelsize=FONT_SIZE_TICK)
+    ax.grid(True, alpha=0.3)
+    ax.legend(fontsize=8.5, loc="lower right", framealpha=0.9)
 
     plt.tight_layout()
-    _save_figure(fig, output_path, "Fig07_stress_test_outcomes")
+    _save_figure(fig, output_path, "Fig06_alpha_sensitivity")
     plt.close(fig)
-
-
-def plot_control_findings(analysis_json: str, output_dir: str) -> None:
-    """
-    Horizontal bar chart showing control layer issue frequencies across proposals.
-
-    Complements Fig 5b (filter failure causes) by showing what governance and design
-    issues the control layer detects — directly demonstrating the framework's ability
-    to surface insider concentration, Gini violations, and vesting gaps as described
-    in Table II of the paper.
-
-    Reads:
-      - experiment_analysis.json for control_issues frequency dict
-    """
-    output_path = _ensure_output_dir(output_dir)
-
-    with open(analysis_json, "r") as f:
-        analysis = json.load(f)
-
-    control_issues = analysis.get("control_issues", {})
-    if not control_issues:
-        print("  Warning: No control issues found in analysis JSON")
-        return
-
-    sorted_issues = sorted(control_issues.items(), key=lambda x: x[1], reverse=True)
-    issue_names = [item[0] for item in sorted_issues]
-    issue_counts = [item[1] for item in sorted_issues]
-
-    bar_colors = []
-    for name in issue_names:
-        nl = name.lower()
-        if "gini" in nl or "concentration" in nl:
-            bar_colors.append(OKABE_ITO_PALETTE[5])   # orange-red for Gini/concentration
-        elif "insider" in nl:
-            bar_colors.append(OKABE_ITO_PALETTE[4])   # deep blue for insider allocation
-        elif "vest" in nl:
-            bar_colors.append(OKABE_ITO_PALETTE[0])   # amber for vesting
-        else:
-            bar_colors.append(OKABE_ITO_PALETTE[1])   # sky blue for other findings
-
-    fig_height = max(2.5, 0.6 * len(issue_names) + 1.5)
-    fig, ax = plt.subplots(figsize=(6, fig_height))
-    y_pos = np.arange(len(issue_names))
-
-    hbars = ax.barh(y_pos, issue_counts, color=bar_colors, edgecolor="black",
-                    linewidth=1, alpha=0.85, height=0.5)
-
-    for bar, count in zip(hbars, issue_counts):
-        ax.text(bar.get_width() + 0.5, bar.get_y() + bar.get_height() / 2,
-                f"{count}", ha="left", va="center", fontsize=10, weight="bold")
-
-    wrapped_labels = []
-    for name in issue_names:
-        if len(name) > 25:
-            words = name.split()
-            mid = len(words) // 2
-            wrapped_labels.append(" ".join(words[:mid]) + "\n" + " ".join(words[mid:]))
-        else:
-            wrapped_labels.append(name)
-
-    ax.set_yticks(y_pos)
-    ax.set_yticklabels(wrapped_labels, fontsize=9)
-    ax.set_xlabel("Number of Proposals", fontsize=FONT_SIZE_LABEL)
-    ax.set_xlim(0, max(issue_counts) + 10)
-    ax.invert_yaxis()
-    ax.grid(True, axis="x", alpha=0.3)
-    ax.set_title("Control Layer Finding Frequencies", fontsize=FONT_SIZE_LABEL, weight="bold")
-
-    legend_patches = [
-        mpatches.Patch(color=OKABE_ITO_PALETTE[5], label="Concentration / Gini"),
-        mpatches.Patch(color=OKABE_ITO_PALETTE[4], label="Insider allocation"),
-        mpatches.Patch(color=OKABE_ITO_PALETTE[0], label="Vesting"),
-        mpatches.Patch(color=OKABE_ITO_PALETTE[1], label="Other"),
-    ]
-    ax.legend(handles=legend_patches, fontsize=8, loc="lower right")
-
-    plt.tight_layout()
-    _save_figure(fig, output_path, "Fig03_control_findings")
-    plt.close(fig)
-
 
 
 def generate_all_figures(data_dir: str, output_dir: str) -> None:
     """
-    Master function that loads all result files and generates all figures.
-
-    Expected data files in data_dir:
-      - batch_results.csv (for Fig 3 control findings + Fig 4 allocation)
-      - experiment_analysis.json (for Fig 3 control findings)
-      - allocation_results.csv (for Fig 4, falls back to batch_results.csv)
-      - simulation_results.json (for Figs 5, 6, 7)
+    Load all result files and generate the four figures used in the paper:
+      Fig. 3 allocation distribution, Fig. 4 circulating supply growth,
+      Fig. 5 fairness (temporal concentration change), Fig. 6 alpha sensitivity.
     """
     data_path = Path(data_dir)
     output_path = _ensure_output_dir(output_dir)
 
-    print(f"Generating publication-quality figures from data in {data_dir}")
-    print(f"Output directory: {output_dir}\n")
+    print("Generating publication-quality figures from data in " + str(data_dir))
+    print("Output directory: " + str(output_dir) + "\n")
 
-    batch_csv = data_path / "batch_results.csv"
-    analysis_file = data_path / "experiment_analysis.json"
-
-    # ── Figure 3: Control Layer Findings ──
-    if analysis_file.exists():
-        print("Figure 3: Control Layer Findings...")
-        try:
-            plot_control_findings(str(analysis_file), str(output_path))
-        except Exception as e:
-            print(f"  Error: {e}")
-    else:
-        print(f"  Skipping Fig 3 (need experiment_analysis.json)")
-
-    # ── Figure 4: Allocation Distribution ──
+    # -- Fig. 3: Allocation Distribution --
     alloc_file = data_path / "allocation_results.csv"
-
     if not alloc_file.exists():
+        batch_csv = data_path / "batch_results.csv"
         if batch_csv.exists():
             try:
                 df = pd.read_csv(batch_csv)
-                if all(col in df.columns for col in ["team_pct", "investor_pct", "insider_pct", "distributed_pct"]):
+                if all(c in df.columns for c in ["team_pct", "investor_pct", "insider_pct", "distributed_pct"]):
                     alloc_file = batch_csv
             except Exception:
                 pass
-
     if alloc_file.exists():
-        print("Figure 4: Allocation Distribution...")
+        print("Figure 3: Allocation Distribution...")
         try:
             plot_allocation_distribution(str(alloc_file), str(output_path))
         except Exception as e:
-            print(f"  Error: {e}")
+            print("  Error: " + str(e))
     else:
-        print(f"  Skipping Fig 4 (no allocation data found)")
+        print("  Skipping Fig 3 (no allocation data found)")
 
-    # ── Figures 5, 6: Supply Growth + Fairness Drift ──
+    # -- Figs. 4-5: Supply Growth + Fairness --
     sim_file = data_path / "simulation_results.json"
-
     if not sim_file.exists():
         checkpoint_file = data_path / "checkpoint_results.json"
         if checkpoint_file.exists():
             sim_file = checkpoint_file
-
     if sim_file.exists():
-        print("Figure 5: Circulating Supply Growth...")
+        print("Figure 4: Circulating Supply Growth...")
         try:
             plot_circulating_supply_growth(str(sim_file), str(output_path))
         except Exception as e:
-            print(f"  Error: {e}")
-
-        print("Figure 6: Fairness Drift...")
+            print("  Error: " + str(e))
+        print("Figure 5: Fairness (temporal concentration change)...")
         try:
             plot_fairness_drift(str(sim_file), str(output_path))
         except Exception as e:
-            print(f"  Error: {e}")
+            print("  Error: " + str(e))
     else:
-        print(f"  Skipping simulation figures (no simulation data found)")
+        print("  Skipping simulation figures (no simulation data found)")
 
-    # ── Figure 7: Stress Test Outcomes ──
-    stress_file = data_path / "simulation_results.json"
-    if not stress_file.exists():
-        stress_file = data_path / "checkpoint_results.json"
-    if not stress_file.exists():
-        stress_file = data_path / "batch_results_full.json"
-
-    if stress_file.exists():
-        print("Figure 7: Stress Test Outcomes...")
+    # -- Fig. 6: Alpha Sensitivity --
+    sensitivity_file = data_path / "sensitivity_alpha.json"
+    if sensitivity_file.exists():
+        print("Figure 6: Demand-Baseline Alpha Sensitivity...")
         try:
-            plot_stress_test_outcomes(str(stress_file), str(output_path))
+            plot_alpha_sensitivity(str(sensitivity_file), str(output_path))
         except Exception as e:
-            print(f"  Error: {e}")
+            print("  Error: " + str(e))
     else:
-        print(f"  Skipping Fig 7 (no stress test data found)")
+        print("  Skipping Fig 6 (run: python analyze_results.py --sensitivity)")
 
-    print(f"\nAll available figures generated in {output_dir}")
+    print("All figures generated in " + str(output_dir))
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate publication-quality figures for tokenomics research paper Section IV"
+        description="Generate publication-quality figures for the tokenomics paper (Figs. 3-6)"
     )
-
-    parser.add_argument(
-        "--data-dir", "-d",
-        type=str,
-        default="./experiment_results",
-        help="Directory containing result CSV/JSON files (default: ./experiment_results)"
-    )
-
-    parser.add_argument(
-        "--output-dir", "-o",
-        type=str,
-        default="./figures",
-        help="Directory to save figures (default: ./figures)"
-    )
-
-    parser.add_argument(
-        "--fig3", action="store_true",
-        help="Generate only Figure 3 (control layer finding frequencies)"
-    )
-
-    parser.add_argument(
-        "--fig4", action="store_true",
-        help="Generate only Figure 4 (allocation distribution)"
-    )
-
-    parser.add_argument(
-        "--fig5", action="store_true",
-        help="Generate only Figure 5 (circulating supply growth)"
-    )
-
-    parser.add_argument(
-        "--fig6", action="store_true",
-        help="Generate only Figure 6 (fairness drift)"
-    )
-
-    parser.add_argument(
-        "--fig7", action="store_true",
-        help="Generate only Figure 7 (stress test outcomes)"
-    )
-
-    parser.add_argument(
-        "--analysis-json", type=str,
-        help="Path to experiment analysis JSON (for Fig 3)"
-    )
-
-    parser.add_argument(
-        "--allocation-csv", type=str,
-        help="Path to allocation results CSV (for Fig 4)"
-    )
-
-    parser.add_argument(
-        "--simulation-json", type=str,
-        help="Path to simulation results JSON (for Figs 5, 6, 7)"
-    )
-
+    parser.add_argument("--data-dir", "-d", type=str, default="./experiment_results",
+                        help="Directory containing result CSV/JSON files")
+    parser.add_argument("--output-dir", "-o", type=str, default="./figures",
+                        help="Directory to save figures")
+    parser.add_argument("--fig3", action="store_true", help="Fig. 3 (allocation distribution)")
+    parser.add_argument("--fig4", action="store_true", help="Fig. 4 (circulating supply growth)")
+    parser.add_argument("--fig5", action="store_true", help="Fig. 5 (fairness / temporal concentration)")
+    parser.add_argument("--fig6", action="store_true", help="Fig. 6 (demand-baseline alpha sensitivity)")
+    parser.add_argument("--allocation-csv", type=str, help="Allocation results CSV (Fig. 3)")
+    parser.add_argument("--simulation-json", type=str, help="Simulation results JSON (Figs. 4-5)")
+    parser.add_argument("--sensitivity-json", type=str,
+                        default="./experiment_results/sensitivity_alpha.json",
+                        help="Alpha sensitivity JSON (Fig. 6)")
     args = parser.parse_args()
 
-    if any([args.fig3, args.fig4, args.fig5, args.fig6, args.fig7]):
-
-        if args.fig3 and args.analysis_json:
-            plot_control_findings(args.analysis_json, args.output_dir)
-
-        if args.fig4 and args.allocation_csv:
+    if any([args.fig3, args.fig4, args.fig5, args.fig6]):
+        if args.fig3 and args.allocation_csv:
             plot_allocation_distribution(args.allocation_csv, args.output_dir)
-
-        if args.fig5 and args.simulation_json:
+        if args.fig4 and args.simulation_json:
             plot_circulating_supply_growth(args.simulation_json, args.output_dir)
-
-        if args.fig6 and args.simulation_json:
+        if args.fig5 and args.simulation_json:
             plot_fairness_drift(args.simulation_json, args.output_dir)
-
-        if args.fig7 and args.simulation_json:
-            plot_stress_test_outcomes(args.simulation_json, args.output_dir)
+        if args.fig6:
+            plot_alpha_sensitivity(args.sensitivity_json, args.output_dir)
     else:
-
         generate_all_figures(args.data_dir, args.output_dir)
 
 

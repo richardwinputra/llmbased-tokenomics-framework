@@ -1,0 +1,212 @@
+{
+  "conditions": {
+    "model": "nvidia/nemotron-3-super-120b-a12b:free",
+    "prompt_variant": "kb",
+    "served_models": [
+      "nvidia/nemotron-3-super-120b-a12b:free"
+    ],
+    "served_providers": [
+      "Nvidia"
+    ]
+  },
+  "categories": {
+    "DeFi": {
+      "n": 18,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.8333,
+      "control_aligned_rate": 1.0,
+      "overall_gini_mean": 0.2977,
+      "overall_gini_std": 0.1252,
+      "t0_gini_mean": 0.5466,
+      "gini_12m_mean": 0.5309,
+      "gini_24m_mean": 0.3725,
+      "gini_24m_std": 0.137,
+      "gini_full_mean": 0.2993,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.2889,
+      "fairness_drift_std": 0.0377,
+      "stress_pass_rate_mean": 0.8444,
+      "year1_inflation_mean": 22.8383,
+      "year1_inflation_std": 30.7356,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 0.8889,
+        "Bear": 0.7778,
+        "Unlock Shock": 0.8333,
+        "Liquidity Pressure": 0.7222
+      }
+    },
+    "Gaming and Metaverse": {
+      "n": 16,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.8125,
+      "control_aligned_rate": 0.8125,
+      "overall_gini_mean": 0.343,
+      "overall_gini_std": 0.1258,
+      "t0_gini_mean": 0.6057,
+      "gini_12m_mean": 0.5737,
+      "gini_24m_mean": 0.4177,
+      "gini_24m_std": 0.1385,
+      "gini_full_mean": 0.3455,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.3266,
+      "fairness_drift_std": 0.0808,
+      "stress_pass_rate_mean": 0.75,
+      "year1_inflation_mean": 13.9719,
+      "year1_inflation_std": 17.4155,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 0.9375,
+        "Bear": 0.8125,
+        "Unlock Shock": 1.0,
+        "Liquidity Pressure": 0.0
+      }
+    },
+    "Infrastructure": {
+      "n": 16,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 1.0,
+      "control_aligned_rate": 1.0,
+      "overall_gini_mean": 0.2802,
+      "overall_gini_std": 0.1213,
+      "t0_gini_mean": 0.4485,
+      "gini_12m_mean": 0.552,
+      "gini_24m_mean": 0.3698,
+      "gini_24m_std": 0.1265,
+      "gini_full_mean": 0.2805,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.2956,
+      "fairness_drift_std": 0.0507,
+      "stress_pass_rate_mean": 0.925,
+      "year1_inflation_mean": 15.4338,
+      "year1_inflation_std": 15.5849,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 1.0,
+        "Bear": 0.8125,
+        "Unlock Shock": 1.0,
+        "Liquidity Pressure": 0.8125
+      }
+    },
+    "Marketplace": {
+      "n": 16,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.5,
+      "control_aligned_rate": 0.875,
+      "overall_gini_mean": 0.3159,
+      "overall_gini_std": 0.1191,
+      "t0_gini_mean": 0.541,
+      "gini_12m_mean": 0.5674,
+      "gini_24m_mean": 0.4167,
+      "gini_24m_std": 0.1158,
+      "gini_full_mean": 0.318,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.3223,
+      "fairness_drift_std": 0.0993,
+      "stress_pass_rate_mean": 0.5375,
+      "year1_inflation_mean": 39.9703,
+      "year1_inflation_std": 35.1265,
+      "scenario_pass_rates": {
+        "Bull": 0.9375,
+        "Neutral": 0.625,
+        "Bear": 0.5,
+        "Unlock Shock": 0.625,
+        "Liquidity Pressure": 0.0
+      }
+    },
+    "Social and Content": {
+      "n": 16,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.375,
+      "control_aligned_rate": 0.9375,
+      "overall_gini_mean": 0.2795,
+      "overall_gini_std": 0.097,
+      "t0_gini_mean": 0.4018,
+      "gini_12m_mean": 0.4804,
+      "gini_24m_mean": 0.3197,
+      "gini_24m_std": 0.0979,
+      "gini_full_mean": 0.2814,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.3035,
+      "fairness_drift_std": 0.0537,
+      "stress_pass_rate_mean": 0.5875,
+      "year1_inflation_mean": 39.8294,
+      "year1_inflation_std": 42.4951,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 0.75,
+        "Bear": 0.375,
+        "Unlock Shock": 0.8125,
+        "Liquidity Pressure": 0.0
+      }
+    },
+    "Utility": {
+      "n": 18,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.5556,
+      "control_aligned_rate": 1.0,
+      "overall_gini_mean": 0.228,
+      "overall_gini_std": 0.0789,
+      "t0_gini_mean": 0.5297,
+      "gini_12m_mean": 0.488,
+      "gini_24m_mean": 0.3068,
+      "gini_24m_std": 0.0848,
+      "gini_full_mean": 0.2304,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.3054,
+      "fairness_drift_std": 0.0359,
+      "stress_pass_rate_mean": 0.6111,
+      "year1_inflation_mean": 37.6688,
+      "year1_inflation_std": 40.7948,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 0.7778,
+        "Bear": 0.5556,
+        "Unlock Shock": 0.7222,
+        "Liquidity Pressure": 0.0
+      }
+    }
+  },
+  "input_types": {
+    "structured": {
+      "n": 100,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.68,
+      "control_aligned_rate": 0.94,
+      "overall_gini_mean": 0.2896,
+      "overall_gini_std": 0.1179,
+      "t0_gini_mean": 0.5132,
+      "gini_12m_mean": 0.5312,
+      "gini_24m_mean": 0.3661,
+      "gini_24m_std": 0.1257,
+      "gini_full_mean": 0.2914,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.3067,
+      "fairness_drift_std": 0.0645,
+      "stress_pass_rate_mean": 0.71,
+      "year1_inflation_mean": 28.3642,
+      "year1_inflation_std": 34.1599,
+      "scenario_pass_rates": {
+        "Bull": 0.99,
+        "Neutral": 0.83,
+        "Bear": 0.64,
+        "Unlock Shock": 0.83,
+        "Liquidity Pressure": 0.26
+      }
+    }
+  },
+  "timestamp": "2026-07-18T19:54:45.806928",
+  "total_results": 100,
+  "control_issue_frequency": {
+    "Combined insider concentration": 6,
+    "Investor concentration": 1
+  },
+  "filter_issue_frequency": {}
+}

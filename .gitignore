@@ -21,3 +21,7 @@ pipeline_exports/
 experiment_results/checkpoint_results.json
 experiment_results/raw_llm_responses/
 experiment_results/batch_results.csv
+
+# Multi-model runs — keep summary JSON/CSV, drop bulky raw outputs and duplicate checkpoint
+experiment_results/runs/*/raw_llm_responses/
+experiment_results/runs/*/checkpoint_results.json

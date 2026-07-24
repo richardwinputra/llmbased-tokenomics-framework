@@ -1,0 +1,280 @@
+{
+ "n_proposals": 100,
+ "grid": {
+  "DISTRIBUTED_FLOOR": {
+   "default": 20.0,
+   "sweep": [
+    {
+     "value": 10.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 15.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 20.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 25.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 30.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    }
+   ]
+  },
+  "TEAM_MAX": {
+   "default": 35.0,
+   "sweep": [
+    {
+     "value": 25.0,
+     "proposals_flagged": 12,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Team concentration": 8,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 30.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Team concentration": 1,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 35.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 40.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 45.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    }
+   ]
+  },
+  "INVESTOR_PREFERRED": {
+   "default": 25.0,
+   "sweep": [
+    {
+     "value": 15.0,
+     "proposals_flagged": 7,
+     "findings_by_check": {
+      "Investor concentration": 5,
+      "Combined insider concentration": 6
+     }
+    },
+    {
+     "value": 20.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 25.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 30.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 35.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    }
+   ]
+  },
+  "INSIDER_PREFERRED": {
+   "default": 40.0,
+   "sweep": [
+    {
+     "value": 30.0,
+     "proposals_flagged": 36,
+     "findings_by_check": {
+      "Combined insider concentration": 36,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 35.0,
+     "proposals_flagged": 13,
+     "findings_by_check": {
+      "Combined insider concentration": 13,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 40.0,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 45.0,
+     "proposals_flagged": 2,
+     "findings_by_check": {
+      "Combined insider concentration": 2,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 50.0,
+     "proposals_flagged": 1,
+     "findings_by_check": {
+      "Investor concentration": 1,
+      "Combined insider concentration": 1
+     }
+    }
+   ]
+  },
+  "INSIDER_MIN_VESTING": {
+   "default": 12,
+   "sweep": [
+    {
+     "value": 6,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 9,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 12,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 18,
+     "proposals_flagged": 7,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1,
+      "Insider lockup horizon": 1
+     }
+    },
+    {
+     "value": 24,
+     "proposals_flagged": 9,
+     "findings_by_check": {
+      "Insider lockup horizon": 3,
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    }
+   ]
+  },
+  "GINI_MAX": {
+   "default": 0.6,
+   "sweep": [
+    {
+     "value": 0.5,
+     "proposals_flagged": 9,
+     "findings_by_check": {
+      "Aggregate concentration": 3,
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 0.55,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 0.6,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 0.65,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    },
+    {
+     "value": 0.7,
+     "proposals_flagged": 6,
+     "findings_by_check": {
+      "Combined insider concentration": 6,
+      "Investor concentration": 1
+     }
+    }
+   ]
+  }
+ }
+}

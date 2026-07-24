@@ -1,0 +1,213 @@
+{
+  "conditions": {
+    "model": "x-ai/grok-4.3",
+    "prompt_variant": "kb",
+    "served_models": [
+      "x-ai/grok-4.3"
+    ],
+    "served_providers": [
+      "xAI"
+    ]
+  },
+  "categories": {
+    "DeFi": {
+      "n": 18,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 1.0,
+      "control_aligned_rate": 1.0,
+      "overall_gini_mean": 0.2382,
+      "overall_gini_std": 0.0663,
+      "t0_gini_mean": 0.5863,
+      "gini_12m_mean": 0.4962,
+      "gini_24m_mean": 0.3254,
+      "gini_24m_std": 0.0777,
+      "gini_full_mean": 0.24,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.2941,
+      "fairness_drift_std": 0.0453,
+      "stress_pass_rate_mean": 0.9778,
+      "year1_inflation_mean": 14.3614,
+      "year1_inflation_std": 13.1762,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 1.0,
+        "Bear": 1.0,
+        "Unlock Shock": 1.0,
+        "Liquidity Pressure": 0.8889
+      }
+    },
+    "Gaming and Metaverse": {
+      "n": 16,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.9375,
+      "control_aligned_rate": 0.8125,
+      "overall_gini_mean": 0.2249,
+      "overall_gini_std": 0.0668,
+      "t0_gini_mean": 0.5613,
+      "gini_12m_mean": 0.5014,
+      "gini_24m_mean": 0.3309,
+      "gini_24m_std": 0.0584,
+      "gini_full_mean": 0.2261,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.3266,
+      "fairness_drift_std": 0.0817,
+      "stress_pass_rate_mean": 0.7875,
+      "year1_inflation_mean": 9.1862,
+      "year1_inflation_std": 13.0528,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 1.0,
+        "Bear": 0.9375,
+        "Unlock Shock": 1.0,
+        "Liquidity Pressure": 0.0
+      }
+    },
+    "Infrastructure": {
+      "n": 16,
+      "filter_pass_rate": 0.9375,
+      "stress_overall_pass_rate": 0.9375,
+      "control_aligned_rate": 1.0,
+      "overall_gini_mean": 0.2283,
+      "overall_gini_std": 0.0821,
+      "t0_gini_mean": 0.5072,
+      "gini_12m_mean": 0.4592,
+      "gini_24m_mean": 0.3397,
+      "gini_24m_std": 0.0995,
+      "gini_full_mean": 0.2451,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.2672,
+      "fairness_drift_std": 0.0837,
+      "stress_pass_rate_mean": 0.9375,
+      "year1_inflation_mean": 7.4305,
+      "year1_inflation_std": 12.8177,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 1.0,
+        "Bear": 0.9375,
+        "Unlock Shock": 1.0,
+        "Liquidity Pressure": 0.75
+      }
+    },
+    "Marketplace": {
+      "n": 16,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.875,
+      "control_aligned_rate": 0.9375,
+      "overall_gini_mean": 0.2301,
+      "overall_gini_std": 0.0359,
+      "t0_gini_mean": 0.5105,
+      "gini_12m_mean": 0.4883,
+      "gini_24m_mean": 0.3313,
+      "gini_24m_std": 0.0358,
+      "gini_full_mean": 0.232,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.2954,
+      "fairness_drift_std": 0.0569,
+      "stress_pass_rate_mean": 0.775,
+      "year1_inflation_mean": 11.5408,
+      "year1_inflation_std": 16.3444,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 1.0,
+        "Bear": 0.875,
+        "Unlock Shock": 1.0,
+        "Liquidity Pressure": 0.0
+      }
+    },
+    "Social and Content": {
+      "n": 16,
+      "filter_pass_rate": 0.9375,
+      "stress_overall_pass_rate": 0.875,
+      "control_aligned_rate": 0.9375,
+      "overall_gini_mean": 0.2285,
+      "overall_gini_std": 0.0645,
+      "t0_gini_mean": 0.5373,
+      "gini_12m_mean": 0.4555,
+      "gini_24m_mean": 0.3057,
+      "gini_24m_std": 0.0909,
+      "gini_full_mean": 0.2455,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.2809,
+      "fairness_drift_std": 0.0894,
+      "stress_pass_rate_mean": 0.75,
+      "year1_inflation_mean": 15.7161,
+      "year1_inflation_std": 28.7179,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 0.9375,
+        "Bear": 0.875,
+        "Unlock Shock": 0.9375,
+        "Liquidity Pressure": 0.0
+      }
+    },
+    "Utility": {
+      "n": 18,
+      "filter_pass_rate": 1.0,
+      "stress_overall_pass_rate": 0.8333,
+      "control_aligned_rate": 1.0,
+      "overall_gini_mean": 0.206,
+      "overall_gini_std": 0.0439,
+      "t0_gini_mean": 0.5216,
+      "gini_12m_mean": 0.464,
+      "gini_24m_mean": 0.3042,
+      "gini_24m_std": 0.0681,
+      "gini_full_mean": 0.2086,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.3045,
+      "fairness_drift_std": 0.0367,
+      "stress_pass_rate_mean": 0.7667,
+      "year1_inflation_mean": 14.8875,
+      "year1_inflation_std": 19.501,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 1.0,
+        "Bear": 0.8333,
+        "Unlock Shock": 1.0,
+        "Liquidity Pressure": 0.0
+      }
+    }
+  },
+  "input_types": {
+    "structured": {
+      "n": 100,
+      "filter_pass_rate": 0.98,
+      "stress_overall_pass_rate": 0.91,
+      "control_aligned_rate": 0.95,
+      "overall_gini_mean": 0.2258,
+      "overall_gini_std": 0.0625,
+      "t0_gini_mean": 0.538,
+      "gini_12m_mean": 0.4776,
+      "gini_24m_mean": 0.3226,
+      "gini_24m_std": 0.0759,
+      "gini_full_mean": 0.2323,
+      "insider_share_t0_mean": 0.0,
+      "insider_share_t0_std": 0.0,
+      "fairness_drift_mean": 0.295,
+      "fairness_drift_std": 0.0702,
+      "stress_pass_rate_mean": 0.834,
+      "year1_inflation_mean": 12.2846,
+      "year1_inflation_std": 18.3636,
+      "scenario_pass_rates": {
+        "Bull": 1.0,
+        "Neutral": 0.99,
+        "Bear": 0.91,
+        "Unlock Shock": 0.99,
+        "Liquidity Pressure": 0.28
+      }
+    }
+  },
+  "timestamp": "2026-07-19T10:22:38.391829",
+  "total_results": 100,
+  "control_issue_frequency": {
+    "Combined insider concentration": 5
+  },
+  "filter_issue_frequency": {
+    "Required analytical groups identifiable": 2
+  }
+}

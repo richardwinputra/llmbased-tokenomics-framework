@@ -1,0 +1,594 @@
+{
+ "n_proposals": 100,
+ "grid": {
+  "SDR_THRESHOLD_BASE": {
+   "default": 1.5,
+   "sweep": [
+    {
+     "value": 1.0,
+     "scenario_pass_counts": {
+      "Bull": 99,
+      "Neutral": 46,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 48
+    },
+    {
+     "value": 1.25,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 82,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 1.5,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 1.75,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 100,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 2.0,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 100,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    }
+   ]
+  },
+  "SDR_THRESHOLD_BEAR": {
+   "default": 2.0,
+   "sweep": [
+    {
+     "value": 1.5,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 13,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 36
+    },
+    {
+     "value": 1.75,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 26,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 42
+    },
+    {
+     "value": 2.0,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 2.25,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 79,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 80
+    },
+    {
+     "value": 2.5,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 92,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 92
+    }
+   ]
+  },
+  "SDR_THRESHOLD_SHOCK": {
+   "default": 2.0,
+   "sweep": [
+    {
+     "value": 1.5,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 50,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 49
+    },
+    {
+     "value": 1.75,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 83,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 56
+    },
+    {
+     "value": 2.0,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 2.25,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 99,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 2.5,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 100,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    }
+   ]
+  },
+  "SDR_THRESHOLD_LIQUIDITY": {
+   "default": 4.5,
+   "sweep": [
+    {
+     "value": 3.5,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 20
+     },
+     "overall_pass_count": 51
+    },
+    {
+     "value": 4.0,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 27
+     },
+     "overall_pass_count": 55
+    },
+    {
+     "value": 4.5,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 5.0,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 5.5,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 30
+     },
+     "overall_pass_count": 57
+    }
+   ]
+  },
+  "SPIKE_THRESHOLD": {
+   "default": 0.15,
+   "sweep": [
+    {
+     "value": 0.05,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.1,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.15,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.2,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.3,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    }
+   ]
+  },
+  "GROWTH_BULL": {
+   "default": 0.05,
+   "sweep": [
+    {
+     "value": 0.025,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.0375,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.05,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.0625,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.075,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    }
+   ]
+  },
+  "GROWTH_NEUTRAL": {
+   "default": 0.01,
+   "sweep": [
+    {
+     "value": 0.005,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 92,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.0075,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 95,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.01,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.015,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 99,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.02,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 99,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    }
+   ]
+  },
+  "GROWTH_BEAR": {
+   "default": -0.02,
+   "sweep": [
+    {
+     "value": -0.03,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 29,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 45
+    },
+    {
+     "value": -0.025,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 42,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 53
+    },
+    {
+     "value": -0.02,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": -0.015,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 66,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 69
+    },
+    {
+     "value": -0.01,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 79,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 80
+    }
+   ]
+  },
+  "GROWTH_LIQUIDITY": {
+   "default": 0.005,
+   "sweep": [
+    {
+     "value": 0.0025,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.005,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.0075,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 0.01,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    }
+   ]
+  },
+  "SELL_PRESSURE_MULTIPLIER": {
+   "default": 3.0,
+   "sweep": [
+    {
+     "value": 2.0,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 30
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 2.5,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 30
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 3.0,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 29
+     },
+     "overall_pass_count": 57
+    },
+    {
+     "value": 3.5,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 25
+     },
+     "overall_pass_count": 53
+    },
+    {
+     "value": 4.0,
+     "scenario_pass_counts": {
+      "Bull": 100,
+      "Neutral": 97,
+      "Bear": 51,
+      "Unlock Shock": 96,
+      "Liquidity Pressure": 13
+     },
+     "overall_pass_count": 51
+    }
+   ]
+  }
+ }
+}
