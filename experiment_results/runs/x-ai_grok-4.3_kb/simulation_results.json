@@ -69,7 +69,8 @@
       "year1_circulating_pct": 80.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 58,
-      "year1_inflation_proxy": 0.0
+      "year1_inflation_proxy": 0.0,
+      "total_supply": 200000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.19327731092436976,
@@ -222,7 +223,8 @@
       "year1_circulating_pct": 63.74999999999999,
       "year2_circulating_pct": 77.5,
       "full_unlock_month": 59,
-      "year1_inflation_proxy": 6.25
+      "year1_inflation_proxy": 6.25,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3968586387434555,
@@ -375,7 +377,8 @@
       "year1_circulating_pct": 68.75,
       "year2_circulating_pct": 82.91666666666666,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 5.769230769230769
+      "year1_inflation_proxy": 5.769230769230769,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.34636871508379885,
@@ -529,7 +532,8 @@
       "year1_circulating_pct": 71.0,
       "year2_circulating_pct": 83.66666666666667,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 4.411764705882353
+      "year1_inflation_proxy": 4.411764705882353,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.31620111731843575,
@@ -682,7 +686,8 @@
       "year1_circulating_pct": 76.0,
       "year2_circulating_pct": 87.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.10958904109589
+      "year1_inflation_proxy": 4.10958904109589,
+      "total_supply": 200000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2638655462184874,
@@ -835,7 +840,8 @@
       "year1_circulating_pct": 71.7,
       "year2_circulating_pct": 86.5,
       "full_unlock_month": 38,
-      "year1_inflation_proxy": 10.307692307692308
+      "year1_inflation_proxy": 10.307692307692308,
+      "total_supply": 3030000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3440968718466196,
@@ -989,7 +995,8 @@
       "year1_circulating_pct": 63.74999999999999,
       "year2_circulating_pct": 79.58333333333333,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 6.25
+      "year1_inflation_proxy": 6.25,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.39580419580419585,
@@ -1143,7 +1150,8 @@
       "year1_circulating_pct": 55.00000000000001,
       "year2_circulating_pct": 67.91666666666666,
       "full_unlock_month": 59,
-      "year1_inflation_proxy": 0.0
+      "year1_inflation_proxy": 0.0,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.4471204188481675,
@@ -1297,7 +1305,8 @@
       "year1_circulating_pct": 76.75,
       "year2_circulating_pct": 88.25,
       "full_unlock_month": 45,
-      "year1_inflation_proxy": 5.136986301369863
+      "year1_inflation_proxy": 5.136986301369863,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.26262626262626265,
@@ -1451,7 +1460,8 @@
       "year1_circulating_pct": 60.0,
       "year2_circulating_pct": 78.33333333333334,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 9.090909090909092
+      "year1_inflation_proxy": 9.090909090909092,
+      "total_supply": 200000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.4461538461538461,
@@ -1606,7 +1616,8 @@
       "year1_circulating_pct": 100.0,
       "year2_circulating_pct": 100.0,
       "full_unlock_month": 0,
-      "year1_inflation_proxy": 0.0
+      "year1_inflation_proxy": 0.0,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.0,
@@ -1756,7 +1767,8 @@
       "year1_circulating_pct": 67.5,
       "year2_circulating_pct": 78.33333333333334,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 3.8461538461538463
+      "year1_inflation_proxy": 3.8461538461538463,
+      "total_supply": 50000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2452697967764541,
@@ -1910,7 +1922,8 @@
       "year1_circulating_pct": 71.0,
       "year2_circulating_pct": 82.0,
       "full_unlock_month": 58,
-      "year1_inflation_proxy": 4.411764705882353
+      "year1_inflation_proxy": 4.411764705882353,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3142857142857143,
@@ -2063,7 +2076,8 @@
       "year1_circulating_pct": 38.75,
       "year2_circulating_pct": 59.16666666666668,
       "full_unlock_month": 48,
-      "year1_inflation_proxy": 55.00000000000001
+      "year1_inflation_proxy": 55.00000000000001,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2,
@@ -2218,7 +2232,8 @@
       "year1_circulating_pct": 60.0,
       "year2_circulating_pct": 70.0,
       "full_unlock_month": 59,
-      "year1_inflation_proxy": 0.0
+      "year1_inflation_proxy": 0.0,
+      "total_supply": 75000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3949579831932773,
@@ -2371,7 +2386,8 @@
       "year1_circulating_pct": 58.75,
       "year2_circulating_pct": 76.25,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 6.8181818181818175
+      "year1_inflation_proxy": 6.8181818181818175,
+      "total_supply": 150000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.44537815126050423,
@@ -2525,7 +2541,8 @@
       "year1_circulating_pct": 60.0,
       "year2_circulating_pct": 73.33333333333333,
       "full_unlock_month": 48,
-      "year1_inflation_proxy": 0.0
+      "year1_inflation_proxy": 0.0,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.25,
@@ -2679,7 +2696,8 @@
       "year1_circulating_pct": 71.0,
       "year2_circulating_pct": 83.66666666666667,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 4.411764705882353
+      "year1_inflation_proxy": 4.411764705882353,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.31620111731843575,
@@ -2833,7 +2851,8 @@
       "year1_circulating_pct": 53.75,
       "year2_circulating_pct": 72.91666666666666,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 7.5
+      "year1_inflation_proxy": 7.5,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.4950911640953717,
@@ -2987,7 +3006,8 @@
       "year1_circulating_pct": 100.0,
       "year2_circulating_pct": 100.0,
       "full_unlock_month": 0,
-      "year1_inflation_proxy": 0.0
+      "year1_inflation_proxy": 0.0,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.0,
@@ -3137,7 +3157,8 @@
       "year1_circulating_pct": 20.0,
       "year2_circulating_pct": 56.00000000000001,
       "full_unlock_month": 42,
-      "year1_inflation_proxy": 20.0
+      "year1_inflation_proxy": 20.0,
+      "total_supply": 200000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.4,
@@ -3291,7 +3312,8 @@
       "year1_circulating_pct": 53.5,
       "year2_circulating_pct": 83.66666666666666,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 62.121212121212125
+      "year1_inflation_proxy": 62.121212121212125,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.31620111731843575,
@@ -3446,7 +3468,8 @@
       "year1_circulating_pct": 75.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 41,
-      "year1_inflation_proxy": 0.0
+      "year1_inflation_proxy": 0.0,
+      "total_supply": 300000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.24369747899159663,
@@ -3600,7 +3623,8 @@
       "year1_circulating_pct": 58.75,
       "year2_circulating_pct": 76.25,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 6.8181818181818175
+      "year1_inflation_proxy": 6.8181818181818175,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.44537815126050423,
@@ -3754,7 +3778,8 @@
       "year1_circulating_pct": 66.66666666666667,
       "year2_circulating_pct": 80.0,
       "full_unlock_month": 42,
-      "year1_inflation_proxy": 11.111111111111125
+      "year1_inflation_proxy": 11.111111111111125,
+      "total_supply": 250000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.28,
@@ -3908,7 +3933,8 @@
       "year1_circulating_pct": 78.0,
       "year2_circulating_pct": 85.33333333333334,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 0.0
+      "year1_inflation_proxy": 0.0,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2152040245947457,
@@ -4062,7 +4088,8 @@
       "year1_circulating_pct": 46.33333333333333,
       "year2_circulating_pct": 71.66666666666666,
       "full_unlock_month": 38,
-      "year1_inflation_proxy": 54.44444444444443
+      "year1_inflation_proxy": 54.44444444444443,
+      "total_supply": 200000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29292929292929293,
@@ -4217,7 +4244,8 @@
       "year1_circulating_pct": 67.5,
       "year2_circulating_pct": 78.33333333333334,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 3.8461538461538463
+      "year1_inflation_proxy": 3.8461538461538463,
+      "total_supply": 400000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2452697967764541,
@@ -4371,7 +4399,8 @@
       "year1_circulating_pct": 80.0,
       "year2_circulating_pct": 85.71428571428572,
       "full_unlock_month": 52,
-      "year1_inflation_proxy": 0.0
+      "year1_inflation_proxy": 0.0,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.19230769230769232,
@@ -4525,7 +4554,8 @@
       "year1_circulating_pct": 42.166666666666664,
       "year2_circulating_pct": 70.83333333333333,
       "full_unlock_month": 38,
-      "year1_inflation_proxy": 68.66666666666666
+      "year1_inflation_proxy": 68.66666666666666,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3939393939393939,
@@ -4680,7 +4710,8 @@
       "year1_circulating_pct": 65.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 33,
-      "year1_inflation_proxy": 8.333333333333332
+      "year1_inflation_proxy": 8.333333333333332,
+      "total_supply": 150000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.4,
@@ -4834,7 +4865,8 @@
       "year1_circulating_pct": 75.0,
       "year2_circulating_pct": 83.33333333333333,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 0.0
+      "year1_inflation_proxy": 0.0,
+      "total_supply": 350000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2447552447552448,
@@ -4988,7 +5020,8 @@
       "year1_circulating_pct": 62.0,
       "year2_circulating_pct": 76.0,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 3.3333333333333335
+      "year1_inflation_proxy": 3.3333333333333335,
+      "total_supply": 200000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.39495798319327735,
@@ -5142,7 +5175,8 @@
       "year1_circulating_pct": 43.333333333333336,
       "year2_circulating_pct": 71.66666666666667,
       "full_unlock_month": 36,
-      "year1_inflation_proxy": 116.66666666666667
+      "year1_inflation_proxy": 116.66666666666667,
+      "total_supply": 75000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.25,
@@ -5300,7 +5334,8 @@
       "year1_circulating_pct": 48.25,
       "year2_circulating_pct": 69.25,
       "full_unlock_month": 48,
-      "year1_inflation_proxy": 30.405405405405407
+      "year1_inflation_proxy": 30.405405405405407,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.33,
@@ -5453,7 +5488,8 @@
       "year1_circulating_pct": 72.14285714285712,
       "year2_circulating_pct": 80.71428571428572,
       "full_unlock_month": 50,
-      "year1_inflation_proxy": 3.0612244897959062
+      "year1_inflation_proxy": 3.0612244897959062,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2949640287769784,
@@ -5606,7 +5642,8 @@
       "year1_circulating_pct": 65.0,
       "year2_circulating_pct": 76.66666666666667,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 0.0
+      "year1_inflation_proxy": 0.0,
+      "total_supply": 150000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.34361851332398313,
@@ -5760,7 +5797,8 @@
       "year1_circulating_pct": 73.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.285714285714286
+      "year1_inflation_proxy": 4.285714285714286,
+      "total_supply": 2000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29292929292929293,
@@ -5914,7 +5952,8 @@
       "year1_circulating_pct": 65.0,
       "year2_circulating_pct": 78.57142857142857,
       "full_unlock_month": 53,
-      "year1_inflation_proxy": 8.333333333333332
+      "year1_inflation_proxy": 8.333333333333332,
+      "total_supply": 120000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2949640287769784,
@@ -6068,7 +6107,8 @@
       "year1_circulating_pct": 47.5,
       "year2_circulating_pct": 67.5,
       "full_unlock_month": 48,
-      "year1_inflation_proxy": 35.714285714285715
+      "year1_inflation_proxy": 35.714285714285715,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.25,
@@ -6221,7 +6261,8 @@
       "year1_circulating_pct": 72.75,
       "year2_circulating_pct": 82.58333333333333,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 1.0416666666666665
+      "year1_inflation_proxy": 1.0416666666666665,
+      "total_supply": 90000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.27496503496503494,
@@ -6374,7 +6415,8 @@
       "year1_circulating_pct": 73.75,
       "year2_circulating_pct": 86.25,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 5.357142857142857
+      "year1_inflation_proxy": 5.357142857142857,
+      "total_supply": 2000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2941176470588235,
@@ -6528,7 +6570,8 @@
       "year1_circulating_pct": 74.5,
       "year2_circulating_pct": 85.5,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 3.4722222222222223
+      "year1_inflation_proxy": 3.4722222222222223,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2727272727272727,
@@ -6682,7 +6725,8 @@
       "year1_circulating_pct": 73.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.285714285714286
+      "year1_inflation_proxy": 4.285714285714286,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29292929292929293,
@@ -6836,7 +6880,8 @@
       "year1_circulating_pct": 57.08333333333333,
       "year2_circulating_pct": 77.91666666666666,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 26.851851851851844
+      "year1_inflation_proxy": 26.851851851851844,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29411764705882354,
@@ -6990,7 +7035,8 @@
       "year1_circulating_pct": 73.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.285714285714286
+      "year1_inflation_proxy": 4.285714285714286,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29292929292929293,
@@ -7144,7 +7190,8 @@
       "year1_circulating_pct": 68.75,
       "year2_circulating_pct": 82.91666666666666,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 5.769230769230769
+      "year1_inflation_proxy": 5.769230769230769,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3463687150837989,
@@ -7298,7 +7345,8 @@
       "year1_circulating_pct": 70.75,
       "year2_circulating_pct": 84.25,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 5.597014925373134
+      "year1_inflation_proxy": 5.597014925373134,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.32323232323232326,
@@ -7452,7 +7500,8 @@
       "year1_circulating_pct": 73.75,
       "year2_circulating_pct": 86.25,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 5.357142857142857
+      "year1_inflation_proxy": 5.357142857142857,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2941176470588235,
@@ -7606,7 +7655,8 @@
       "year1_circulating_pct": 71.0,
       "year2_circulating_pct": 82.0,
       "full_unlock_month": 58,
-      "year1_inflation_proxy": 4.411764705882353
+      "year1_inflation_proxy": 4.411764705882353,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3142857142857143,
@@ -7759,7 +7809,8 @@
       "year1_circulating_pct": 72.5,
       "year2_circulating_pct": 84.16666666666667,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 3.571428571428571
+      "year1_inflation_proxy": 3.571428571428571,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29608938547486036,
@@ -7912,7 +7963,8 @@
       "year1_circulating_pct": 51.24999999999999,
       "year2_circulating_pct": 71.25,
       "full_unlock_month": 48,
-      "year1_inflation_proxy": 28.125
+      "year1_inflation_proxy": 28.125,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3,
@@ -8065,7 +8117,8 @@
       "year1_circulating_pct": 77.5,
       "year2_circulating_pct": 87.5,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 3.3333333333333335
+      "year1_inflation_proxy": 3.3333333333333335,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.24369747899159663,
@@ -8218,7 +8271,8 @@
       "year1_circulating_pct": 44.5,
       "year2_circulating_pct": 66.75,
       "full_unlock_month": 48,
-      "year1_inflation_proxy": 39.0625
+      "year1_inflation_proxy": 39.0625,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.33,
@@ -8371,7 +8425,8 @@
       "year1_circulating_pct": 52.0,
       "year2_circulating_pct": 70.5,
       "full_unlock_month": 48,
-      "year1_inflation_proxy": 23.809523809523807
+      "year1_inflation_proxy": 23.809523809523807,
+      "total_supply": 200000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.28,
@@ -8524,7 +8579,8 @@
       "year1_circulating_pct": 51.24999999999999,
       "year2_circulating_pct": 71.25,
       "full_unlock_month": 48,
-      "year1_inflation_proxy": 28.125
+      "year1_inflation_proxy": 28.125,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3,
@@ -8677,7 +8733,8 @@
       "year1_circulating_pct": 50.5,
       "year2_circulating_pct": 70.0,
       "full_unlock_month": 48,
-      "year1_inflation_proxy": 26.25
+      "year1_inflation_proxy": 26.25,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3,
@@ -8830,7 +8887,8 @@
       "year1_circulating_pct": 76.0,
       "year2_circulating_pct": 87.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.10958904109589
+      "year1_inflation_proxy": 4.10958904109589,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2638655462184874,
@@ -8983,7 +9041,8 @@
       "year1_circulating_pct": 76.0,
       "year2_circulating_pct": 87.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.10958904109589
+      "year1_inflation_proxy": 4.10958904109589,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2638655462184874,
@@ -9136,7 +9195,8 @@
       "year1_circulating_pct": 73.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.285714285714286
+      "year1_inflation_proxy": 4.285714285714286,
+      "total_supply": 2000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29292929292929293,
@@ -9290,7 +9350,8 @@
       "year1_circulating_pct": 46.75,
       "year2_circulating_pct": 67.5,
       "full_unlock_month": 48,
-      "year1_inflation_proxy": 33.57142857142857
+      "year1_inflation_proxy": 33.57142857142857,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3,
@@ -9444,7 +9505,8 @@
       "year1_circulating_pct": 73.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.285714285714286
+      "year1_inflation_proxy": 4.285714285714286,
+      "total_supply": 2000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29292929292929293,
@@ -9598,7 +9660,8 @@
       "year1_circulating_pct": 42.25,
       "year2_circulating_pct": 64.5,
       "full_unlock_month": 48,
-      "year1_inflation_proxy": 50.89285714285714
+      "year1_inflation_proxy": 50.89285714285714,
+      "total_supply": 5000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.27,
@@ -9753,7 +9816,8 @@
       "year1_circulating_pct": 70.75,
       "year2_circulating_pct": 84.25,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 5.597014925373134
+      "year1_inflation_proxy": 5.597014925373134,
+      "total_supply": 5000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.32323232323232326,
@@ -9907,7 +9971,8 @@
       "year1_circulating_pct": 79.0,
       "year2_circulating_pct": 89.0,
       "full_unlock_month": 45,
-      "year1_inflation_proxy": 3.9473684210526314
+      "year1_inflation_proxy": 3.9473684210526314,
+      "total_supply": 2000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.23232323232323232,
@@ -10061,7 +10126,8 @@
       "year1_circulating_pct": 73.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.285714285714286
+      "year1_inflation_proxy": 4.285714285714286,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29292929292929293,
@@ -10215,7 +10281,8 @@
       "year1_circulating_pct": 80.5,
       "year2_circulating_pct": 89.5,
       "full_unlock_month": 45,
-      "year1_inflation_proxy": 3.205128205128205
+      "year1_inflation_proxy": 3.205128205128205,
+      "total_supply": 2000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.21212121212121213,
@@ -10369,7 +10436,8 @@
       "year1_circulating_pct": 76.0,
       "year2_circulating_pct": 85.75,
       "full_unlock_month": 57,
-      "year1_inflation_proxy": 4.10958904109589
+      "year1_inflation_proxy": 4.10958904109589,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2630914826498423,
@@ -10522,7 +10590,8 @@
       "year1_circulating_pct": 68.75,
       "year2_circulating_pct": 81.25,
       "full_unlock_month": 58,
-      "year1_inflation_proxy": 5.769230769230769
+      "year1_inflation_proxy": 5.769230769230769,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3445378151260504,
@@ -10675,7 +10744,8 @@
       "year1_circulating_pct": 76.0,
       "year2_circulating_pct": 85.75,
       "full_unlock_month": 57,
-      "year1_inflation_proxy": 4.10958904109589
+      "year1_inflation_proxy": 4.10958904109589,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2630914826498423,
@@ -10828,7 +10898,8 @@
       "year1_circulating_pct": 56.00000000000001,
       "year2_circulating_pct": 70.75,
       "full_unlock_month": 59,
-      "year1_inflation_proxy": 16.666666666666664
+      "year1_inflation_proxy": 16.666666666666664,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.26883525708289613,
@@ -10981,7 +11052,8 @@
       "year1_circulating_pct": 70.75,
       "year2_circulating_pct": 82.75,
       "full_unlock_month": 58,
-      "year1_inflation_proxy": 5.597014925373134
+      "year1_inflation_proxy": 5.597014925373134,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.3249370277078086,
@@ -11134,7 +11206,8 @@
       "year1_circulating_pct": 73.0,
       "year2_circulating_pct": 83.5,
       "full_unlock_month": 58,
-      "year1_inflation_proxy": 4.285714285714286
+      "year1_inflation_proxy": 4.285714285714286,
+      "total_supply": 10000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2947103274559194,
@@ -11287,7 +11360,8 @@
       "year1_circulating_pct": 73.0,
       "year2_circulating_pct": 83.5,
       "full_unlock_month": 58,
-      "year1_inflation_proxy": 4.285714285714286
+      "year1_inflation_proxy": 4.285714285714286,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2947103274559194,
@@ -11440,7 +11514,8 @@
       "year1_circulating_pct": 77.5,
       "year2_circulating_pct": 86.25,
       "full_unlock_month": 57,
-      "year1_inflation_proxy": 3.3333333333333335
+      "year1_inflation_proxy": 3.3333333333333335,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.24290220820189273,
@@ -11593,7 +11668,8 @@
       "year1_circulating_pct": 76.0,
       "year2_circulating_pct": 87.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.10958904109589
+      "year1_inflation_proxy": 4.10958904109589,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2638655462184874,
@@ -11747,7 +11823,8 @@
       "year1_circulating_pct": 73.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.285714285714286
+      "year1_inflation_proxy": 4.285714285714286,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29292929292929293,
@@ -11901,7 +11978,8 @@
       "year1_circulating_pct": 49.666666666666664,
       "year2_circulating_pct": 73.33333333333333,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 41.9047619047619
+      "year1_inflation_proxy": 41.9047619047619,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29292929292929293,
@@ -12056,7 +12134,8 @@
       "year1_circulating_pct": 52.666666666666664,
       "year2_circulating_pct": 75.33333333333333,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 38.59649122807017
+      "year1_inflation_proxy": 38.59649122807017,
+      "total_supply": 2000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2638655462184874,
@@ -12210,7 +12289,8 @@
       "year1_circulating_pct": 70.75,
       "year2_circulating_pct": 84.25,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 5.597014925373134
+      "year1_inflation_proxy": 5.597014925373134,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.32323232323232326,
@@ -12364,7 +12444,8 @@
       "year1_circulating_pct": 77.5,
       "year2_circulating_pct": 87.5,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 3.3333333333333335
+      "year1_inflation_proxy": 3.3333333333333335,
+      "total_supply": 2000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.24369747899159663,
@@ -12518,7 +12599,8 @@
       "year1_circulating_pct": 73.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.285714285714286
+      "year1_inflation_proxy": 4.285714285714286,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29292929292929293,
@@ -12672,7 +12754,8 @@
       "year1_circulating_pct": 74.5,
       "year2_circulating_pct": 85.5,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 3.4722222222222223
+      "year1_inflation_proxy": 3.4722222222222223,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2727272727272727,
@@ -12826,7 +12909,8 @@
       "year1_circulating_pct": 73.75,
       "year2_circulating_pct": 86.25,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 5.357142857142857
+      "year1_inflation_proxy": 5.357142857142857,
+      "total_supply": 200000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29411764705882354,
@@ -12980,7 +13064,8 @@
       "year1_circulating_pct": 70.75,
       "year2_circulating_pct": 84.25,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 5.597014925373134
+      "year1_inflation_proxy": 5.597014925373134,
+      "total_supply": 200000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.32323232323232326,
@@ -13134,7 +13219,8 @@
       "year1_circulating_pct": 76.0,
       "year2_circulating_pct": 87.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.10958904109589
+      "year1_inflation_proxy": 4.10958904109589,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2638655462184874,
@@ -13288,7 +13374,8 @@
       "year1_circulating_pct": 73.75,
       "year2_circulating_pct": 86.25,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 5.357142857142857
+      "year1_inflation_proxy": 5.357142857142857,
+      "total_supply": 200000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29411764705882354,
@@ -13442,7 +13529,8 @@
       "year1_circulating_pct": 72.5,
       "year2_circulating_pct": 84.16666666666666,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 3.571428571428571
+      "year1_inflation_proxy": 3.571428571428571,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2960893854748603,
@@ -13596,7 +13684,8 @@
       "year1_circulating_pct": 61.0,
       "year2_circulating_pct": 87.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 41.86046511627907
+      "year1_inflation_proxy": 41.86046511627907,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2638655462184874,
@@ -13751,7 +13840,8 @@
       "year1_circulating_pct": 74.5,
       "year2_circulating_pct": 85.5,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 3.4722222222222223
+      "year1_inflation_proxy": 3.4722222222222223,
+      "total_supply": 200000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2727272727272727,
@@ -13905,7 +13995,8 @@
       "year1_circulating_pct": 74.5,
       "year2_circulating_pct": 85.5,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 3.4722222222222223
+      "year1_inflation_proxy": 3.4722222222222223,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2727272727272727,
@@ -14059,7 +14150,8 @@
       "year1_circulating_pct": 74.5,
       "year2_circulating_pct": 85.5,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 3.4722222222222223
+      "year1_inflation_proxy": 3.4722222222222223,
+      "total_supply": 2000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2727272727272727,
@@ -14213,7 +14305,8 @@
       "year1_circulating_pct": 73.0,
       "year2_circulating_pct": 85.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.285714285714286
+      "year1_inflation_proxy": 4.285714285714286,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29292929292929293,
@@ -14367,7 +14460,8 @@
       "year1_circulating_pct": 73.75,
       "year2_circulating_pct": 86.25,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 5.357142857142857
+      "year1_inflation_proxy": 5.357142857142857,
+      "total_supply": 100000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.29411764705882354,
@@ -14521,7 +14615,8 @@
       "year1_circulating_pct": 74.5,
       "year2_circulating_pct": 85.5,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 3.4722222222222223
+      "year1_inflation_proxy": 3.4722222222222223,
+      "total_supply": 2000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2727272727272727,
@@ -14675,7 +14770,8 @@
       "year1_circulating_pct": 48.75,
       "year2_circulating_pct": 72.91666666666666,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 39.285714285714285
+      "year1_inflation_proxy": 39.285714285714285,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.34636871508379885,
@@ -14829,7 +14925,8 @@
       "year1_circulating_pct": 74.5,
       "year2_circulating_pct": 85.5,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 3.4722222222222223
+      "year1_inflation_proxy": 3.4722222222222223,
+      "total_supply": 500000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2727272727272727,
@@ -14983,7 +15080,8 @@
       "year1_circulating_pct": 25.416666666666664,
       "year2_circulating_pct": 61.25000000000001,
       "full_unlock_month": 47,
-      "year1_inflation_proxy": 25.416666666666664
+      "year1_inflation_proxy": 25.416666666666664,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.34636871508379885,
@@ -15138,7 +15236,8 @@
       "year1_circulating_pct": 76.0,
       "year2_circulating_pct": 87.0,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 4.10958904109589
+      "year1_inflation_proxy": 4.10958904109589,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.2638655462184874,
@@ -15292,7 +15391,8 @@
       "year1_circulating_pct": 70.75,
       "year2_circulating_pct": 84.25,
       "full_unlock_month": 46,
-      "year1_inflation_proxy": 5.597014925373134
+      "year1_inflation_proxy": 5.597014925373134,
+      "total_supply": 1000000000.0
     },
     "fairness_evaluation": {
       "fairness_drift": 0.32323232323232326,

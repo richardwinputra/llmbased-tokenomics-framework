@@ -12,7 +12,7 @@ from typing import Dict, List
 import numpy as np
 
 from models import GeneratedTokenomics, ProjectContext, SimulationReport
-from utils import summarize_all_projects, extract_allocation_enhanced
+from utils import summarize_all_projects, extract_allocation_enhanced, get_initial_supply
 from llm_engine import (
     get_structured_input,
     create_structured_prompt,
@@ -105,6 +105,7 @@ def save_pipeline_outputs(
 
     sim_payload = {
         "supply_release": {
+            "total_supply": get_initial_supply(filter_result.adjusted_proposal),
             "initial_circulating_pct": sim_report.supply_release.initial_circulating_pct,
             "year1_circulating_pct": sim_report.supply_release.year1_circulating_pct,
             "year2_circulating_pct": sim_report.supply_release.year2_circulating_pct,

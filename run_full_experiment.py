@@ -27,7 +27,7 @@ from llm_engine import (
 )
 from control_filter import run_control_layer, run_filter_layer
 from simulation import run_simulation_module
-from utils import summarize_all_projects, calculate_gini, get_last_parse_trace
+from utils import summarize_all_projects, calculate_gini, get_last_parse_trace, get_initial_supply
 
 
 BATCH_FILE = "batch_inputs.json"
@@ -108,6 +108,7 @@ def run_single(user_input, project_summaries, seed, model=DEFAULT_MODEL):
 
     supply_release_data = {
         "circulating_supply": sim_report.supply_release.circulating_supply,
+        "total_supply": get_initial_supply(filter_result.adjusted_proposal),
         "initial_circulating_pct": sim_report.supply_release.initial_circulating_pct,
         "year1_circulating_pct": sim_report.supply_release.year1_circulating_pct,
         "year2_circulating_pct": sim_report.supply_release.year2_circulating_pct,

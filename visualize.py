@@ -165,6 +165,7 @@ def plot_circulating_supply_growth(simulation_results: Union[str, List[Dict]], o
 
 
     supply_curves = []
+    n_missing_total_supply = 0
     for result in results_list:
         if isinstance(result, dict):
             if "supply_release" in result:
@@ -172,17 +173,25 @@ def plot_circulating_supply_growth(simulation_results: Union[str, List[Dict]], o
                 if "circulating_supply" in supply_data:
                     curve = supply_data["circulating_supply"]
                     if len(curve) > 1:
-                        supply_curves.append(curve)
+                        total_supply = supply_data.get("total_supply")
+                        if not total_supply or total_supply <= 0:
+                            n_missing_total_supply += 1
+                            total_supply = max(curve) if max(curve) > 0 else 1
+                        supply_curves.append((curve, total_supply))
 
     if not supply_curves:
         print(f"  Warning: No valid supply curves found in {simulation_results}")
         return
 
+    if n_missing_total_supply:
+        print(f"  Warning: {n_missing_total_supply}/{len(supply_curves)} records have no "
+              "'total_supply' (stale export); falling back to max(curve), which understates "
+              "unlock for proposals that have not fully vested by month 60. Re-export with "
+              "the current run_full_experiment.py / main.py to fix.")
 
     supply_pct = []
-    for curve in supply_curves:
-        max_supply = max(curve) if max(curve) > 0 else 1
-        pct_curve = [100 * v / max_supply for v in curve]
+    for curve, total_supply in supply_curves:
+        pct_curve = [100 * v / total_supply for v in curve]
         supply_pct.append(pct_curve)
 
 
